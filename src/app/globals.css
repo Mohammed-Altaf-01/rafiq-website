@@ -1,0 +1,345 @@
+@import "tailwindcss";
+
+/*
+  Rafiq design system, ported from designs/rafiq_design_system_sheet.png.
+  Colour is driven entirely by CSS custom properties so a single token flip
+  themes the page. No `dark:` utility strategy is mixed in on top of it.
+*/
+
+:root {
+  color-scheme: light;
+
+  --bg: #f6f1e7;
+  --surface: #efe7d6;
+  --card: #fbf8f1;
+  --card-raised: #ffffff;
+
+  --ink: #2e2a23;
+  --ink-soft: #625b4d;
+  --ink-faint: #8a8172;
+
+  --primary: #5c6b4c;
+  --primary-hover: #4a5840;
+  --primary-soft: #6e7a56;
+  --on-primary: #f8f5ee;
+
+  /* Brand clay and gold are display colours. On cream they fall under 3:1, so
+     text uses these darkened forms and `--*-fill` keeps the brand value for
+     rings, borders and other non-text marks. */
+  --clay: #a96a3d;
+  --clay-fill: #c08457;
+  --gold: #9a7526;
+  --gold-fill: #c9a24b;
+
+  --line: rgba(46, 42, 35, 0.1);
+  --line-strong: rgba(46, 42, 35, 0.18);
+
+  --shade: rgba(46, 42, 35, 0.14);
+  --shade-deep: rgba(46, 42, 35, 0.22);
+
+  --radius-card: 24px;
+  --radius-tile: 18px;
+  --radius-input: 14px;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #1c1a16;
+  --surface: #24211b;
+  --card: #2e2c24;
+  --card-raised: #35322a;
+
+  --ink: #ede6d6;
+  --ink-soft: #b6ac96;
+  --ink-faint: #8d8570;
+
+  --primary: #8fa07a;
+  --primary-hover: #a1b189;
+  --primary-soft: #7f9068;
+  --on-primary: #1c1a16;
+
+  --clay: #d69a6e;
+  --clay-fill: #d69a6e;
+  --gold: #d8b85f;
+  --gold-fill: #d8b85f;
+
+  --line: rgba(237, 230, 214, 0.12);
+  --line-strong: rgba(237, 230, 214, 0.2);
+
+  --shade: rgba(0, 0, 0, 0.4);
+  --shade-deep: rgba(0, 0, 0, 0.55);
+}
+
+/*
+  The espresso block. Held constant across themes on purpose, exactly like the
+  app's own `blockPreview*` tokens: it is a property of the surface being dark,
+  not of the theme being dark.
+*/
+:root,
+[data-theme="dark"] {
+  --deep: #1c1a16;
+  --deep-surface: #24211b;
+  --deep-card: #2e2c24;
+  --deep-ink: #ede6d6;
+  --deep-ink-soft: #b6ac96;
+  --deep-gold: #d8b85f;
+  --deep-primary: #8fa07a;
+  --deep-line: rgba(237, 230, 214, 0.14);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-card-raised: var(--card-raised);
+
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-faint: var(--ink-faint);
+
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-soft: var(--primary-soft);
+  --color-on-primary: var(--on-primary);
+
+  --color-clay: var(--clay);
+  --color-clay-fill: var(--clay-fill);
+  --color-gold: var(--gold);
+  --color-gold-fill: var(--gold-fill);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-deep: var(--deep);
+  --color-deep-surface: var(--deep-surface);
+  --color-deep-card: var(--deep-card);
+  --color-deep-ink: var(--deep-ink);
+  --color-deep-ink-soft: var(--deep-ink-soft);
+  --color-deep-gold: var(--deep-gold);
+  --color-deep-primary: var(--deep-primary);
+  --color-deep-line: var(--deep-line);
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-arabic: var(--font-amiri), "Traditional Arabic", serif;
+
+  --radius-card: var(--radius-card);
+  --radius-tile: var(--radius-tile);
+  --radius-input: var(--radius-input);
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--gold) 32%, transparent);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.024em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@layer utilities {
+  /* The 8-point star from the system sheet. Full-bleed moments only, never on
+     a card, per the sheet's own note. */
+  .star-field {
+    background-image: url("/brand/pattern-olive.svg");
+    background-size: 72px 72px;
+  }
+
+  .star-field-gold {
+    background-image: url("/brand/pattern-gold.svg");
+    background-size: 72px 72px;
+  }
+
+  /* Display weight is 800 across the sheet. */
+  .display {
+    font-weight: 800;
+    letter-spacing: -0.032em;
+    line-height: 0.98;
+  }
+
+  .overline {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .arabic {
+    font-family: var(--font-amiri), "Traditional Arabic", serif;
+    direction: rtl;
+    line-height: 1.9;
+    font-feature-settings: "liga" 1, "calt" 1;
+  }
+
+  /* Warm-tinted elevation. The sheet bans harsh neutral shadows. */
+  .lift {
+    box-shadow:
+      0 1px 2px var(--shade),
+      0 18px 40px -18px var(--shade-deep);
+  }
+
+  .lift-device {
+    filter: drop-shadow(0 2px 4px rgba(46, 42, 35, 0.1))
+      drop-shadow(0 32px 56px rgba(46, 42, 35, 0.24));
+  }
+
+  .lift-device-deep {
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4))
+      drop-shadow(0 40px 70px rgba(0, 0, 0, 0.5));
+  }
+}
+
+/*
+  Legal documents. Rendered from the same markdown the app bundles, so the
+  hosted wording can never drift from the in-app copy. Styling only.
+*/
+.legal-prose {
+  font-size: 1.02rem;
+  line-height: 1.78;
+  color: var(--ink-soft);
+}
+
+.legal-prose > * + * {
+  margin-top: 1.35em;
+}
+
+.legal-prose h2 {
+  margin-top: 3.5rem;
+  font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.024em;
+  color: var(--ink);
+  scroll-margin-top: 108px;
+}
+
+.legal-prose h3 {
+  margin-top: 2.5rem;
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+}
+
+.legal-prose h2 + *,
+.legal-prose h3 + * {
+  margin-top: 0.9em;
+}
+
+.legal-prose strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.legal-prose em {
+  font-style: italic;
+}
+
+.legal-prose a {
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-thickness: 1px;
+}
+
+.legal-prose ul,
+.legal-prose ol {
+  padding-left: 1.35rem;
+}
+
+.legal-prose li + li {
+  margin-top: 0.65em;
+}
+
+.legal-prose ul > li {
+  list-style: none;
+  position: relative;
+}
+
+.legal-prose ul > li::before {
+  content: "";
+  position: absolute;
+  left: -1.1rem;
+  top: 0.72em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--clay);
+}
+
+.legal-prose ol > li {
+  list-style: decimal;
+}
+
+.legal-prose ol > li::marker {
+  color: var(--ink-faint);
+  font-weight: 700;
+  font-size: 0.9em;
+}
+
+/* The markdown uses `---` as a section break. It reads better as breathing
+   room with a short rule than as a full-width divider. */
+.legal-prose hr {
+  margin-top: 3.25rem;
+  margin-bottom: 0;
+  width: 56px;
+  border: 0;
+  border-top: 2px solid var(--line-strong);
+}
+
+.legal-prose hr + h2 {
+  margin-top: 2rem;
+}
+
+.legal-prose code {
+  font-size: 0.9em;
+  padding: 0.15em 0.4em;
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+/* Every scroll and entrance effect on this site collapses to a static page. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
