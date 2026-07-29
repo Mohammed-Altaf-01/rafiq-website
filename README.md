@@ -57,21 +57,36 @@ instead, which writes every address to a Sheet you own: free, no cap, and
 exportable as CSV whenever you want to mail the list.
 
 1. Make a Google Form with **one** required short-answer question for the email
-   address. Leave Google's own "Collect email addresses" setting **off** — it
-   forces a sign-in and rejects anonymous posts like ours.
-2. In Responses, "Link to Sheets". That Sheet is the list.
+   address.
+2. In Responses, "Link to Sheets". That Sheet is the list. While you are in
+   Settings → Responses, leave all three of these **off**:
+   - **Collect email addresses: Verified**
+   - **Allow response editing**
+   - **Limit to 1 response**
+
+   Each one makes Google require a signed-in Google account before it accepts a
+   submission, which answers every post from this site with `401` and records
+   nothing. The form still opens for anyone, so there is no visible symptom.
 3. Fill in `site.earlyAccess` in `src/lib/site.ts`:
    - `action`: the live form's URL with the last segment swapped from
      `viewform` to `formResponse`.
    - `field`: the question's entry id. Use the form's ⋮ menu, "Get pre-filled
      link", type anything, "Get link", and read `entry.NNNNNNNNNN` out of the
      URL it copies.
-4. Submit once through the real site and check the row lands in the Sheet.
+4. Verify it:
+
+   ```bash
+   npm run verify:form            # config + reachability, posts nothing
+   npm run verify:form -- --submit # posts one probe address and reads the status
+   ```
 
 That last step is not optional. The POST is `no-cors`, because Google sends no
 CORS header back, so the browser cannot read the response: a wrong entry id
-returns 400 and still looks exactly like success on the page. The one honest
-check is a row appearing in the Sheet.
+returns 400, and a form that has started demanding a sign-in returns 401, and
+both look exactly like success on the page. `verify:form` makes the same post
+from Node, where the status code is readable, and names the setting at fault
+when Google refuses. It writes to `probe+<timestamp>@rafiq.invalid`, so delete
+that row from the Sheet afterwards.
 
 Until `action` is set, every "Get early access" control falls back to
 `earlyAccessUrl` rather than showing a form that quietly drops what people type

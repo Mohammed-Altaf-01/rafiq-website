@@ -46,9 +46,13 @@ function remember(email: string) {
  * The request is `no-cors`, because Google does not send back a CORS header
  * for form submissions. That means the response is opaque: we can see that the
  * request left the browser, and nothing else. A rejected promise is a real
- * network failure and worth showing; a 400 from a misconfigured entry id would
- * resolve here and look exactly like success, so verify the wiring once by
- * hand against the Sheet after setting it up.
+ * network failure and worth showing; a 401 from a form that has started
+ * demanding a Google sign-in resolves here and looks exactly like success, so
+ * the visitor reads "You are on the list" while nothing was saved.
+ *
+ * Nothing in the browser can tell those apart. `npm run verify:form -- --submit`
+ * makes the same post from Node, where the status code is readable — that is
+ * the only real check this path has.
  */
 export async function submitEarlyAccess(email: string) {
   const { action, field } = site.earlyAccess;

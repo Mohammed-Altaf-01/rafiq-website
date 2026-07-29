@@ -29,10 +29,16 @@ export const site = {
    * like to tell Us?", entry.839337160). The site does not post it: the hero
    * asks for one thing. Anyone who wants to say more can open the form itself.
    *
-   * Google's own "Collect email addresses" setting must stay OFF — it forces a
-   * sign-in on the hosted form and rejects anonymous posts like ours. It is off
-   * on this form today; changing it in the Google Forms UI silently breaks
-   * every signup here.
+   * Three settings under Settings → Responses each make Google demand a
+   * signed-in Google account before it will accept a submission, which answers
+   * every anonymous post from this site with a 401 and records nothing:
+   * "Collect email addresses: Verified", "Allow response editing", and
+   * "Limit to 1 response". All three have to stay off. Turning any of them on
+   * breaks signup silently — the form still opens for anyone, and the site
+   * cannot see the rejection (see `submitEarlyAccess`).
+   *
+   * `npm run verify:form -- --submit` posts a probe address and reads the real
+   * status code. Run it after touching the form.
    *
    * While `action` is null every CTA falls back to `earlyAccessUrl`, so the
    * page never shows a form that quietly drops what people type into it.
