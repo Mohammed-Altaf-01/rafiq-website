@@ -194,6 +194,49 @@
     line-height: 0.98;
   }
 
+  /*
+    The app's signature, ported from `ui/components/ShimmerText.kt`: the colour
+    sweep the home screen runs through the salam. Same stop order -- gold, clay,
+    gold, olive, gold -- and the same 2.8s linear ping-pong, so the site opens on
+    the gesture the app opens on.
+
+    Two deliberate differences from the Kotlin. The stops are `--gold`/`--clay`,
+    the text-safe forms, not the `--*-fill` display values the app paints with:
+    #c9a24b sits at 2.1:1 on cream and this is an `h1`, not an ornament. And the
+    sweep is one repeating tile rather than a clamped band, which is what lets a
+    single `background-position` animation carry it -- the first and last stop
+    are the same gold, so the tile joins itself with no seam.
+  */
+  .shimmer {
+    background-image: linear-gradient(
+      90deg,
+      var(--gold),
+      var(--clay),
+      var(--gold),
+      var(--primary),
+      var(--gold)
+    );
+    background-size: 200% 100%;
+    animation: shimmer-sweep 2.8s linear infinite alternate;
+  }
+
+  /* Guarded: without `background-clip: text` the transparent fill would leave
+     the headline invisible rather than merely unswept. */
+  @supports (background-clip: text) or (-webkit-background-clip: text) {
+    .shimmer {
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+  }
+
+  @keyframes shimmer-sweep {
+    to {
+      background-position-x: 200%;
+    }
+  }
+
   .overline {
     font-size: 0.6875rem;
     font-weight: 700;

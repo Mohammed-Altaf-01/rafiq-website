@@ -14,7 +14,7 @@ export const screenSize = {
   "/screens/journey-dark.webp": { width: 556, height: 1181 },
   "/screens/limits.webp": { width: 549, height: 1182 },
   "/screens/login.webp": { width: 502, height: 1084 },
-  "/screens/paywall.webp": { width: 513, height: 1090 },
+  "/screens/paywall.webp": { width: 493, height: 1066 },
   "/screens/purchase.webp": { width: 640, height: 1414 },
   "/screens/settings.webp": { width: 640, height: 1414 },
   "/screens/setup-done.webp": { width: 576, height: 1276 },

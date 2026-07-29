@@ -57,11 +57,11 @@ export const metadata: Metadata = {
   },
 };
 
+// Cream, unconditionally: the page itself loads light regardless of the OS
+// preference, so keying the browser chrome to `prefers-color-scheme` would tint
+// it dark above a light page.
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f1e7" },
-    { media: "(prefers-color-scheme: dark)", color: "#1c1a16" },
-  ],
+  themeColor: "#f6f1e7",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

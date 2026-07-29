@@ -2,7 +2,7 @@
 
 import { CheckCircleIcon } from "@phosphor-icons/react/dist/ssr";
 import { AnimatePresence, motion } from "motion/react";
-import { useId, useState, useSyncExternalStore } from "react";
+import { useId, useState, useSyncExternalStore, type ReactNode } from "react";
 
 import { PrimaryButton } from "@/components/ui/button";
 import {
@@ -22,17 +22,25 @@ type Status = "idle" | "sending" | "done" | "error";
  * once the Play listing exists it is a download button, before the Google
  * Form is wired up it is the plain mailto the rest of the page used to carry,
  * and in between it is this form.
+ *
+ * `secondary` is a second call to sit beside the submit — the hero's "See how
+ * it works". Passing it turns the form from one row into two, the address over
+ * the pair of buttons, because a field and two pills on one line reads as three
+ * peers rather than as one question with an answer. It is also rendered under
+ * the confirmation: signing up is not a reason to lose the way into the page.
  */
 export function EarlyAccess({
   onDark = false,
   storeLabel = "Get Rafiq on Google Play",
   align = "start",
+  secondary,
   id,
   className = "",
 }: {
   onDark?: boolean;
   storeLabel?: string;
   align?: "start" | "center";
+  secondary?: ReactNode;
   id?: string;
   className?: string;
 }) {
@@ -99,6 +107,25 @@ export function EarlyAccess({
   const ink = onDark ? "var(--deep-ink)" : "var(--ink)";
   const inkSoft = onDark ? "var(--deep-ink-soft)" : "var(--ink-soft)";
 
+  const submit = (
+    <button
+      type="submit"
+      disabled={status === "sending"}
+      className={`inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[0.95rem] font-bold whitespace-nowrap transition-all duration-200 hover:-translate-y-[1px] active:translate-y-[1px] active:scale-[0.985] disabled:cursor-progress disabled:opacity-70 ${
+        secondary ? "sm:flex-1" : "shrink-0"
+      }`}
+      style={{
+        background: onDark ? "var(--deep-primary)" : "var(--primary)",
+        color: onDark ? "#1C1A16" : "var(--on-primary)",
+        boxShadow: onDark
+          ? "0 10px 26px -12px rgba(0,0,0,0.7)"
+          : "0 10px 26px -12px var(--shade-deep)",
+      }}
+    >
+      {status === "sending" ? "Sending…" : "Get early access"}
+    </button>
+  );
+
   return (
     <div id={id} className={`w-full ${align === "center" ? "text-center" : ""} ${className}`}>
       <AnimatePresence mode="wait" initial={false}>
@@ -122,6 +149,10 @@ export function EarlyAccess({
                 We will email <span className="font-semibold">{email}</span> the day {site.name} is
                 live on Google Play. That is the only reason we will ever write to you.
               </p>
+              {/* `w-fit` so the button keeps its own width here: the `flex-1`
+                  it carries for the form row would otherwise stretch it across
+                  the whole confirmation. */}
+              {secondary ? <div className="mt-6 flex w-fit">{secondary}</div> : null}
             </div>
           </motion.div>
         ) : (
@@ -139,9 +170,16 @@ export function EarlyAccess({
             </label>
 
             <div
-              className={`flex w-full flex-col gap-3 sm:flex-row ${
-                align === "center" ? "sm:justify-center" : ""
-              }`}
+              className={
+                secondary
+                  ? // Two rows. The cap is what makes the buttons read as
+                    // belonging to the field above them: they grow to share its
+                    // width exactly instead of trailing off under one end of it.
+                    `flex w-full max-w-[28rem] flex-col gap-3 ${align === "center" ? "mx-auto" : ""}`
+                  : `flex w-full flex-col gap-3 sm:flex-row ${
+                      align === "center" ? "sm:justify-center" : ""
+                    }`
+              }
             >
               <input
                 id={inputId}
@@ -159,7 +197,9 @@ export function EarlyAccess({
                 aria-invalid={invalid}
                 aria-describedby={status === "error" ? `${inputId}-note` : undefined}
                 disabled={status === "sending"}
-                className="early-input w-full min-w-0 px-5 py-3.5 text-[0.95rem] font-medium transition-shadow duration-200 sm:w-[300px]"
+                className={`early-input w-full min-w-0 px-5 py-3.5 text-[0.95rem] font-medium transition-shadow duration-200 ${
+                  secondary ? "" : "sm:w-[300px]"
+                }`}
                 style={{
                   borderRadius: "var(--radius-input)",
                   background: onDark ? "rgba(237,230,214,0.08)" : "var(--surface)",
@@ -186,20 +226,14 @@ export function EarlyAccess({
                 className="pointer-events-none absolute -left-[9999px] h-0 w-0 opacity-0"
               />
 
-              <button
-                type="submit"
-                disabled={status === "sending"}
-                className="inline-flex shrink-0 items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[0.95rem] font-bold whitespace-nowrap transition-all duration-200 hover:-translate-y-[1px] active:translate-y-[1px] active:scale-[0.985] disabled:cursor-progress disabled:opacity-70"
-                style={{
-                  background: onDark ? "var(--deep-primary)" : "var(--primary)",
-                  color: onDark ? "#1C1A16" : "var(--on-primary)",
-                  boxShadow: onDark
-                    ? "0 10px 26px -12px rgba(0,0,0,0.7)"
-                    : "0 10px 26px -12px var(--shade-deep)",
-                }}
-              >
-                {status === "sending" ? "Sending…" : "Get early access"}
-              </button>
+              {secondary ? (
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  {submit}
+                  {secondary}
+                </div>
+              ) : (
+                submit
+              )}
             </div>
 
             <p

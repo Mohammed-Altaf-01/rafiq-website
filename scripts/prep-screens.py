@@ -45,14 +45,37 @@ FILES = {
 `adult_content_blocking_timerfinished` is the only one: its device frame runs
 off the top, right and bottom of the image, so there is no whole device to
 recover. Trimming the one surviving bezel strip leaves the screen itself, which
-at the sizes these render at is indistinguishable from the others -- the bezel
-is barely a pixel wide on the page. Nothing is invented to fill the gap.
+the uniform frame below then gives an edge back to. Nothing is invented to fill
+the gap.
 """
 HARD_CROP = {"block-adult-done": (26, 6, 714, 1536)}
 
+"""Renders whose drop shadow is soft enough that the default tolerance reads it
+as part of the device, leaving a pale halo the frame below cannot cover (23px of
+it under `paywall`). Measuring the box against a much larger tolerance ignores
+the shadow and lands on the device itself."""
+SHADOWED = {"paywall"}
+
 TARGET_W = 880  # ~2x the widest on-page render
-SS = 4  # supersample factor for the corner mask
-MIN_RADIUS = 0.052  # fraction of width, floor for renders with square corners
+SS = 4  # supersample factor for the corner mask and the frame
+
+"""One device edge for every screen, painted rather than inherited.
+
+The renders disagree with each other about what a phone looks like: corner radii
+run from 4.3% to 7.4% of the width, and the bezel is anywhere between a 2% band
+and nothing at all -- `purchase`, `settings`, `trust` and `setup-done` run their
+content flush to the crop, which is what reads as a cut-off screen next to the
+ones that do have an edge. So the render's own bezel is not preserved. Every
+screen is masked to the same radius and then given the same ring on top.
+
+`RADIUS` clears the widest measured radius so the mask only ever removes corner,
+never leaves a transparent notch where a render was already rounder. `FRAME`
+clears the widest measured bezel for the same reason: at 2% it covers whatever
+edge the render came with instead of sitting inside it and doubling up.
+"""
+RADIUS = 0.075  # corner radius, fraction of width
+FRAME = 0.020  # device edge thickness, fraction of width
+FRAME_RGB = (150, 147, 138)  # the warm grey most of the renders already used
 
 
 def backdrop(img):
@@ -90,15 +113,17 @@ def device_box(img, bg, tol=14):
     return (left, top, right + 1, bottom + 1)
 
 
-def corner_radius(img, bg, tol=14):
-    """Read the radius off the arc: on the device's first row the shape spans
-    [radius, width - radius], so the inset at that row is the radius."""
-    if bg is None:
-        return round(img.width * MIN_RADIUS)
-    px = img.load()
-    w = img.width
-    inset = next((x for x in range(w) if max(abs(px[x, 0][i] - bg[i]) for i in range(3)) > tol), 0)
-    return max(inset, round(w * MIN_RADIUS))
+def add_frame(img, radius, thickness):
+    """Paint the uniform device edge, anti-aliased against the same arc the
+    corner mask is about to cut, so the ring and the silhouette share an edge."""
+    w, h = img.size
+    ring = Image.new("L", (w * SS, h * SS), 0)
+    ImageDraw.Draw(ring).rounded_rectangle(
+        (0, 0, w * SS - 1, h * SS - 1), radius=radius * SS, outline=255, width=thickness * SS
+    )
+    out = img.copy()
+    out.paste(Image.new("RGB", (w, h), FRAME_RGB), (0, 0), ring.resize((w, h), Image.LANCZOS))
+    return out
 
 
 def round_corners(img, radius):
@@ -129,12 +154,13 @@ for name, rel in sorted(FILES.items()):
     else:
         bg = backdrop(img)
         if bg is not None:
-            img = img.crop(device_box(img, bg))
-
-    img = round_corners(img, corner_radius(img, bg))
+            img = img.crop(device_box(img, bg, tol=70 if name in SHADOWED else 14))
 
     if img.width > TARGET_W:
         img = img.resize((TARGET_W, round(img.height * TARGET_W / img.width)), Image.LANCZOS)
+
+    radius = round(img.width * RADIUS)
+    img = round_corners(add_frame(img, radius, round(img.width * FRAME)), radius)
 
     img.save(os.path.join(OUT, f"{name}.webp"), "WEBP", quality=92, method=6)
     manifest[name] = (img.width, img.height)

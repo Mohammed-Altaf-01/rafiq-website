@@ -17,27 +17,32 @@ export const site = {
 
   /*
    * Early-access capture. The site is a static export, so there is no server
-   * of ours to post to: the signup form posts straight into a Google Form,
-   * which drops every address into a Sheet you own and can export as CSV.
+   * of ours to post to: the signup form posts straight into a Google Form
+   * (https://forms.gle/PBWtKF2EwhHw2d4YA), which drops every address into the
+   * Sheet behind it and can be exported as CSV.
    *
-   * To wire it up, make a Google Form with exactly one required short-answer
-   * question for the email address, then fill both fields in:
+   *   action   the form's POST endpoint — its /viewform URL with the last
+   *            segment swapped for `formResponse`.
+   *   field    the entry id of the required "Email" question.
    *
-   *   action   the form's POST endpoint. Take the /viewform URL of the live
-   *            form and swap the last segment for `formResponse`.
-   *   field    that question's entry id. On the live form use the ⋮ menu,
-   *            "Get pre-filled link", type anything, press "Get link", and
-   *            read `entry.NNNNNNNNNN` out of the URL it copies.
+   * The form carries a second, optional question ("Anything that you would
+   * like to tell Us?", entry.839337160). The site does not post it: the hero
+   * asks for one thing. Anyone who wants to say more can open the form itself.
    *
-   * Leave Google's own "Collect email addresses" setting OFF. It forces a
-   * sign-in on the hosted form and rejects anonymous posts like ours.
+   * Google's own "Collect email addresses" setting must stay OFF — it forces a
+   * sign-in on the hosted form and rejects anonymous posts like ours. It is off
+   * on this form today; changing it in the Google Forms UI silently breaks
+   * every signup here.
    *
    * While `action` is null every CTA falls back to `earlyAccessUrl`, so the
    * page never shows a form that quietly drops what people type into it.
    */
   earlyAccess: {
-    action: null as string | null,
-    field: "entry.0000000000",
+    action:
+      "https://docs.google.com/forms/d/e/1FAIpQLSfpNMJaXgnurO4chFT8YrJG3qn3hx6H693O5TmHDr8v5kloxw/formResponse" as
+        | string
+        | null,
+    field: "entry.1045781291",
   },
 
   minAndroid: "8.1",
