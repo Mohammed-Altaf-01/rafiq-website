@@ -1,9 +1,9 @@
 import { Mark } from "@/components/brand/mark";
-import { PrimaryButton } from "@/components/ui/button";
+import { EarlyAccess } from "@/components/ui/early-access";
 import { Reveal } from "@/components/ui/reveal";
 import { Scripture } from "@/components/ui/scripture";
 import { theShade } from "@/lib/scripture";
-import { pricing, site } from "@/lib/site";
+import { pricing } from "@/lib/site";
 
 export function Cta() {
   return (
@@ -43,9 +43,7 @@ export function Cta() {
           </p>
 
           <div className="mt-10 flex justify-center">
-            <PrimaryButton href={site.playStore ?? site.earlyAccessUrl} onDark>
-              {site.playStore ? "Get Rafiq on Google Play" : "Get early access"}
-            </PrimaryButton>
+            <EarlyAccess id="early-access" onDark align="center" />
           </div>
         </Reveal>
       </div>

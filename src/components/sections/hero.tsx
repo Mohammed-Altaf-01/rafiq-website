@@ -4,11 +4,16 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 
-import { PrimaryButton, TonalButton } from "@/components/ui/button";
+import { TonalButton } from "@/components/ui/button";
 import { Device } from "@/components/ui/device";
-import { site } from "@/lib/site";
+import { EarlyAccess } from "@/components/ui/early-access";
 
 gsap.registerPlugin(ScrollTrigger);
+
+// A phone browser hiding or showing its own toolbar counts as a viewport
+// resize, and this hero is `100dvh` tall, so every one of those would refresh
+// every trigger on the page and snap the parallax to a new position mid-scroll.
+ScrollTrigger.config({ ignoreMobileResize: true });
 
 const LINES = ["Lower your gaze.", "Take back your time."];
 
@@ -92,15 +97,13 @@ export function Hero() {
             Everything stays on your phone.
           </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-3">
-            <span className="hero-cta">
-              <PrimaryButton href={site.playStore ?? site.earlyAccessUrl}>
-                {site.playStore ? "Get Rafiq on Google Play" : "Get early access"}
-              </PrimaryButton>
-            </span>
-            <span className="hero-cta">
+          <div className="mt-10">
+            <div className="hero-cta">
+              <EarlyAccess />
+            </div>
+            <div className="hero-cta mt-6">
               <TonalButton href="#pause">See how it works</TonalButton>
-            </span>
+            </div>
           </div>
         </div>
 

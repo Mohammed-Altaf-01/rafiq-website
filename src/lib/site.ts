@@ -15,6 +15,31 @@ export const site = {
   playStore: null as string | null,
   earlyAccessUrl: "mailto:rafiq@support.com?subject=Rafiq%20early%20access",
 
+  /*
+   * Early-access capture. The site is a static export, so there is no server
+   * of ours to post to: the signup form posts straight into a Google Form,
+   * which drops every address into a Sheet you own and can export as CSV.
+   *
+   * To wire it up, make a Google Form with exactly one required short-answer
+   * question for the email address, then fill both fields in:
+   *
+   *   action   the form's POST endpoint. Take the /viewform URL of the live
+   *            form and swap the last segment for `formResponse`.
+   *   field    that question's entry id. On the live form use the ⋮ menu,
+   *            "Get pre-filled link", type anything, press "Get link", and
+   *            read `entry.NNNNNNNNNN` out of the URL it copies.
+   *
+   * Leave Google's own "Collect email addresses" setting OFF. It forces a
+   * sign-in on the hosted form and rejects anonymous posts like ours.
+   *
+   * While `action` is null every CTA falls back to `earlyAccessUrl`, so the
+   * page never shows a form that quietly drops what people type into it.
+   */
+  earlyAccess: {
+    action: null as string | null,
+    field: "entry.0000000000",
+  },
+
   minAndroid: "8.1",
 } as const;
 

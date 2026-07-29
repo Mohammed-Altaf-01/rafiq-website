@@ -2,6 +2,7 @@ import { CheckIcon } from "@phosphor-icons/react/dist/ssr";
 
 import { PrimaryButton } from "@/components/ui/button";
 import { Reveal } from "@/components/ui/reveal";
+import { earlyAccessTarget } from "@/lib/early-access";
 import { pricing, site } from "@/lib/site";
 
 const unlocks = [
@@ -89,10 +90,7 @@ export function Pricing() {
                 </p>
               </div>
 
-              <PrimaryButton
-                href={site.playStore ?? site.earlyAccessUrl}
-                className="mt-2 w-full"
-              >
+              <PrimaryButton href={earlyAccessTarget(true)} className="mt-2 w-full">
                 {site.playStore ? "Start free trial" : "Get early access"}
               </PrimaryButton>
               <p className="text-center text-[0.82rem] text-ink-faint">

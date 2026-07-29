@@ -167,6 +167,14 @@
 }
 
 @layer utilities {
+  /* The signup field sits on cream in one place and on espresso in the other,
+     so its placeholder takes its colour from the text around it rather than
+     naming one. */
+  .early-input::placeholder {
+    color: currentColor;
+    opacity: 0.5;
+  }
+
   /* The 8-point star from the system sheet. Full-bleed moments only, never on
      a card, per the sheet's own note. */
   .star-field {

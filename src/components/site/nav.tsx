@@ -8,6 +8,7 @@ import { useState } from "react";
 
 import { Wordmark } from "@/components/brand/mark";
 import { ThemeToggle } from "@/components/site/theme-toggle";
+import { earlyAccessTarget } from "@/lib/early-access";
 import { nav, site } from "@/lib/site";
 
 export function Nav() {
@@ -20,6 +21,7 @@ export function Nav() {
   // browser take them to the section once it arrives.
   const onHome = usePathname() === "/";
   const to = (hash: string) => (onHome ? hash : `/${hash}`);
+  const cta = earlyAccessTarget(onHome);
 
   // Motion's scroll observer rather than a scroll listener: no per-frame
   // React state, and the bar only re-renders on the one threshold crossing.
@@ -72,13 +74,13 @@ export function Nav() {
 
         <div className="flex items-center gap-2.5">
           <ThemeToggle />
-          <a
-            href={site.playStore ?? site.earlyAccessUrl}
+          <Link
+            href={cta}
             className="hidden rounded-full px-5 py-2.5 text-[0.875rem] font-bold transition-all duration-200 hover:-translate-y-[1px] active:translate-y-[1px] sm:inline-flex"
             style={{ background: "var(--primary)", color: "var(--on-primary)" }}
           >
             {site.playStore ? "Get Rafiq" : "Get early access"}
-          </a>
+          </Link>
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
@@ -120,14 +122,14 @@ export function Nav() {
                 </li>
               ))}
               <li>
-                <a
-                  href={site.playStore ?? site.earlyAccessUrl}
+                <Link
+                  href={cta}
                   onClick={() => setOpen(false)}
                   className="mt-1 block rounded-full px-4 py-3 text-center text-[0.95rem] font-bold"
                   style={{ background: "var(--primary)", color: "var(--on-primary)" }}
                 >
                   {site.playStore ? "Get Rafiq" : "Get early access"}
-                </a>
+                </Link>
               </li>
             </ul>
           </motion.nav>
