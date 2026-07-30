@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import { Amiri, Plus_Jakarta_Sans } from "next/font/google";
 
@@ -73,6 +74,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className={`${jakarta.variable} ${amiri.variable}`}>
         <MotionProvider>{children}</MotionProvider>
+
+        {/*
+          Page views only, and no cookies or identifiers — which is the whole
+          reason this and not a general-purpose analytics suite, on a site whose
+          pitch is that nothing about you is collected.
+
+          The script it loads is served from `/_vercel/insights/script.js` by
+          Vercel's edge, so it only reports anything when the site is deployed
+          on Vercel with Web Analytics enabled for the project. On Firebase
+          Hosting that path 404s and nothing is recorded.
+        */}
+        <Analytics />
       </body>
     </html>
   );

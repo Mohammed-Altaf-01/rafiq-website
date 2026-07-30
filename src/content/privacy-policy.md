@@ -1,7 +1,7 @@
 # Privacy Policy
 
 **Effective date:** 24 July 2026
-**Last updated:** 24 July 2026
+**Last updated:** 30 July 2026
 
 Rafiq ("Rafiq", "we", "us", or "our") is an Android app that helps you live more intentionally by blocking harmful and habit-forming content and by enforcing screen-time limits you set for yourself. We built Rafiq around one promise: what you look at on your phone is nobody's business but yours. This policy explains exactly what we collect, what we deliberately never collect, and the choices you have.
 

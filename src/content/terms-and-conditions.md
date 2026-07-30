@@ -1,7 +1,7 @@
 # Terms of Service
 
 **Effective date:** 24 July 2026
-**Last updated:** 24 July 2026
+**Last updated:** 30 July 2026
 
 Welcome to Rafiq. These terms are the agreement between you and Rafiq. By downloading, installing, or using the app, you agree to them. If you do not agree, please do not use Rafiq.
 
