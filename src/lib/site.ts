@@ -4,7 +4,7 @@ export const site = {
   description:
     "Rafiq is an Android app that blocks adult content and short-video feeds, and holds the screen-time limits you set for yourself. Every match happens on your device. Nothing you look at is ever stored or sent.",
   url: "https://rafiq.app",
-  supportEmail: "rafiq@support.com",
+  supportEmail: "rafiqgaurdian@gmail.com",
 
   /*
    * The Play listing does not exist yet: LAUNCH.md §0 requires a 14-day closed
@@ -13,7 +13,7 @@ export const site = {
    * page switches from early-access wording to a download CTA.
    */
   playStore: null as string | null,
-  earlyAccessUrl: "mailto:rafiq@support.com?subject=Rafiq%20early%20access",
+  earlyAccessUrl: "mailto:rafiqgaurdian@gmail.com?subject=Rafiq%20early%20access",
 
   /*
    * Early-access capture. The site is a static export, so there is no server
@@ -55,7 +55,7 @@ export const site = {
 } as const;
 
 export const pricing = {
-  trialDays: 14,
+  trialDays: 7,
   monthly: { price: "$4.99", period: "per month" },
   annual: { price: "$35.99", period: "per year", perMonth: "$3.00 / month", saving: "Save 40%" },
 } as const;
