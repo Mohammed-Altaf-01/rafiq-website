@@ -290,7 +290,9 @@
   line-height: 1.15;
   letter-spacing: -0.024em;
   color: var(--ink);
-  scroll-margin-top: 108px;
+  /* Breathing room above a heading jumped to from the table of contents.
+     Nothing is fixed over these pages, so this only has to clear itself. */
+  scroll-margin-top: 2.5rem;
 }
 
 .legal-prose h3 {

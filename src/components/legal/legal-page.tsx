@@ -3,17 +3,22 @@ import Link from "next/link";
 
 import { ReadingProgress } from "@/components/legal/reading-progress";
 import { Footer } from "@/components/site/footer";
-import { Nav } from "@/components/site/nav";
+import { ThemeToggle } from "@/components/site/theme-toggle";
 import type { LegalDoc } from "@/lib/legal";
 
 export function LegalPage({ doc, sibling }: { doc: LegalDoc; sibling: { href: string; label: string } }) {
   return (
     <>
       <ReadingProgress />
-      <Nav />
 
-      <main className="px-5 pt-[124px] pb-24 sm:px-8">
-        <header className="mx-auto max-w-[1160px]">
+      {/*
+        No site nav here. A policy is a document, not a place to be sold from:
+        the only way out is back to the landing page, where the nav lives. The
+        theme toggle stays, because these are the longest reads on the site and
+        a dark-theme reader would otherwise be stuck on a cream page.
+      */}
+      <main className="px-5 pt-11 pb-24 sm:px-8">
+        <div className="mx-auto flex max-w-[1160px] items-center justify-between gap-4">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-[0.88rem] font-semibold text-ink-soft transition-colors hover:text-ink"
@@ -22,7 +27,11 @@ export function LegalPage({ doc, sibling }: { doc: LegalDoc; sibling: { href: st
             Back to Rafiq
           </Link>
 
-          <h1 className="display mt-8 text-[2.5rem] sm:text-[3.25rem] lg:text-[3.75rem]">
+          <ThemeToggle />
+        </div>
+
+        <header className="mx-auto mt-12 max-w-[1160px]">
+          <h1 className="display text-[2.5rem] sm:text-[3.25rem] lg:text-[3.75rem]">
             {doc.title}
           </h1>
 
@@ -40,7 +49,7 @@ export function LegalPage({ doc, sibling }: { doc: LegalDoc; sibling: { href: st
 
         <div className="mx-auto mt-16 grid max-w-[1160px] gap-14 lg:grid-cols-[240px_1fr] lg:gap-20">
           <nav aria-label="On this page" className="hidden lg:block">
-            <div className="sticky top-[104px]">
+            <div className="sticky top-11">
               <p className="overline text-ink-faint">On this page</p>
               <ul className="mt-5 space-y-2.5">
                 {doc.toc.map((item) => (
