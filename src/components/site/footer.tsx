@@ -51,13 +51,15 @@ export function Footer() {
                 {site.supportEmail}
               </a>
             </li>
+            {/*
+              A real page, not a mailto: the Play Console Data Safety form only
+              takes an https URL, and Google expects to find that URL linked
+              from the site itself.
+            */}
             <li>
-              <a
-                href={`mailto:${site.supportEmail}?subject=Delete%20my%20Rafiq%20account`}
-                className="transition-colors hover:text-ink"
-              >
+              <Link href="/delete-account" className="transition-colors hover:text-ink">
                 Delete your account
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

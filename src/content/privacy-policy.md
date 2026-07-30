@@ -7,7 +7,7 @@ Rafiq ("Rafiq", "we", "us", or "our") is an Android app that helps you live more
 
 Rafiq is operated by an individual developer (Altaf) and is governed by the laws of India. Rafiq is intended for people aged 15 and older.
 
-If you have any question about this policy, email **rafiq@support.com**.
+If you have any question about this policy, email **rafiqgaurdian@gmail.com**.
 
 ---
 
@@ -124,18 +124,18 @@ Your cloud data is processed on Google's infrastructure in the United States. If
 
 ## Your choices and rights
 
-- **See or export your data** — email rafiq@support.com and we will help.
+- **See or export your data** — email rafiqgaurdian@gmail.com and we will help.
 - **Correct your data** — update your Google account details, or change your settings and limits in the app.
-- **Delete your data** — uninstalling removes everything on your device. To delete cloud data, email rafiq@support.com with the email tied to your account, and we will remove your profile, entitlement, and synced data within 30 days.
+- **Delete your account and data** — in the app, open Settings → Account → Delete account, and your account and everything synced with it go straight away. If you have already uninstalled Rafiq, email rafiqgaurdian@gmail.com from the address tied to your account and we will remove your profile, entitlement, and synced data within 30 days. Both routes, and the full list of what is deleted and what is kept, are set out at https://rafiq.app/delete-account/. Uninstalling removes everything held on your device.
 - **Revoke permissions** — you can turn off Accessibility, overlay, usage-access, or notifications at any time in Android Settings. Blocking stops when Accessibility is off, and Rafiq will simply invite you to turn it back on.
 
-Depending on where you live — for example under the GDPR in the EU/EEA, or under India's data-protection law — you may have additional rights to access, correct, delete, restrict, or object to the processing of your data, and to lodge a complaint with your local authority. To exercise any of these, email rafiq@support.com with your request and a way to verify your identity. We will respond within 30 days.
+Depending on where you live — for example under the GDPR in the EU/EEA, or under India's data-protection law — you may have additional rights to access, correct, delete, restrict, or object to the processing of your data, and to lodge a complaint with your local authority. To exercise any of these, email rafiqgaurdian@gmail.com with your request and a way to verify your identity. We will respond within 30 days.
 
 ---
 
 ## Children
 
-Rafiq is intended for people aged 15 and older. We do not knowingly collect data from anyone younger. If you believe a child has provided us data, email rafiq@support.com and we will delete it.
+Rafiq is intended for people aged 15 and older. We do not knowingly collect data from anyone younger. If you believe a child has provided us data, email rafiqgaurdian@gmail.com and we will delete it.
 
 ---
 
@@ -147,6 +147,6 @@ We may update this policy as the app evolves or as the law requires. When we do,
 
 ## Contact
 
-Questions, requests, or complaints: **rafiq@support.com**
+Questions, requests, or complaints: **rafiqgaurdian@gmail.com**
 
 We will always try to resolve things with you directly first.

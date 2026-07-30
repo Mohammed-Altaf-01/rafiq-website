@@ -7,7 +7,7 @@ Welcome to Rafiq. These terms are the agreement between you and Rafiq. By downlo
 
 Rafiq is an Android app that helps you live more intentionally by blocking harmful and habit-forming content and by enforcing screen-time limits you set for yourself. It is operated by an individual developer (Altaf) and is governed by the laws of India.
 
-Questions? Email **rafiq@support.com**.
+Questions? Email **rafiqgaurdian@gmail.com**.
 
 ---
 
@@ -26,7 +26,7 @@ Rafiq offers two ways in:
 
 Email-and-password sign-in is not offered.
 
-You are responsible for keeping your Google account secure and for activity under your Rafiq account. To sign out, use Settings. Signing out leaves your data in place; to delete cloud data permanently, email rafiq@support.com from the account's email and we will remove it within 30 days.
+You are responsible for keeping your Google account secure and for activity under your Rafiq account. To sign out, use Settings. Signing out leaves your data in place. To delete your account permanently, use Settings → Account → Delete account, or, if you have uninstalled the app, email rafiqgaurdian@gmail.com from the account's email and we will remove it within 30 days. The full deletion routes are set out at https://rafiq.app/delete-account/.
 
 ---
 
@@ -51,7 +51,7 @@ Subscriptions are purchased and charged through Google Play. They renew automati
 
 ### Refunds
 
-Refunds are handled by Google Play under its standard policy. We do not separately prorate or refund partial periods. If you were charged in error or hit a genuine problem, email rafiq@support.com with your Google Play order ID and we will do our best to help.
+Refunds are handled by Google Play under its standard policy. We do not separately prorate or refund partial periods. If you were charged in error or hit a genuine problem, email rafiqgaurdian@gmail.com with your Google Play order ID and we will do our best to help.
 
 ### Price changes
 
@@ -125,7 +125,7 @@ To the fullest extent allowed by law, Rafiq is not liable for indirect, incident
 
 ## 11. Suspension and termination
 
-You can stop using Rafiq at any time by uninstalling it. We may suspend or end access if you seriously breach these terms, attempt fraud, or misuse the app in a way that harms the service or others. You can appeal any such decision by emailing rafiq@support.com.
+You can stop using Rafiq at any time by uninstalling it. We may suspend or end access if you seriously breach these terms, attempt fraud, or misuse the app in a way that harms the service or others. You can appeal any such decision by emailing rafiqgaurdian@gmail.com.
 
 ---
 
@@ -137,10 +137,10 @@ We may update these terms as the app evolves or the law requires. We will update
 
 ## 13. Governing law
 
-These terms are governed by the laws of India, and any disputes will be handled by the courts with jurisdiction there. Before any formal action, we ask that you contact us at rafiq@support.com so we can try to resolve the matter directly.
+These terms are governed by the laws of India, and any disputes will be handled by the courts with jurisdiction there. Before any formal action, we ask that you contact us at rafiqgaurdian@gmail.com so we can try to resolve the matter directly.
 
 ---
 
 ## 14. Contact
 
-For support, billing questions, account deletion, or anything else: **rafiq@support.com**
+For support, billing questions, account deletion, or anything else: **rafiqgaurdian@gmail.com**
