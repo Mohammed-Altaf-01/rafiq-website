@@ -51,10 +51,8 @@ export const metadata: Metadata = {
     description: site.description,
     images: ["/brand/app-icon.png"],
   },
-  icons: {
-    icon: [{ url: "/brand/app-icon.png", type: "image/png" }],
-    apple: "/brand/app-icon.png",
-  },
+  // Tab and home-screen icons come from the favicon.ico / icon.png /
+  // apple-icon.png files in this directory, which Next links automatically.
 };
 
 // Cream, unconditionally: the page itself loads light regardless of the OS
