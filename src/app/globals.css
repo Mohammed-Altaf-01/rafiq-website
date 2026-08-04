@@ -175,6 +175,15 @@
     opacity: 0.5;
   }
 
+  /* The scroll gate's dialog. `dvh` so a phone's collapsing address bar cannot
+     push the pinned form off the bottom, with `vh` underneath it for iOS below
+     15.4, where an unsupported `dvh` would drop the cap entirely and let a tall
+     dialog run past the edge of the screen. */
+  .gate-panel {
+    max-height: 88vh;
+    max-height: 88dvh;
+  }
+
   /* The 8-point star from the system sheet. Full-bleed moments only, never on
      a card, per the sheet's own note. */
   .star-field {

@@ -46,6 +46,14 @@ export const theTreacheryOfEyes: Passage = {
   reference: "Qur'an 40:19",
 };
 
+export const theSteadyDeed: Passage = {
+  arabic: "أَحَبُّ الْأَعْمَالِ إِلَى اللَّهِ أَدْوَمُهَا وَإِنْ قَلَّ",
+  transliteration: "Ahabbu-l-a'mali ila-llahi adwamuha wa in qall",
+  translation:
+    "The deeds most beloved to Allah are the ones done consistently, even if they are few.",
+  reference: "Sahih al-Bukhari 6464",
+};
+
 export const theShade: Passage = {
   arabic: "وَرَجُلٌ دَعَتْهُ امْرَأَةٌ ذَاتُ مَنْصِبٍ وَجَمَالٍ فَقَالَ إِنِّي أَخَافُ اللَّهَ",
   translation:

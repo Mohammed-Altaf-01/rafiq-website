@@ -9,6 +9,7 @@ import {
   earlyAccessEnabled,
   isEmail,
   rememberedEmail,
+  subscribeRememberedEmail,
   submitEarlyAccess,
 } from "@/lib/early-access";
 import { site } from "@/lib/site";
@@ -28,21 +29,33 @@ type Status = "idle" | "sending" | "done" | "error";
  * the pair of buttons, because a field and two pills on one line reads as three
  * peers rather than as one question with an answer. It is also rendered under
  * the confirmation: signing up is not a reason to lose the way into the page.
+ *
+ * `stack` puts the button under the field at every width, for the narrow
+ * columns — the scroll gate's dialog — where a row would leave the field too
+ * short to read a typed address back in.
+ *
+ * `onDone` fires once the address is in. Only the scroll gate uses it, to close
+ * itself a beat after the confirmation appears; the sections on the page keep
+ * their confirmation on screen and pass nothing.
  */
 export function EarlyAccess({
   onDark = false,
   storeLabel = "Get Rafiq on Google Play",
   align = "start",
   secondary,
+  stack = false,
   id,
   className = "",
+  onDone,
 }: {
   onDark?: boolean;
   storeLabel?: string;
   align?: "start" | "center";
   secondary?: ReactNode;
+  stack?: boolean;
   id?: string;
   className?: string;
+  onDone?: () => void;
 }) {
   const inputId = useId();
   const [typed, setTyped] = useState("");
@@ -54,9 +67,13 @@ export function EarlyAccess({
    * `useSyncExternalStore`: the page is exported as static HTML, which cannot
    * know who is reading it, so the server snapshot is null and React swaps in
    * the stored address after hydration instead of tripping over a mismatch.
+   *
+   * Subscribing rather than reading once is what keeps the page consistent with
+   * itself: an address left in the scroll gate settles this form too, wherever
+   * on the page it is, instead of leaving a second empty field behind.
    */
   const remembered = useSyncExternalStore(
-    () => () => {},
+    subscribeRememberedEmail,
     rememberedEmail,
     () => null,
   );
@@ -91,6 +108,7 @@ export function EarlyAccess({
     // person gets and post nothing.
     if (trap) {
       setStatus("done");
+      onDone?.();
       return;
     }
 
@@ -98,6 +116,7 @@ export function EarlyAccess({
     try {
       await submitEarlyAccess(email);
       setStatus("done");
+      onDone?.();
     } catch {
       setStatus("error");
     }
@@ -107,12 +126,16 @@ export function EarlyAccess({
   const ink = onDark ? "var(--deep-ink)" : "var(--ink)";
   const inkSoft = onDark ? "var(--deep-ink-soft)" : "var(--ink-soft)";
 
+  // One column instead of a row: either because a second button has to sit
+  // under the field, or because the caller asked for it.
+  const column = stack || Boolean(secondary);
+
   const submit = (
     <button
       type="submit"
       disabled={status === "sending"}
       className={`inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[0.95rem] font-bold whitespace-nowrap transition-all duration-200 hover:-translate-y-[1px] active:translate-y-[1px] active:scale-[0.985] disabled:cursor-progress disabled:opacity-70 ${
-        secondary ? "sm:flex-1" : "shrink-0"
+        secondary ? "sm:flex-1" : column ? "w-full" : "shrink-0"
       }`}
       style={{
         background: onDark ? "var(--deep-primary)" : "var(--primary)",
@@ -171,7 +194,7 @@ export function EarlyAccess({
 
             <div
               className={
-                secondary
+                column
                   ? // Two rows. The cap is what makes the buttons read as
                     // belonging to the field above them: they grow to share its
                     // width exactly instead of trailing off under one end of it.
@@ -188,17 +211,24 @@ export function EarlyAccess({
                 inputMode="email"
                 autoComplete="email"
                 required
+                maxLength={254}
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => {
                   setTyped(e.target.value);
                   if (status === "error") setStatus("idle");
                 }}
+                // Checked on the way out of the field, not on every keystroke:
+                // an address is malformed for as long as it is half-typed, and
+                // saying so while someone is still typing it is just noise.
+                onBlur={() => {
+                  if (!settled && typed.trim() !== "" && !isEmail(typed)) setStatus("error");
+                }}
                 aria-invalid={invalid}
                 aria-describedby={status === "error" ? `${inputId}-note` : undefined}
                 disabled={status === "sending"}
                 className={`early-input w-full min-w-0 px-5 py-3.5 text-[0.95rem] font-medium transition-shadow duration-200 ${
-                  secondary ? "" : "sm:w-[300px]"
+                  column ? "" : "sm:w-[300px]"
                 }`}
                 style={{
                   borderRadius: "var(--radius-input)",
