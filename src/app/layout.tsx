@@ -38,19 +38,33 @@ export const metadata: Metadata = {
     "block Shorts and Reels",
     "Android",
   ],
+  // The link preview card. `og:image` is deliberately NOT listed here: the
+  // `opengraph-image.png` file next to this one is picked up by Next's file
+  // convention, which emits the URL along with `og:image:type`, `:width` and
+  // `:height` read from the file itself, and the alt text from
+  // `opengraph-image.alt.txt`. WhatsApp in particular ignores a card whose
+  // dimensions it cannot learn without downloading the image first.
+  //
+  // To swap in a different banner, overwrite `src/app/opengraph-image.png`.
+  // Keep it 1200x630 (the 1.91:1 that X, WhatsApp, Slack and iMessage all
+  // crop to) and under ~300KB, or WhatsApp silently drops the thumbnail.
   openGraph: {
     type: "website",
     siteName: site.name,
     title: `${site.name}: ${site.tagline}`,
     description: site.description,
     url: site.url,
-    images: [{ url: "/brand/app-icon.png", width: 512, height: 512, alt: "Rafiq" }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${site.name}: ${site.tagline}`,
     description: site.description,
-    images: ["/brand/app-icon.png"],
+  },
+  // The canonical URL. Without it, a link shared with tracking junk on the end
+  // (?utm_source=…, WhatsApp's own appended params) can be scraped as a
+  // separate page, so the crawler caches an empty card against that variant.
+  alternates: {
+    canonical: "/",
   },
   // Tab and home-screen icons come from the favicon.ico / icon.png /
   // apple-icon.png files in this directory, which Next links automatically.
