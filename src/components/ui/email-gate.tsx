@@ -6,6 +6,7 @@ import {
   ShieldCheckIcon,
   XIcon,
 } from "@phosphor-icons/react/dist/ssr";
+import { track } from "@vercel/analytics";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
@@ -18,8 +19,13 @@ import { pricing, site } from "@/lib/site";
 /** Once per tab. `sessionStorage`, not `localStorage`: a new visit may ask again. */
 const SESSION_KEY = "rafiq-gate-shown";
 
-/** How far down the page counts as "they are reading and still have not signed up". */
-const TRIGGER = 0.5;
+/**
+ * How far down the page counts as "they've started reading and still have
+ * not signed up". Set just past the hero rather than at the midpoint, so the
+ * ask lands right after the initial scroll instead of halfway through the
+ * page.
+ */
+const TRIGGER = 0.08;
 
 const reasons = [
   {
@@ -79,6 +85,7 @@ export function EmailGate() {
     if (rememberedEmail() !== null) return;
 
     setOpen(true);
+    track("early_access_gate_shown");
     try {
       sessionStorage.setItem(SESSION_KEY, "1");
     } catch {
@@ -221,6 +228,7 @@ export function EmailGate() {
               <EarlyAccess
                 align="center"
                 stack
+                source="gate"
                 onDone={() => {
                   closeTimer.current = setTimeout(close, 2600);
                 }}

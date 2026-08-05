@@ -1,6 +1,7 @@
 "use client";
 
 import { CheckCircleIcon } from "@phosphor-icons/react/dist/ssr";
+import { track } from "@vercel/analytics";
 import { AnimatePresence, motion } from "motion/react";
 import { useId, useState, useSyncExternalStore, type ReactNode } from "react";
 
@@ -47,6 +48,7 @@ export function EarlyAccess({
   id,
   className = "",
   onDone,
+  source = "page",
 }: {
   onDark?: boolean;
   storeLabel?: string;
@@ -56,6 +58,8 @@ export function EarlyAccess({
   id?: string;
   className?: string;
   onDone?: () => void;
+  /** Which instance of this form fired an event — "hero", "cta", or "gate". Lets the funnel be read apart by placement instead of as one lump. */
+  source?: string;
 }) {
   const inputId = useId();
   const [typed, setTyped] = useState("");
@@ -101,23 +105,31 @@ export function EarlyAccess({
     event.preventDefault();
     if (status === "sending") return;
     if (!isEmail(email)) {
+      track("early_access_invalid", { source });
       setStatus("error");
       return;
     }
     // Anything in the honeypot came from a script. Give it the same screen a
     // person gets and post nothing.
     if (trap) {
+      track("early_access_bot_blocked", { source });
       setStatus("done");
       onDone?.();
       return;
     }
 
+    track("early_access_submit", { source });
     setStatus("sending");
     try {
       await submitEarlyAccess(email);
+      track("early_access_success", { source });
       setStatus("done");
       onDone?.();
-    } catch {
+    } catch (error) {
+      track("early_access_error", {
+        source,
+        message: error instanceof Error ? error.message : "unknown",
+      });
       setStatus("error");
     }
   }

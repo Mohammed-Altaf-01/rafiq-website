@@ -126,6 +126,7 @@ export function Hero() {
           */}
           <div className="hero-cta mt-10">
             <EarlyAccess
+              source="hero"
               secondary={
                 <TonalButton href="#pause" className="sm:flex-1">
                   See how it works
