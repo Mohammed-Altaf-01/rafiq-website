@@ -34,19 +34,19 @@
 - Create through helper: `.impeccable/surfaces/src-app-page-tsx.md` (use the path returned by the surface-brief script)
 - Modify: `docs/superpowers/specs/2026-08-27-conversion-redesign-design.md`
 
-- [ ] **Step 1: Write the product record from approved facts**
+- [x] **Step 1: Write the product record from approved facts**
 
 Create `PRODUCT.md` with `<!-- impeccable:product-schema 1 -->`, platform `web`, the primary audience (Muslims on Android seeking voluntary protection from adult content, short-video feeds, and app overuse), Rafiq’s on-device mechanism, current pre-launch state, Google Form eligibility record, absent testimonials/benchmarks, and WCAG-minded accessibility commitment. Mark entitlement automation and custom-domain connection as explicit future decisions rather than present capabilities.
 
-- [ ] **Step 2: Document the incumbent visual system**
+- [x] **Step 2: Document the incumbent visual system**
 
 Create `DESIGN.md` in scan mode with canonical sections and machine-readable frontmatter. Extract the actual tokens from `src/app/globals.css`: warm cream/espresso surfaces, olive primary, clay/gold accents, Jakarta body/display, Amiri Arabic, 24/18/14px radii, warm shadows, star field, pill actions, and full-bleed scripture moments. Use the qualitative north star **“The Steadfast Companion”**: calm, spiritually grounded, direct, never punitive or gamified.
 
-- [ ] **Step 3: Write the design sidecar**
+- [x] **Step 3: Write the design sidecar**
 
 Create `.impeccable/design.json` schema version 2 with color/typography metadata, exact shadow and motion tokens, Tailwind breakpoints, and self-contained previews for the primary button, tonal button, email field, card, and navigation. Do not duplicate primitive token values outside `DESIGN.md` frontmatter.
 
-- [ ] **Step 4: Persist the landing-page surface brief**
+- [x] **Step 4: Persist the landing-page surface brief**
 
 Run:
 
@@ -57,11 +57,11 @@ node /Users/altaf/.agents/skills/impeccable/scripts/surface-brief.mjs write src/
 
 The brief must record Persuade mode, the email-reservation action, the truthful proof sources, the focused narrative, the memorable two-device hero/three-state pause demonstration, and the no-modal/no-invented-proof constraints.
 
-- [ ] **Step 5: Mark the approved design spec approved**
+- [x] **Step 5: Mark the approved design spec approved**
 
 Change the spec status from “awaiting final review” to “Approved for implementation” and record the stable production metadata base discovered through Vercel: `https://rafiq-website-beryl.vercel.app`.
 
-- [ ] **Step 6: Review and commit the authority files**
+- [x] **Step 6: Review and commit the authority files**
 
 Run `git diff --check` and inspect each file for accidental pricing, 7-day, or 14-day claims.
 
@@ -650,4 +650,3 @@ Check the immutable deployment URL and stable alias `https://rafiq-website-beryl
 - [ ] **Step 7: Report release evidence**
 
 Report the commit SHA, stable production URL, immutable deployment URL, Vercel status/build duration, exact local command outcomes, production browser checks, dependency audit result, and the intentionally deferred custom-domain/form-probe items. Do not claim an 80–90% conversion rate; state that instrumentation now measures the real baseline.
-

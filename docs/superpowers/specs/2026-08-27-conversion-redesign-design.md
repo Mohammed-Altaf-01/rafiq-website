@@ -2,9 +2,11 @@
 
 **Date:** 2026-08-27
 
-**Status:** Approved direction; design specification awaiting final review
+**Status:** Approved for implementation
 
 **Release target:** `main`, followed by the connected Vercel production deployment
+
+**Resolved production metadata base:** `https://rafiq-website-beryl.vercel.app`
 
 ## Context
 
