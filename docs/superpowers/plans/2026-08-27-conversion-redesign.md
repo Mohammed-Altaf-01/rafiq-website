@@ -80,11 +80,11 @@ git commit -m "docs: record Rafiq product and design foundations"
 - Create: `vitest.config.mts`
 - Create: `src/test/setup.ts`
 
-- [ ] **Step 1: Re-read installed Next.js guidance**
+- [x] **Step 1: Re-read installed Next.js guidance**
 
 Read the full local guides for Vitest, upgrading, static exports, metadata/OG images, images, accessibility, and production checklists. After upgrading, re-open the same paths from the new `node_modules/next/dist/docs/` so implementation follows 16.3.3, not memory.
 
-- [ ] **Step 2: Upgrade compatible framework packages**
+- [x] **Step 2: Upgrade compatible framework packages**
 
 Run:
 
@@ -94,7 +94,7 @@ npm install next@16.3.3 react@19.2.8 react-dom@19.2.8 eslint-config-next@16.3.3
 
 Do not force unrelated major upgrades. Record exact installed versions with `npm ls next react react-dom eslint-config-next`.
 
-- [ ] **Step 3: Install the documented Vitest stack**
+- [x] **Step 3: Install the documented Vitest stack**
 
 Run:
 
@@ -102,11 +102,11 @@ Run:
 npm install --save-dev vitest @vitejs/plugin-react jsdom @testing-library/react @testing-library/dom @testing-library/user-event @testing-library/jest-dom vite-tsconfig-paths
 ```
 
-- [ ] **Step 4: Configure deterministic tests**
+- [x] **Step 4: Configure deterministic tests**
 
 Create `vitest.config.mts` using `react()` and `tsconfigPaths()`, `environment: "jsdom"`, `setupFiles: ["./src/test/setup.ts"]`, and CSS handling. In setup, import `@testing-library/jest-dom/vitest`, clean up after each test, restore mocks, and provide a deterministic `matchMedia` helper only where jsdom lacks the browser contract.
 
-- [ ] **Step 5: Add scripts**
+- [x] **Step 5: Add scripts**
 
 Add:
 
@@ -119,11 +119,11 @@ Add:
 }
 ```
 
-- [ ] **Step 6: Prove the harness and security baseline**
+- [x] **Step 6: Prove the harness and security baseline**
 
 Run `npm run test -- --passWithNoTests`, `npm run lint`, `npm run build`, and `npm audit --omit=dev`. If audit still reports a compatible transitive patch, run `npm audit fix --omit=dev`, inspect the lockfile diff, and repeat all four commands. Do not use `--force`.
 
-- [ ] **Step 7: Commit only after fresh checks**
+- [x] **Step 7: Commit only after fresh checks**
 
 ```bash
 git add package.json package-lock.json vitest.config.mts src/test/setup.ts
