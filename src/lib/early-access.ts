@@ -3,19 +3,19 @@ import { site } from "@/lib/site";
 /** The one address remembered on this device, so a returning visitor is not asked twice. */
 const STORE_KEY = "rafiq-early-access";
 
-export const earlyAccessEnabled = site.earlyAccess.action !== null;
+export const earlyAccessEnabled = site.offer.active && site.offer.action !== null;
 
 /**
  * Where a "Get early access" button should send someone: the store once it
  * exists, otherwise the signup form in the closing section, and the mailto
  * only while that form has nowhere to post to.
  *
- * `onHome` is false on the legal pages, where `#early-access` matches nothing.
+ * `onHome` is false on the legal pages, where `#free-month` matches nothing.
  */
 export function earlyAccessTarget(onHome: boolean) {
   if (site.playStore) return site.playStore;
   if (!earlyAccessEnabled) return site.earlyAccessUrl;
-  return onHome ? "#early-access" : "/#early-access";
+  return onHome ? "#free-month" : "/#free-month";
 }
 
 /*
@@ -64,9 +64,9 @@ export function rememberedEmail(): string | null {
  *
  * Two signals feed it. `storage` events cover the same site open in another
  * tab, which the browser fires on its own; the set of listeners covers this
- * tab, where it does not. Without the second one a signup in the scroll gate
- * would leave the form in the closing section still sitting there empty, asking
- * for an address the site already has.
+ * tab, where it does not. Without the second one a signup in the hero would
+ * leave the offer form sitting there empty, asking for an address the site
+ * already has.
  */
 export function subscribeRememberedEmail(onChange: () => void) {
   listeners.add(onChange);
@@ -98,7 +98,23 @@ function remember(email: string) {
 }
 
 /**
- * Posts one address into the Google Form behind `site.earlyAccess`.
+ * Lets a visitor correct the address remembered on this device.
+ *
+ * This only clears local state. It cannot remove an earlier row from the
+ * eligibility Sheet, so the confirmation UI must never imply that it does.
+ */
+export function forgetRememberedEmail() {
+  try {
+    localStorage.removeItem(STORE_KEY);
+  } catch {
+    // Storage may be unavailable, but the in-memory state can still be reset.
+  }
+  cached = null;
+  for (const listener of listeners) listener();
+}
+
+/**
+ * Posts one address into the Google Form behind `site.offer`.
  *
  * The request is `no-cors`, because Google does not send back a CORS header
  * for form submissions. That means the response is opaque: we can see that the
@@ -112,8 +128,8 @@ function remember(email: string) {
  * the only real check this path has.
  */
 export async function submitEarlyAccess(email: string) {
-  const { action, field } = site.earlyAccess;
-  if (!action) throw new Error("site.earlyAccess.action is not set");
+  const { action, field } = site.offer;
+  if (!action) throw new Error("site.offer.action is not set");
 
   const body = new URLSearchParams({ [field]: email.trim() });
   await fetch(action, {

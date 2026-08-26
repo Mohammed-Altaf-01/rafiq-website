@@ -139,7 +139,7 @@ git commit -m "build: update Next.js and add the test harness"
 - Modify: `src/lib/early-access.ts`
 - Create: `src/lib/__tests__/early-access.test.ts`
 
-- [ ] **Step 1: Write failing offer and validation tests**
+- [x] **Step 1: Write failing offer and validation tests**
 
 Name the break each test catches, then test literal observable behavior:
 
@@ -160,7 +160,7 @@ it.each([
 
 Add independent tests for localStorage read/write synchronization, storage-event updates, network rejection, successful request-sent storage, and clearing the remembered address. Mock only `fetch` as the external boundary.
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 ```bash
 npm run test -- src/lib/__tests__/early-access.test.ts
@@ -168,9 +168,9 @@ npm run test -- src/lib/__tests__/early-access.test.ts
 
 Confirm failures are due to absent `site.offer`, `#free-month`, controlled result semantics, and `forgetRememberedEmail`, not test setup.
 
-- [ ] **Step 3: Replace pricing with one offer configuration**
+- [x] **Step 3: Add one offer configuration and retire pricing safely**
 
-In `site.ts`, set `site.url` to `https://rafiq-website-beryl.vercel.app`, remove `pricing`, and add:
+In `site.ts`, set `site.url` to `https://rafiq-website-beryl.vercel.app` and add:
 
 ```ts
 offer: {
@@ -184,21 +184,23 @@ offer: {
 
 Keep `playStore` and support fallback. Update nav hashes to `#how-it-works`, `#protection`, `#privacy`, and `#free-month`.
 
-- [ ] **Step 4: Implement storage correction and request-sent semantics**
+The legacy standalone `pricing` export remains only until Task 5 deletes its current section importers; no new code may consume it. Removing it here would knowingly make the intermediate commit fail TypeScript. Task 5 removes the export and all importers together.
+
+- [x] **Step 4: Implement storage correction and request-sent semantics**
 
 Keep the real Google Form POST and `no-cors`; return only after the request promise resolves. Export `forgetRememberedEmail()` to clear storage/cache and notify mounted forms. Never expose a production-only reset method. Keep arbitrary errors out of analytics-facing return values.
 
-- [ ] **Step 5: Run GREEN and refactor**
+- [x] **Step 5: Run GREEN and refactor**
 
-Run the focused test until clean, then `npm run test` and `npm run lint`. Check for all duration sources:
+Run the focused test until clean, then `npm run test` and `npm run lint`. Check the new acquisition path for duration sources:
 
 ```bash
-rg -n "trialDays|pricing|7 days|7-day|14 days|14-day" src
+rg -n "trialDays|pricing|7 days|7-day|14 days|14-day" src/lib/early-access.ts src/components/ui/early-access.tsx
 ```
 
-Marketing/config matches must be zero; legal historical wording is reviewed manually rather than blindly changed.
+Matches in the new acquisition path must be zero. The known legacy pricing export and its existing section importers are removed together in Task 5; legal historical wording is reviewed manually rather than blindly changed.
 
-- [ ] **Step 6: Commit**
+- [x] **Step 6: Commit**
 
 ```bash
 git add src/lib/site.ts src/lib/early-access.ts src/lib/__tests__/early-access.test.ts

@@ -3,7 +3,7 @@ export const site = {
   tagline: "Lower your gaze. Take back your time.",
   description:
     "Rafiq is an Android app that blocks adult content and short-video feeds, and holds the screen-time limits you set for yourself. Every match happens on your device. Nothing you look at is ever stored or sent.",
-  url: "https://rafiq.app",
+  url: "https://rafiq-website-beryl.vercel.app",
   supportEmail: "rafiqgaurdian@gmail.com",
 
   /*
@@ -16,8 +16,9 @@ export const site = {
   earlyAccessUrl: "mailto:rafiqgaurdian@gmail.com?subject=Rafiq%20early%20access",
 
   /*
-   * Early-access capture. The site is a static export, so there is no server
-   * of ours to post to: the signup form posts straight into a Google Form
+   * The pre-launch offer and its capture destination. The site is a static
+   * export, so there is no server of ours to post to: the signup form posts
+   * straight into a Google Form
    * (https://forms.gle/PBWtKF2EwhHw2d4YA), which drops every address into the
    * Sheet behind it and can be exported as CSV.
    *
@@ -43,7 +44,10 @@ export const site = {
    * While `action` is null every CTA falls back to `earlyAccessUrl`, so the
    * page never shows a form that quietly drops what people type into it.
    */
-  earlyAccess: {
+  offer: {
+    active: true,
+    premiumDays: 30,
+    requiresCard: false,
     action:
       "https://docs.google.com/forms/d/e/1FAIpQLSfpNMJaXgnurO4chFT8YrJG3qn3hx6H693O5TmHDr8v5kloxw/formResponse" as
         | string
@@ -62,12 +66,12 @@ export const pricing = {
 
 /*
  * Section anchors, stored without a path. The nav resolves them against the
- * current route: a bare `#pause` on the legal pages would do nothing, since the
+ * current route: a bare `#how-it-works` on legal pages would do nothing, since the
  * section it points at only exists on the landing page.
  */
 export const nav = [
-  { label: "The pause", hash: "#pause" },
+  { label: "How it works", hash: "#how-it-works" },
   { label: "Protection", hash: "#protection" },
   { label: "Privacy", hash: "#privacy" },
-  { label: "Pricing", hash: "#pricing" },
+  { label: "Free month", hash: "#free-month" },
 ] as const;
