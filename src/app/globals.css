@@ -183,6 +183,25 @@
     opacity: 0.5;
   }
 
+  .skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 50%;
+    z-index: 100;
+    border-radius: 999px;
+    padding: 0.7rem 1rem;
+    background: var(--primary);
+    color: var(--on-primary);
+    font-size: 0.875rem;
+    font-weight: 700;
+    transform: translate3d(-50%, -5rem, 0);
+    transition: transform var(--duration-ui) var(--ease-out);
+  }
+
+  .skip-link:focus {
+    transform: translate3d(-50%, 0, 0);
+  }
+
   /* The 8-point star from the system sheet. Full-bleed moments only, never on
      a card, per the sheet's own note. */
   .star-field {
@@ -379,5 +398,9 @@
   [data-spatial-motion="true"],
   .pressable {
     transform: none !important;
+  }
+
+  .skip-link {
+    transition-duration: 0ms;
   }
 }

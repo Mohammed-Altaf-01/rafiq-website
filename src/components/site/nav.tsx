@@ -23,6 +23,7 @@ export function Nav() {
   const [open, setOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const firstMenuLinkRef = useRef<HTMLAnchorElement>(null);
   const reduced = useReducedMotion();
   const { scrollY } = useScroll();
 
@@ -42,6 +43,8 @@ export function Nav() {
 
   useEffect(() => {
     if (!open) return;
+
+    firstMenuLinkRef.current?.focus();
 
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
@@ -124,6 +127,8 @@ export function Nav() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
+            aria-controls={open ? "mobile-sections-menu" : undefined}
+            aria-haspopup="true"
             className="pressable inline-flex size-10 items-center justify-center rounded-full text-ink-soft lg:hidden"
             style={{ boxShadow: "inset 0 0 0 1px var(--line)" }}
           >
@@ -135,6 +140,7 @@ export function Nav() {
       <AnimatePresence initial={false}>
         {open ? (
           <motion.nav
+            id="mobile-sections-menu"
             aria-label="Sections"
             data-spatial-motion="true"
             initial={{ opacity: 0, transform: menuOffset }}
@@ -148,9 +154,10 @@ export function Nav() {
             }}
           >
             <ul className="flex flex-col p-2.5">
-              {nav.map((item) => (
+              {nav.map((item, index) => (
                 <li key={item.hash}>
                   <Link
+                    ref={index === 0 ? firstMenuLinkRef : undefined}
                     href={to(item.hash)}
                     onClick={() => setOpen(false)}
                     className="block rounded-[var(--radius-input)] px-4 py-3 text-[0.95rem] font-semibold text-ink"

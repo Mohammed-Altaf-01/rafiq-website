@@ -416,29 +416,29 @@ git commit -m "feat: consolidate and refine the landing motion system"
 - Create: `src/components/site/__tests__/nav.test.tsx`
 - Create: `src/components/sections/__tests__/faq.test.tsx`
 
-- [ ] **Step 1: Write failing interaction and image-contract tests**
+- [x] **Step 1: Write failing interaction and image-contract tests**
 
 Test the skip link/main target, menu selection/Escape/outside close, logical focus return, non-obscured closed controls, FAQ `aria-expanded`/`aria-controls`/labelled panels, and exactly one hero image using the Next 16 LCP-loading signal.
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 ```bash
 npm run test -- src/components/site/__tests__/nav.test.tsx src/components/sections/__tests__/faq.test.tsx
 ```
 
-- [ ] **Step 3: Implement navigation containment without a modal**
+- [x] **Step 3: Implement navigation containment without a modal**
 
 Add the skip link before navigation. When mobile menu opens, focus its first link; close on selection, Escape, and outside pointer interaction; return focus to the menu button when appropriate. Keep the closed tree unmounted. Track nav offer clicks as `{ source: "nav" }` only.
 
-- [ ] **Step 4: Correct FAQ semantics**
+- [x] **Step 4: Correct FAQ semantics**
 
 Use stable button/panel IDs, `aria-expanded`, `aria-controls`, and `role="region"` with `aria-labelledby`. Preserve all content in DOM only when open and make rapid toggles interruptible.
 
-- [ ] **Step 5: Fix Next Image loading**
+- [x] **Step 5: Fix Next Image loading**
 
-Following the installed Next 16 image guide, remove deprecated `priority`. Only `/screens/home.webp`, the likely LCP, receives `preload` (or the current documented equivalent) and `fetchPriority="high"`; the secondary hero screen is eager without preload; below-fold screens remain lazy. Keep accurate `sizes` and eliminate duplicate LCP warnings.
+Following the installed Next 16 image guide, remove deprecated `priority`. Runtime traces identify different hero LCP elements by viewport: `/screens/home.webp` on desktop and `/screens/block-limit.webp` on mobile. Load both small hero proofs eagerly (81 KiB combined), give only the mobile-measured candidate `fetchPriority="high"`, and keep below-fold screens and reusable marks lazy. Keep accurate `sizes` and eliminate LCP warnings.
 
-- [ ] **Step 6: Verify accessibility and commit**
+- [x] **Step 6: Verify accessibility and commit**
 
 Keyboard-test every control, both themes, reduced motion, and 200% browser zoom. Run focused/full tests, lint, build, and then:
 

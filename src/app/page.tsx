@@ -14,7 +14,7 @@ export default function Home() {
   return (
     <>
       <Nav />
-      <main id="main-content">
+      <main id="main-content" tabIndex={-1}>
         <Hero />
         <ProofRibbon />
         <Verse />

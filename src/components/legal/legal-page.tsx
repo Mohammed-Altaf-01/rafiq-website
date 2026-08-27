@@ -17,7 +17,7 @@ export function LegalPage({ doc, sibling }: { doc: LegalDoc; sibling: { href: st
         theme toggle stays, because these are the longest reads on the site and
         a dark-theme reader would otherwise be stuck on a cream page.
       */}
-      <main className="px-5 pt-11 pb-24 sm:px-8">
+      <main id="main-content" tabIndex={-1} className="px-5 pt-11 pb-24 sm:px-8">
         <div className="mx-auto flex max-w-[1160px] items-center justify-between gap-4">
           <Link
             href="/"

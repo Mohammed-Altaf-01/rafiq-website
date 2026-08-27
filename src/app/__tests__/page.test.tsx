@@ -50,9 +50,11 @@ describe("conversion landing narrative", () => {
         name: "Your first 30 days of Rafiq Premium are on us.",
       }),
     ).toBeInTheDocument();
-    expect(screen.getAllByRole("form", { name: "Reserve 30 days of Rafiq Premium" })).toHaveLength(
-      2,
-    );
+    expect(
+      screen.getAllByRole("form", {
+        name: /Reserve 30 days of Rafiq Premium from/,
+      }),
+    ).toHaveLength(2);
 
     for (const label of proofLabels) expect(screen.getByText(label)).toBeInTheDocument();
     expect(screen.getByText("Qur'an 24:30")).toBeInTheDocument();

@@ -44,6 +44,7 @@ export function HeroVisual() {
             src="/screens/block-limit.webp"
             alt="Rafiq holding a daily app limit after its chosen minutes have been used."
             eager
+            highPriority
             sizes="(max-width: 640px) 52vw, (max-width: 1024px) 260px, 270px"
           />
         </div>
@@ -57,6 +58,7 @@ export function HeroVisual() {
           <Device
             src="/screens/home.webp"
             alt="The Rafiq home screen showing protection controls, today's blocks, time saved, and the dhikr of the day."
+            eager
             sizes="(max-width: 640px) 61vw, (max-width: 1024px) 300px, 320px"
           />
         </div>

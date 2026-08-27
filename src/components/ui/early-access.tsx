@@ -80,6 +80,7 @@ export function EarlyAccess({
   const done = status === "done" || settled;
   const email = settled ? remembered : typed;
   const invalid = status === "error" && errorReason === "invalid";
+  const formLocation = source === "hero" ? "the introduction" : "the free-month offer";
   const ink = onDark ? "var(--deep-ink)" : "var(--ink)";
   const inkSoft = onDark ? "var(--deep-ink-soft)" : "var(--ink-soft)";
 
@@ -212,7 +213,7 @@ export function EarlyAccess({
             key="form"
             action={site.offer.action ?? undefined}
             method="post"
-            aria-label={`Reserve ${site.offer.premiumDays} days of Rafiq Premium`}
+            aria-label={`Reserve ${site.offer.premiumDays} days of Rafiq Premium from ${formLocation}`}
             onSubmit={onSubmit}
             initial={false}
             animate={{ opacity: 1 }}

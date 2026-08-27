@@ -59,7 +59,7 @@ describe("progressive form contract", () => {
     await renderEarlyAccess();
 
     const form = screen.getByRole("form", {
-      name: "Reserve 30 days of Rafiq Premium",
+      name: "Reserve 30 days of Rafiq Premium from the introduction",
     });
     expect(form).toHaveAttribute("action", FORM_ACTION);
     expect(form).toHaveAttribute("method", "post");
@@ -137,9 +137,14 @@ describe("submission states", () => {
       </>,
     );
 
-    const [heroForm] = screen.getAllByRole("form", {
-      name: "Reserve 30 days of Rafiq Premium",
+    const heroForm = screen.getByRole("form", {
+      name: "Reserve 30 days of Rafiq Premium from the introduction",
     });
+    expect(
+      screen.getByRole("form", {
+        name: "Reserve 30 days of Rafiq Premium from the free-month offer",
+      }),
+    ).toBeInTheDocument();
     await user.type(within(heroForm).getByRole("textbox", { name: "Email address" }), "person@example.com");
     await user.click(within(heroForm).getByRole("button", { name: "Claim my free month" }));
 

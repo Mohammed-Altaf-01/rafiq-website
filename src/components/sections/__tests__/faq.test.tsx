@@ -30,4 +30,21 @@ describe("FAQ disclosure", () => {
     await user.click(first);
     await waitFor(() => expect(first).toHaveAttribute("aria-expanded", "false"));
   });
+
+  it("connects every question to a labelled answer region", () => {
+    render(<Faq />);
+
+    const questions = screen.getAllByRole("button");
+    expect(questions).toHaveLength(5);
+
+    for (const question of questions) {
+      const panelId = question.getAttribute("aria-controls");
+      expect(panelId).toBeTruthy();
+      expect(question.id).toBeTruthy();
+
+      const panel = document.getElementById(panelId!);
+      expect(panel).toHaveAttribute("role", "region");
+      expect(panel).toHaveAttribute("aria-labelledby", question.id);
+    }
+  });
 });

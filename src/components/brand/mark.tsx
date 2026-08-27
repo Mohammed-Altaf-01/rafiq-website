@@ -22,7 +22,7 @@ export function Mark({
       alt=""
       width={size}
       height={size}
-      priority
+      loading="lazy"
       style={{ width: onDark ? size * 0.76 : size, height: "auto" }}
     />
   );

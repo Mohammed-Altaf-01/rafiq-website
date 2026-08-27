@@ -4,6 +4,7 @@ import type { Metadata, Viewport } from "next";
 import { Amiri, Plus_Jakarta_Sans } from "next/font/google";
 
 import { MotionProvider } from "@/components/motion-provider";
+import { SkipLink } from "@/components/site/skip-link";
 import { ThemeScript } from "@/components/theme-script";
 import { site } from "@/lib/site";
 
@@ -88,6 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <ThemeScript />
       </head>
       <body className={`${jakarta.variable} ${amiri.variable}`}>
+        <SkipLink />
         <MotionProvider>{children}</MotionProvider>
 
         {/*

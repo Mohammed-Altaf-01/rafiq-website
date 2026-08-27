@@ -19,6 +19,7 @@ export function Device({
   src,
   alt,
   eager = false,
+  highPriority = false,
   onDark = false,
   className = "",
   sizes = "(max-width: 768px) 70vw, 380px",
@@ -26,6 +27,7 @@ export function Device({
   src: ScreenSrc;
   alt: string;
   eager?: boolean;
+  highPriority?: boolean;
   onDark?: boolean;
   className?: string;
   sizes?: string;
@@ -38,12 +40,11 @@ export function Device({
       alt={alt}
       width={width}
       height={height}
-      // `loading`/`fetchPriority` rather than `preload`: Next 16 deprecated
-      // `priority`, and its replacement injects a `<link rel=preload>`, which
-      // the docs warn against when more than one image on the page could turn
-      // out to be the LCP element. The hero has two.
+      // Next 16 recommends eager loading or fetchPriority over preload when a
+      // hero contains two viewport-dependent LCP images. Both load eagerly;
+      // runtime LCP verification decides which single phone gets `high`.
       loading={eager ? "eager" : "lazy"}
-      fetchPriority={eager ? "high" : undefined}
+      fetchPriority={highPriority ? "high" : undefined}
       sizes={sizes}
       className={`h-auto w-full select-none ${onDark ? "lift-device-deep" : "lift-device"} ${className}`}
       draggable={false}

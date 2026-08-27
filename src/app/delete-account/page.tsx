@@ -78,7 +78,7 @@ const deletionMailto =
 export default function DeleteAccountPage() {
   return (
     <>
-      <main className="px-5 pt-11 pb-24 sm:px-8">
+      <main id="main-content" tabIndex={-1} className="px-5 pt-11 pb-24 sm:px-8">
         {/* Same chrome as the policy pages: a way back, a theme toggle, no nav. */}
         <div className="mx-auto flex max-w-[880px] items-center justify-between gap-4">
           <Link
