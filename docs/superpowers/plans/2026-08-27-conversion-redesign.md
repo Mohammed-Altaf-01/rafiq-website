@@ -297,11 +297,11 @@ git commit -m "feat: turn early access into a progressive free-month claim"
 - Delete: `src/components/sections/setup.tsx`
 - Create: `src/app/__tests__/page.test.tsx`
 
-- [ ] **Step 1: Write a failing landing narrative test**
+- [x] **Step 1: Write a failing landing narrative test**
 
 Render the synchronous page shell and assert one H1, the offer copy, four proof labels, the mission reference, three how-it-works state names, protection/privacy contract, three progress outcomes, five FAQs, two forms at most, and no pricing/7-day/14-day text. If interactive children require browser APIs, use real components with jsdom polyfills rather than replacing them with fake DOM.
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 ```bash
 npm run test -- src/app/__tests__/page.test.tsx
@@ -309,31 +309,31 @@ npm run test -- src/app/__tests__/page.test.tsx
 
 The existing Pricing section, duplicate long sections, old heading/copy, and modal reference must make this fail.
 
-- [ ] **Step 3: Recompose the page in the approved order**
+- [x] **Step 3: Recompose the page in the approved order**
 
 `Nav → Hero → ProofRibbon → Verse → HowItWorks → Protection → Journey → FreeMonth → Faq → Cta → Footer`. Remove every obsolete import and the email gate. Add `id="main-content"` to `<main>`.
 
-- [ ] **Step 4: Make the initial viewport convert**
+- [x] **Step 4: Make the initial viewport convert**
 
 Keep static hero text server-rendered. Use the eyebrow **Android early access · 30 days Premium free**, concrete blocking/privacy copy, the hero form, the secondary “See how it works” anchor, and the real two-phone composition. Only `hero-visual.tsx` owns scroll-aware artwork.
 
-- [ ] **Step 5: Build the compact proof and objection sections**
+- [x] **Step 5: Build the compact proof and objection sections**
 
 Proof labels: **Adult content**, **Shorts & Reels**, **Daily app limits**, **On-device matching**. Combine strict mode, offline/reboot resilience, dhikr pause, inspected/stored/sent privacy facts, and Privacy Policy link into one concise protection section.
 
-- [ ] **Step 6: Build the offer decision point**
+- [x] **Step 6: Build the offer decision point**
 
 Use a large `30 days` marker, heading **Your first 30 days of Rafiq Premium are on us.**, three truthful inclusions, eligibility/redemption explanation, and the second/final `EarlyAccess source="offer"` form. No price, savings badge, renewal countdown, or payment pressure.
 
-- [ ] **Step 7: Reduce the FAQ and close**
+- [x] **Step 7: Reduce the FAQ and close**
 
 Keep exactly the five approved objections. The last answer states no card and fallback to the useful free tier after promotional Premium. Closing CTA targets `#free-month` and emits `offer_cta_click` with source `closing` without duplicating a third form.
 
-- [ ] **Step 8: Run GREEN and length checks**
+- [x] **Step 8: Run GREEN and length checks**
 
 Run focused/full tests and lint. Start the dev server and measure page height at 390×844; target `≤ 12,174px` and preferably materially shorter. Check no horizontal overflow at 320px.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```bash
 git add src/app/page.tsx src/app/__tests__/page.test.tsx src/components/sections src/components/site/footer.tsx

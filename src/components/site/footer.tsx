@@ -13,7 +13,7 @@ export function Footer() {
             <span className="text-[1.05rem] font-extrabold tracking-tight">Rafiq</span>
           </div>
           <p className="mt-4 max-w-[38ch] text-[0.9rem] leading-relaxed text-ink-soft">
-            A quiet companion for your phone. Built for Android {site.minAndroid} and newer.
+            A steadfast companion for intentional Android use. Built for Android {site.minAndroid} and newer.
           </p>
         </div>
 
@@ -69,7 +69,7 @@ export function Footer() {
         className="mx-auto mt-12 flex max-w-[1240px] flex-col gap-3 border-t pt-8 text-[0.82rem] text-ink-faint sm:flex-row sm:items-center sm:justify-between"
         style={{ borderColor: "var(--line)" }}
       >
-        <p>&copy; {new Date().getFullYear()} Rafiq. Made with care.</p>
+        <p className="text-ink-soft">&copy; {new Date().getFullYear()} Rafiq. Made with care.</p>
         <p className="arabic text-[1rem]" dir="rtl" lang="ar" style={{ color: "var(--gold)" }}>
           وَٱللَّهُ خَيْرٌ حَـٰفِظًا
         </p>

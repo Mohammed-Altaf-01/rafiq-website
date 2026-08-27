@@ -1,5 +1,4 @@
 import { Scripture } from "@/components/ui/scripture";
-import { Reveal } from "@/components/ui/reveal";
 import { loweringTheGaze } from "@/lib/scripture";
 
 /**
@@ -11,7 +10,7 @@ export function Verse() {
   return (
     <section
       id="gaze"
-      className="relative overflow-hidden px-5 py-28 sm:px-8 sm:py-36"
+      className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32"
       style={{ background: "var(--deep)", color: "var(--deep-ink)" }}
     >
       <div
@@ -33,18 +32,16 @@ export function Verse() {
       />
 
       <div className="relative mx-auto max-w-[900px]">
+        <h2 className="sr-only">Why Rafiq exists</h2>
         <Scripture passage={loweringTheGaze} tone="deep" size="xl" />
 
-        <Reveal delay={0.35}>
-          <p
-            className="mx-auto mt-16 max-w-[52ch] text-center text-[1.02rem] leading-relaxed sm:text-[1.1rem]"
-            style={{ color: "var(--deep-ink-soft)" }}
-          >
-            The command is to lower the gaze, not to fight it every few minutes.
-            Rafiq exists to move that struggle off your shoulders and onto your phone,
-            so the thing you already decided stays decided.
-          </p>
-        </Reveal>
+        <p
+          className="mx-auto mt-14 max-w-[54ch] text-center text-[1.02rem] leading-relaxed sm:text-[1.1rem]"
+          style={{ color: "var(--deep-ink-soft)" }}
+        >
+          The command is to lower the gaze, not to renegotiate it every few minutes.
+          Rafiq helps the choice you made in a clear moment keep holding in a difficult one.
+        </p>
       </div>
     </section>
   );

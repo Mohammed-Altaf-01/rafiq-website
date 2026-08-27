@@ -58,12 +58,6 @@ export const site = {
   minAndroid: "8.1",
 } as const;
 
-export const pricing = {
-  trialDays: 7,
-  monthly: { price: "$4.99", period: "per month" },
-  annual: { price: "$35.99", period: "per year", perMonth: "$3.00 / month", saving: "Save 40%" },
-} as const;
-
 /*
  * Section anchors, stored without a path. The nav resolves them against the
  * current route: a bare `#how-it-works` on legal pages would do nothing, since the

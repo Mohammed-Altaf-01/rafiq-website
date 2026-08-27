@@ -1,60 +1,58 @@
 import { Device } from "@/components/ui/device";
-import { Reveal, RevealGroup, RevealItem } from "@/components/ui/reveal";
-import { Scripture } from "@/components/ui/scripture";
-import { theTwoBlessings } from "@/lib/scripture";
 
-const facts = [
+const outcomes = [
   {
-    title: "A streak you did not have to log",
-    body: "Rafiq counts the clean days for you. Slip once and the ring resets, which is the honest thing for it to do, and the next day starts at one again.",
+    title: "An honest streak",
+    body: "Clean days count without asking you to log them, and a slip resets the number instead of flattering it.",
   },
   {
-    title: "A month you can see at a glance",
-    body: "Every day is a square: clean, slipped, or still ahead of you. Patterns show up in the grid long before you would notice them in yourself.",
+    title: "Patterns visible over time",
+    body: "A simple calendar makes stronger weeks and difficult days easier to notice without exporting a history.",
   },
   {
     title: "Minutes handed back",
-    body: "The time you did not spend in a feed is counted alongside the blocks, so the trade is visible instead of theoretical.",
+    body: "Time not spent inside a feed sits beside the blocks, making the trade visible rather than theoretical.",
   },
 ];
 
 export function Journey() {
   return (
-    <section className="px-5 py-28 sm:px-8 sm:py-36">
-      <div className="mx-auto max-w-[900px]">
-        <Scripture passage={theTwoBlessings} size="lg" />
-      </div>
-
-      <div className="mx-auto mt-24 grid max-w-[1240px] items-center gap-14 lg:grid-cols-[0.82fr_1.18fr] lg:gap-20">
-        <Reveal className="mx-auto w-[62%] max-w-[300px] lg:w-full lg:max-w-[320px]" y={34}>
-          <Device
-            src="/screens/journey.webp"
-            alt="Rafiq's journey screen showing a gold streak ring, current and longest streak, and a month of clean days."
-            sizes="(max-width: 1024px) 62vw, 320px"
+    <section className="px-5 py-24 sm:px-8 sm:py-32">
+      <div className="mx-auto grid max-w-[1120px] items-center gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
+        <div className="relative mx-auto w-[68%] max-w-[310px] lg:w-full">
+          <div
+            className="absolute -inset-7 rounded-[44%]"
+            aria-hidden
+            style={{ background: "color-mix(in srgb, var(--gold-fill) 11%, transparent)" }}
           />
-        </Reveal>
+          <div className="relative">
+            <Device
+              src="/screens/journey.webp"
+              alt="Rafiq's journey screen showing a clean-day streak, a monthly pattern, and time returned."
+              sizes="(max-width: 1024px) 68vw, 310px"
+            />
+          </div>
+        </div>
 
         <div>
-          <Reveal>
-            <h2 className="display max-w-[16ch] text-[2.25rem] sm:text-[3rem] lg:text-[3.25rem]">
-              Free time is a blessing you can watch come back.
-            </h2>
-            <p className="mt-6 max-w-[52ch] text-[1.02rem] leading-relaxed text-ink-soft sm:text-[1.1rem]">
-              Rafiq keeps the record so you do not have to argue with your own memory
-              about how the week actually went.
-            </p>
-          </Reveal>
+          <h2 className="display max-w-[14ch] text-[2.4rem] sm:text-[3.2rem] lg:text-[3.55rem]">
+            See the time that quietly came back.
+          </h2>
+          <p className="mt-6 max-w-[54ch] text-[1rem] leading-relaxed text-ink-soft sm:text-[1.08rem]">
+            Rafiq keeps a small, local record so you can see whether the rule is changing
+            the week—without asking you to turn self-control into another tracking task.
+          </p>
 
-          <RevealGroup className="mt-12 space-y-9">
-            {facts.map((fact) => (
-              <RevealItem key={fact.title}>
-                <h3 className="text-[1.15rem] font-extrabold tracking-tight">{fact.title}</h3>
-                <p className="mt-2.5 max-w-[52ch] text-[0.98rem] leading-relaxed text-ink-soft">
-                  {fact.body}
+          <ul className="mt-10">
+            {outcomes.map((outcome) => (
+              <li key={outcome.title} className="border-t py-5" style={{ borderColor: "var(--line-strong)" }}>
+                <h3 className="text-[1.05rem] font-extrabold">{outcome.title}</h3>
+                <p className="mt-2 max-w-[55ch] text-[0.92rem] leading-relaxed text-ink-soft">
+                  {outcome.body}
                 </p>
-              </RevealItem>
+              </li>
             ))}
-          </RevealGroup>
+          </ul>
         </div>
       </div>
     </section>

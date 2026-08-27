@@ -1,6 +1,7 @@
 "use client";
 
 import { ListIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
+import { track } from "@vercel/analytics";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -76,10 +77,13 @@ export function Nav() {
           <ThemeToggle />
           <Link
             href={cta}
+            onClick={() => {
+              if (!site.playStore) track("offer_cta_click", { source: "nav" });
+            }}
             className="hidden rounded-full px-5 py-2.5 text-[0.875rem] font-bold transition-all duration-200 hover:-translate-y-[1px] active:translate-y-[1px] sm:inline-flex"
             style={{ background: "var(--primary)", color: "var(--on-primary)" }}
           >
-            {site.playStore ? "Get Rafiq" : "Get early access"}
+            {site.playStore ? "Get Rafiq" : `Get ${site.offer.premiumDays} days free`}
           </Link>
           <button
             type="button"
@@ -124,11 +128,14 @@ export function Nav() {
               <li>
                 <Link
                   href={cta}
-                  onClick={() => setOpen(false)}
+                  onClick={() => {
+                    setOpen(false);
+                    if (!site.playStore) track("offer_cta_click", { source: "nav" });
+                  }}
                   className="mt-1 block rounded-full px-4 py-3 text-center text-[0.95rem] font-bold"
                   style={{ background: "var(--primary)", color: "var(--on-primary)" }}
                 >
-                  {site.playStore ? "Get Rafiq" : "Get early access"}
+                  {site.playStore ? "Get Rafiq" : `Get ${site.offer.premiumDays} days free`}
                 </Link>
               </li>
             </ul>

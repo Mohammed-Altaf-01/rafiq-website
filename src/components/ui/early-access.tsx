@@ -184,7 +184,8 @@ export function EarlyAccess({
                 style={{ color: inkSoft }}
               >
                 We will email <span className="font-semibold">{email}</span> on launch day
-                with the steps to redeem 30 days of {site.name} Premium. No card required.
+                with the steps to redeem {site.offer.premiumDays} days of {site.name} Premium.
+                No card required.
               </p>
               <button
                 type="button"
@@ -206,7 +207,7 @@ export function EarlyAccess({
             key="form"
             action={site.offer.action ?? undefined}
             method="post"
-            aria-label="Reserve 30 days of Rafiq Premium"
+            aria-label={`Reserve ${site.offer.premiumDays} days of Rafiq Premium`}
             onSubmit={onSubmit}
             initial={false}
             animate={{ opacity: 1 }}

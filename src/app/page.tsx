@@ -2,30 +2,26 @@ import { Footer } from "@/components/site/footer";
 import { Nav } from "@/components/site/nav";
 import { Cta } from "@/components/sections/cta";
 import { Faq } from "@/components/sections/faq";
-import { Glance } from "@/components/sections/glance";
+import { FreeMonth } from "@/components/sections/free-month";
 import { Hero } from "@/components/sections/hero";
+import { HowItWorks } from "@/components/sections/how-it-works";
 import { Journey } from "@/components/sections/journey";
-import { Pause } from "@/components/sections/pause";
-import { Pricing } from "@/components/sections/pricing";
-import { Privacy } from "@/components/sections/privacy";
+import { ProofRibbon } from "@/components/sections/proof-ribbon";
 import { Protection } from "@/components/sections/protection";
-import { Setup } from "@/components/sections/setup";
 import { Verse } from "@/components/sections/verse";
 
 export default function Home() {
   return (
     <>
       <Nav />
-      <main>
+      <main id="main-content">
         <Hero />
+        <ProofRibbon />
         <Verse />
-        <Pause />
-        <Glance />
+        <HowItWorks />
         <Protection />
-        <Privacy />
-        <Setup />
         <Journey />
-        <Pricing />
+        <FreeMonth />
         <Faq />
         <Cta />
       </main>
