@@ -123,9 +123,10 @@ export function forgetRememberedEmail() {
  * demanding a Google sign-in resolves here and looks exactly like success, so
  * the visitor reads "You are on the list" while nothing was saved.
  *
- * Nothing in the browser can tell those apart. `npm run verify:form -- --submit`
- * makes the same post from Node, where the status code is readable — that is
- * the only real check this path has.
+ * Nothing in the browser can tell those apart. `npm run verify:form` checks the
+ * public configuration without writing a row. A separately authorized
+ * `npm run verify:form -- --submit` probe makes the same post from Node, where
+ * the status code is readable — that is the only end-to-end check this path has.
  */
 export async function submitEarlyAccess(email: string) {
   const { action, field } = site.offer;

@@ -506,7 +506,7 @@ git commit -m "fix: give every public route correct metadata"
 - Modify: `README.md`
 - Modify: `docs/superpowers/specs/2026-08-27-conversion-redesign-design.md`
 
-- [ ] **Step 1: Write the static verifier against the real export**
+- [x] **Step 1: Write the static verifier against the real export**
 
 The script must fail with a clear message if `out/` is absent and otherwise verify:
 
@@ -521,11 +521,11 @@ The script must fail with a clear message if `out/` is absent and otherwise veri
 
 Use jsdom for HTML behavior; derive expected literals independently of the implementation helper.
 
-- [ ] **Step 2: Prove verifier failure before the new build**
+- [x] **Step 2: Prove verifier failure before the new build**
 
 Run it once against a deliberately copied/incomplete fixture directory or the old export and confirm it reports at least the known old pricing/canonical/hidden-content defects. Do not weaken checks to make the current artifact pass.
 
-- [ ] **Step 3: Run the verifier against a fresh new build**
+- [x] **Step 3: Run the verifier against a fresh new build**
 
 ```bash
 npm run build
@@ -534,15 +534,15 @@ npm run verify:static
 
 Fix the product code when a check exposes a real defect. Do not add broad allowlists.
 
-- [ ] **Step 4: Refresh README operations**
+- [x] **Step 4: Refresh README operations**
 
 Document the 30-day offer, Google Form Sheet eligibility role, launch-email redemption obligation, Vercel Git deployment, stable current production URL and absent custom domain, Motion-only architecture, analytics event meanings, tests/verification commands, and exact Node requirement. Remove Firebase deployment, pricing, 7/14-day claims, and incorrect OG claims.
 
-- [ ] **Step 5: Keep form verification terminology honest**
+- [x] **Step 5: Keep form verification terminology honest**
 
 Update script/help comments to distinguish configuration-only verification from the optional row-writing `--submit` probe. Do not run `--submit`.
 
-- [ ] **Step 6: Run docs/static checks and commit**
+- [x] **Step 6: Run docs/static checks and commit**
 
 Run `npm run verify`, `npm audit --omit=dev`, and `git diff --check`. Then:
 

@@ -38,8 +38,9 @@ export const site = {
    * breaks signup silently — the form still opens for anyone, and the site
    * cannot see the rejection (see `submitEarlyAccess`).
    *
-   * `npm run verify:form -- --submit` posts a probe address and reads the real
-   * status code. Run it after touching the form.
+   * `npm run verify:form` checks the public configuration without writing a
+   * row. A separately authorized `npm run verify:form -- --submit` probe posts
+   * an address and is the only way to read the real submission status.
    *
    * While `action` is null every CTA falls back to `earlyAccessUrl`, so the
    * page never shows a form that quietly drops what people type into it.

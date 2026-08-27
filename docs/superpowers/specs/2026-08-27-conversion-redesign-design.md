@@ -333,6 +333,15 @@ Update the README to describe:
 
 Remove stale Firebase deployment instructions, pricing values, and trial-duration claims.
 
+### Operations handoff
+
+- The repository requires Node `^20.19.0 || ^22.12.0 || >=24.0.0` and produces a static `out/` artifact.
+- Production deploys from `main` through the connected Vercel project. The stable alias remains `https://rafiq-website-beryl.vercel.app` until a custom domain is actually connected and verified.
+- `npm run verify:static` inspects the built artifact rather than source assumptions: routes, route-specific canonical/OG URLs, anchors, pre-hydration visibility, stale marketing claims, social image, crawl files, and homepage JavaScript gzip.
+- `npm run verify:form` is configuration-only and writes no response. The `--submit` variant is an optional, separately authorized end-to-end probe because it writes a real Sheet row.
+- The response Sheet is the promotion eligibility record. Sending launch-day redemption instructions to every eligible address is a product-owner release obligation, not an automated behavior of this repository.
+- Hosted legal prose preserves the app documents while resolving their deployment-owned account-deletion link against the verified site URL, so the pre-domain release cannot route legal requests to an unrelated website.
+
 ## Release Process
 
 1. Implement on the current `main` branch as explicitly requested.

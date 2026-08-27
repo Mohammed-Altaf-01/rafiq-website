@@ -3,6 +3,8 @@ import path from "node:path";
 
 import { marked } from "marked";
 
+import { site } from "@/lib/site";
+
 export type LegalDoc = {
   title: string;
   effective: string;
@@ -33,7 +35,9 @@ function slug(text: string) {
 /**
  * The two policy documents are the same files the app bundles, copied into
  * `src/content` verbatim. They are parsed at build time and rendered as static
- * HTML, so the hosted copy can never drift in wording from the in-app one.
+ * HTML. The one deployment-owned value—the account-deletion URL—is routed to
+ * this site's verified base URL so a stale custom-domain reference cannot send
+ * a legal request to an unrelated website.
  */
 export async function loadLegal(file: "privacy-policy" | "terms-and-conditions"): Promise<LegalDoc> {
   const raw = await readFile(path.join(process.cwd(), "src/content", `${file}.md`), "utf8");
@@ -50,7 +54,10 @@ export async function loadLegal(file: "privacy-policy" | "terms-and-conditions")
     .replace(/^\*\*Last updated:\*\*.*$/m, "")
     .trimStart();
 
-  const parsed = await marked.parse(body, { gfm: true, breaks: false });
+  const parsed = (await marked.parse(body, { gfm: true, breaks: false })).replaceAll(
+    "https://rafiq.app/delete-account/",
+    `${site.url}/delete-account/`,
+  );
 
   const toc: { id: string; text: string }[] = [];
   const html = parsed.replace(/<h2>([\s\S]*?)<\/h2>/g, (_match, inner: string) => {

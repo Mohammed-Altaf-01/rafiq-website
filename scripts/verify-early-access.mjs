@@ -1,19 +1,19 @@
 /**
- * End-to-end check of the early-access signup path.
+ * Configuration check for the early-access Google Form, with an optional
+ * row-writing probe.
  *
- * The browser cannot do this check. `submitEarlyAccess` posts with
- * `mode: "no-cors"`, because Google sends no CORS header back for form
- * submissions, so the response is opaque: a 401 from a form that has quietly
- * started demanding a Google sign-in resolves exactly like a recorded signup
- * and the visitor still reads "You are on the list". This script posts the same
- * body from Node, where the real status code is visible, and fails loudly.
+ *   node scripts/verify-early-access.mjs
+ *     Read-only: checks public reachability, the configured entry id, and
+ *     visible sign-in requirements. It does not submit an address and cannot
+ *     prove that Google will record one.
  *
- *   node scripts/verify-early-access.mjs           dry run: config + reachability
- *   node scripts/verify-early-access.mjs --submit  also posts one probe address
+ *   node scripts/verify-early-access.mjs --submit
+ *     End to end: posts one probe and reads Google's real status. This writes a
+ *     row and must only be run with explicit authorization.
  *
- * `--submit` writes a real row into the linked Sheet, addressed
- * `probe+<timestamp>@rafiq.invalid` so it is obvious and filterable. `.invalid`
- * is reserved by RFC 2606 and can never belong to anyone.
+ * The probe uses `probe+<timestamp>@rafiq.invalid`, so it is obvious and
+ * filterable. `.invalid` is reserved by RFC 2606 and can never belong to
+ * anyone. Delete the probe row from the eligibility Sheet afterward.
  */
 
 import { readFile } from "node:fs/promises";
@@ -88,11 +88,12 @@ if (forcesSignIn.length) {
 }
 
 if (!SUBMIT) {
-  console.log("\nConfig looks sane. Re-run with --submit to post a probe address.");
+  console.log("\n✓ Configuration check passed. No address was submitted and no row was written.");
+  console.log("  Recording is only proven by a separately authorized --submit probe.");
   process.exit(0);
 }
 
-/* 4. The only check that proves anything: post, and read the status. */
+/* 4. Optional end-to-end check: write one probe row and read the status. */
 const probe = `probe+${Date.now()}@rafiq.invalid`;
 const body = new URLSearchParams({
   [field]: probe,
