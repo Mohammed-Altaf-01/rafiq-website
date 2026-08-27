@@ -1,6 +1,6 @@
 # 002 — Consolidate on Motion and replace scroll-controlled stages
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 063844a
 - **Severity**: HIGH
 - **Category**: Purpose, interruptibility, performance, cohesion
@@ -99,4 +99,3 @@ Tabs implement arrow-key navigation, Home/End, `aria-selected`, `aria-controls`,
 - In DevTools at 10% playback, the state panel should move 10px and fade over 220ms with no blank frame.
 - Toggle reduced motion: hero artwork stays still and state changes keep opacity only.
 - **Done when**: the page has one motion language, one product-demo DOM tree, no scroll trap, and keyboard-complete state selection.
-

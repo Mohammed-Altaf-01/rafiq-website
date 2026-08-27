@@ -1,67 +1,66 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
-import { Children, cloneElement, isValidElement, type ReactNode } from "react";
+import { motion, useInView, type Variants } from "motion/react";
+import {
+  Children,
+  cloneElement,
+  isValidElement,
+  useRef,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 
-const EASE = [0.16, 1, 0.3, 1] as const;
+const EASE = [0.23, 1, 0.32, 1] as const;
+const noopSubscribe = () => () => undefined;
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
 
-// Reduced motion is handled once, by the MotionConfig in MotionProvider.
-// Branching on it here would change the markup between the exported HTML and
-// the client, which React cannot reconcile.
+const revealVariants: Variants = {
+  hidden: { opacity: 0, transform: "translate3d(0, 18px, 0)" },
+  shown: {
+    opacity: 1,
+    transform: "translate3d(0, 0, 0)",
+  },
+};
 
-/**
- * Entrance reveal. Used to give sections a reading order on arrival rather
- * than dropping the whole block in at once.
- */
+function useEnhancedInView(ref: React.RefObject<Element | null>) {
+  const mounted = useSyncExternalStore(noopSubscribe, clientSnapshot, serverSnapshot);
+  const inView = useInView(ref, { once: true, amount: 0.2 });
+  return !mounted || inView;
+}
+
+/** Content is visible in static HTML; hydrated clients add one restrained reveal. */
 export function Reveal({
   children,
   delay = 0,
-  y = 22,
   className = "",
   as = "div",
 }: {
   children: ReactNode;
   delay?: number;
-  y?: number;
   className?: string;
   as?: "div" | "li" | "section" | "p" | "span";
 }) {
+  const ref = useRef<Element>(null);
+  const shown = useEnhancedInView(ref);
   const Tag = motion[as];
 
   return (
     <Tag
+      ref={ref as never}
+      data-spatial-motion="true"
       className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.75, delay, ease: EASE }}
+      initial={false}
+      animate={shown ? "shown" : "hidden"}
+      variants={revealVariants}
+      transition={{ duration: 0.55, delay, ease: EASE }}
     >
       {children}
     </Tag>
   );
 }
 
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  shown: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: EASE, delay: Math.min(i, 4) * 0.075 },
-  }),
-};
-
-/**
- * Groups `RevealItem` children so a row resolves in reading order.
- *
- * The stagger is a delay per item, not a parent timeline. A parent timeline
- * measures the whole group, and every one of these groups is a grid that
- * stacks into a single tall column on a phone: the group crosses its trigger
- * while the reader is still on the first card, so cards two and three play out
- * hundreds of pixels below the fold and are already sitting there, finished,
- * by the time the reader reaches them. Each item watches for itself instead,
- * which is identical on a wide screen (the row arrives together, so the delays
- * still read as a stagger) and correct on a narrow one.
- */
+/** Adds a decorative 50ms reading-order delay without delaying interaction. */
 export function RevealGroup({
   children,
   className = "",
@@ -69,12 +68,12 @@ export function RevealGroup({
   children: ReactNode;
   className?: string;
 }) {
-  let i = 0;
+  let index = 0;
   return (
     <div className={className}>
       {Children.map(children, (child) =>
         isValidElement<{ index?: number }>(child) && child.type === RevealItem
-          ? cloneElement(child, { index: i++ })
+          ? cloneElement(child, { index: index++ })
           : child,
       )}
     </div>
@@ -90,18 +89,21 @@ export function RevealItem({
   children: ReactNode;
   className?: string;
   style?: React.CSSProperties;
-  /** Set by `RevealGroup`. Position in the group, which becomes its delay. */
   index?: number;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const shown = useEnhancedInView(ref);
+
   return (
     <motion.div
+      ref={ref}
+      data-spatial-motion="true"
       className={className}
       style={style}
-      variants={itemVariants}
-      custom={index}
-      initial="hidden"
-      whileInView="shown"
-      viewport={{ once: true, amount: 0.25 }}
+      initial={false}
+      animate={shown ? "shown" : "hidden"}
+      variants={revealVariants}
+      transition={{ duration: 0.55, delay: Math.min(index, 4) * 0.05, ease: EASE }}
     >
       {children}
     </motion.div>

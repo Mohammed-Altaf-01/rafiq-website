@@ -1,9 +1,14 @@
 "use client";
 
 import { PlusIcon } from "@phosphor-icons/react/dist/ssr";
-import { useId, useState } from "react";
+import { motion, useReducedMotion } from "motion/react";
+import { useId, useState, useSyncExternalStore } from "react";
 
 import { site } from "@/lib/site";
+
+const noopSubscribe = () => () => undefined;
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
 
 const questions = [
   {
@@ -30,6 +35,8 @@ const questions = [
 
 export function Faq() {
   const baseId = useId();
+  const reduced = useReducedMotion();
+  const mounted = useSyncExternalStore(noopSubscribe, clientSnapshot, serverSnapshot);
   const [openItems, setOpenItems] = useState<Set<number>>(() => new Set([0]));
 
   return (
@@ -57,11 +64,15 @@ export function Faq() {
             const summaryId = `${baseId}-question-${index}`;
             const panelId = `${baseId}-answer-${index}`;
             const isOpen = openItems.has(index);
+            const panelVisible = !mounted || isOpen;
 
             return (
-              <details
+              <motion.details
                 key={item.q}
                 open={isOpen}
+                data-spatial-motion="true"
+                layout={reduced ? false : "position"}
+                transition={{ layout: { duration: 0.24, ease: [0.23, 1, 0.32, 1] } }}
                 className="group border-b"
                 style={{ borderColor: "var(--line-strong)" }}
                 onToggle={(event) => {
@@ -86,16 +97,31 @@ export function Faq() {
                     size={20}
                     weight="regular"
                     aria-hidden
+                    data-spatial-motion="true"
                     className="mt-0.5 shrink-0 transition-transform duration-200 group-open:rotate-45"
                     style={{ color: "var(--primary)" }}
                   />
                 </summary>
-                <div id={panelId} role="region" aria-labelledby={summaryId}>
+                <motion.div
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={summaryId}
+                  data-spatial-motion="true"
+                  initial={false}
+                  animate={{
+                    opacity: panelVisible ? 1 : 0,
+                    transform:
+                      reduced || panelVisible
+                        ? "translate3d(0, 0, 0)"
+                        : "translate3d(0, -6px, 0)",
+                  }}
+                  transition={{ duration: reduced ? 0.18 : 0.2, ease: [0.23, 1, 0.32, 1] }}
+                >
                   <p className="max-w-[65ch] pb-7 text-[0.96rem] leading-relaxed text-ink-soft">
                     {item.a}
                   </p>
-                </div>
-              </details>
+                </motion.div>
+              </motion.details>
             );
           })}
         </div>

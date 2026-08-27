@@ -1,10 +1,15 @@
 "use client";
 
-import { motion } from "motion/react";
+import { motion, useInView } from "motion/react";
+import { useRef, useSyncExternalStore } from "react";
 
 import type { Passage } from "@/lib/scripture";
 
 type Tone = "page" | "deep";
+
+const noopSubscribe = () => () => undefined;
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
 
 const tones = {
   page: {
@@ -43,6 +48,10 @@ export function Scripture({
 }) {
   const c = tones[tone];
   const words = passage.arabic.split(" ");
+  const arabicRef = useRef<HTMLParagraphElement>(null);
+  const mounted = useSyncExternalStore(noopSubscribe, clientSnapshot, serverSnapshot);
+  const inView = useInView(arabicRef, { once: true, amount: 0.35 });
+  const shown = !mounted || inView;
 
   const arabicSize =
     size === "xl"
@@ -54,16 +63,17 @@ export function Scripture({
   return (
     <figure className={`text-center ${className}`}>
       <motion.p
+        ref={arabicRef}
+        data-spatial-motion="true"
         dir="rtl"
         lang="ar"
         className={`arabic mx-auto max-w-[15em] ${arabicSize}`}
         style={{ color: c.arabic }}
-        initial="hidden"
-        whileInView="shown"
-        viewport={{ once: true, amount: 0.5 }}
+        initial={false}
+        animate={shown ? "shown" : "hidden"}
         variants={{
           hidden: {},
-          shown: { transition: { staggerChildren: Math.min(0.075, 1.1 / words.length) } },
+          shown: { transition: { staggerChildren: Math.min(0.05, 0.8 / words.length) } },
         }}
       >
         {words.map((word, i) => (
@@ -71,12 +81,16 @@ export function Scripture({
             key={`${word}-${i}`}
             className="inline-block"
             variants={{
-              hidden: { opacity: 0, filter: "blur(3px)", y: 8 },
+              hidden: {
+                opacity: 0,
+                filter: "blur(3px)",
+                transform: "translate3d(0, 8px, 0)",
+              },
               shown: {
                 opacity: 1,
                 filter: "blur(0px)",
-                y: 0,
-                transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] },
+                transform: "translate3d(0, 0, 0)",
+                transition: { duration: 0.55, ease: [0.23, 1, 0.32, 1] },
               },
             }}
           >

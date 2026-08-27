@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useId, useRef, useState, type KeyboardEvent } from "react";
 
 import { Device } from "@/components/ui/device";
@@ -32,11 +32,33 @@ const states: Array<{
   },
 ];
 
+const REST = "translate3d(0, 0, 0)";
+
+export function getPanelMotion(reduced: boolean) {
+  return {
+    hidden: {
+      opacity: 0,
+      transform: reduced ? REST : "translate3d(0, 10px, 0)",
+    },
+    shown: { opacity: 1, transform: REST },
+    exit: {
+      opacity: 0,
+      transform: reduced ? REST : "translate3d(0, -6px, 0)",
+    },
+    transition: {
+      duration: reduced ? 0.18 : 0.22,
+      ease: [0.23, 1, 0.32, 1] as const,
+    },
+  };
+}
+
 export function HowItWorks() {
   const [active, setActive] = useState(0);
+  const reduced = useReducedMotion();
   const baseId = useId();
   const tabs = useRef<Array<HTMLButtonElement | null>>([]);
   const current = states[active];
+  const panelMotion = getPanelMotion(Boolean(reduced));
 
   function selectFromKeyboard(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     let next: number | null = null;
@@ -86,7 +108,7 @@ export function HowItWorks() {
                   tabIndex={selected ? 0 : -1}
                   onClick={() => setActive(index)}
                   onKeyDown={(event) => selectFromKeyboard(event, index)}
-                  className="w-full rounded-[var(--radius-input)] px-5 py-4 text-left transition-[background-color,box-shadow,transform] duration-200 ease-out active:scale-[0.99]"
+                  className="pressable w-full rounded-[var(--radius-input)] px-5 py-4 text-left"
                   style={{
                     background: selected ? "var(--surface)" : "transparent",
                     boxShadow: selected ? "inset 0 0 0 1px var(--line-strong)" : "none",
@@ -116,13 +138,14 @@ export function HowItWorks() {
             tabIndex={0}
             className="relative mx-auto w-[72%] max-w-[330px]"
           >
-            <AnimatePresence mode="wait" initial={false}>
+            <AnimatePresence initial={false}>
               <motion.div
                 key={current.src}
-                initial={{ opacity: 0, transform: "translateY(10px) scale(0.99)" }}
-                animate={{ opacity: 1, transform: "translateY(0px) scale(1)" }}
-                exit={{ opacity: 0, transform: "translateY(-6px) scale(0.995)" }}
-                transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
+                data-spatial-motion="true"
+                initial={panelMotion.hidden}
+                animate={panelMotion.shown}
+                exit={panelMotion.exit}
+                transition={panelMotion.transition}
               >
                 <Device src={current.src} alt={current.alt} onDark sizes="(max-width: 640px) 66vw, 330px" />
               </motion.div>

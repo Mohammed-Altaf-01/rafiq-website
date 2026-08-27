@@ -28,7 +28,7 @@ export function Cta() {
         <Link
           href="#free-month"
           onClick={() => track("offer_cta_click", { source: "closing" })}
-          className="mt-9 inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[0.95rem] font-bold transition-[transform,box-shadow] duration-200 ease-out hover:-translate-y-px active:translate-y-px active:scale-[0.985]"
+          className="pressable mt-9 inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[0.95rem] font-bold"
           style={{
             background: "var(--deep-primary)",
             color: "#1c1a16",

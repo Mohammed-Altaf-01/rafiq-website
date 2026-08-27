@@ -1,6 +1,6 @@
 # 001 — Keep content visible while preserving meaningful reveals
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 063844a
 - **Severity**: HIGH
 - **Category**: Accessibility / performance
@@ -83,4 +83,3 @@ The reveal wrapper must use `initial={false}`. A mount flag plus `useInView(...,
 - Disable JavaScript and reload: all section and scripture copy must remain visible.
 - Toggle reduced motion: translation disappears while gentle opacity feedback remains.
 - **Done when**: no visitor can lose content because an entrance animation failed, while enhanced clients still receive one restrained reveal per section.
-

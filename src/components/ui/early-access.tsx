@@ -2,7 +2,7 @@
 
 import { CheckCircleIcon } from "@phosphor-icons/react/dist/ssr";
 import { track } from "@vercel/analytics";
-import { AnimatePresence, motion, useInView } from "motion/react";
+import { AnimatePresence, motion, useInView, useReducedMotion } from "motion/react";
 import {
   useEffect,
   useId,
@@ -57,6 +57,7 @@ export function EarlyAccess({
   const viewRef = useRef<HTMLDivElement>(null);
   const viewTracked = useRef(false);
   const isInView = useInView(viewRef, { once: true, amount: 0.4 });
+  const reduced = useReducedMotion();
 
   const [typed, setTyped] = useState("");
   const [status, setStatus] = useState<Status>("idle");
@@ -149,9 +150,12 @@ export function EarlyAccess({
   }
 
   const column = Boolean(secondary);
-  const buttonClass = `inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 py-3.5 text-[0.95rem] font-bold transition-[transform,box-shadow,opacity] duration-200 ease-out hover:-translate-y-px active:translate-y-px active:scale-[0.985] disabled:cursor-progress disabled:opacity-70 ${
+  const buttonClass = `pressable inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 py-3.5 text-[0.95rem] font-bold disabled:cursor-progress disabled:opacity-70 ${
     secondary ? "sm:flex-1" : column ? "w-full" : "shrink-0"
   }`;
+  const rest = "translate3d(0, 0, 0)";
+  const enterOffset = reduced ? rest : "translate3d(0, 8px, 0)";
+  const exitOffset = reduced ? rest : "translate3d(0, -6px, 0)";
 
   return (
     <div
@@ -163,10 +167,11 @@ export function EarlyAccess({
         {done ? (
           <motion.div
             key="done"
-            initial={{ opacity: 0, transform: "translateY(8px)" }}
-            animate={{ opacity: 1, transform: "translateY(0px)" }}
-            exit={{ opacity: 0, transform: "translateY(-6px)" }}
-            transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
+            data-spatial-motion="true"
+            initial={{ opacity: 0, transform: enterOffset }}
+            animate={{ opacity: 1, transform: rest }}
+            exit={{ opacity: 0, transform: exitOffset }}
+            transition={{ duration: reduced ? 0.18 : 0.22, ease: [0.23, 1, 0.32, 1] }}
             className={`flex items-start gap-3 ${align === "center" ? "justify-center text-left" : ""}`}
           >
             <span

@@ -5,9 +5,8 @@ import type { ReactNode } from "react";
  * That is the entire radius system; nothing else invents its own.
  */
 const base =
-  "group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full " +
-  "px-7 py-3.5 text-[0.95rem] font-bold transition-all duration-200 " +
-  "active:translate-y-[1px] active:scale-[0.985]";
+  "pressable group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full " +
+  "px-7 py-3.5 text-[0.95rem] font-bold";
 
 export function PrimaryButton({
   href,
@@ -23,7 +22,7 @@ export function PrimaryButton({
   return (
     <a
       href={href}
-      className={`${base} hover:-translate-y-[1px] ${className}`}
+      className={`${base} ${className}`}
       style={{
         background: onDark ? "var(--deep-primary)" : "var(--primary)",
         color: onDark ? "#1C1A16" : "var(--on-primary)",

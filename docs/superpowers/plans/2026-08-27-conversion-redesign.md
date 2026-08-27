@@ -367,15 +367,15 @@ git commit -m "feat: rebuild the landing page around one conversion story"
 - Create: `src/components/ui/__tests__/scripture.test.tsx`
 - Create: `src/components/sections/__tests__/how-it-works.test.tsx`
 
-- [ ] **Step 1: Load the Impeccable craft floor immediately before UI edits**
+- [x] **Step 1: Load the Impeccable craft floor immediately before UI edits**
 
 Read `/Users/altaf/.agents/skills/impeccable/reference/craft-floor.md` fully. Apply its bans and quality checks throughout this and later UI tasks.
 
-- [ ] **Step 2: Execute each animation plan test-first**
+- [x] **Step 2: Execute each animation plan test-first**
 
 Follow the exact red/green steps and values in the four animation plans. Mark each plan’s status `DONE` only after its mechanical and feel checks pass.
 
-- [ ] **Step 3: Remove GSAP**
+- [x] **Step 3: Remove GSAP**
 
 ```bash
 npm uninstall gsap
@@ -384,15 +384,15 @@ rg -n "gsap|ScrollTrigger" src package.json
 
 The second command must return no matches. Do not keep dead timeline helpers.
 
-- [ ] **Step 4: Prove exported visibility**
+- [x] **Step 4: Prove exported visibility**
 
 After `npm run build`, inspect `out/index.html`. No substantive headline, paragraph, section, scripture word, proof label, or form may carry an inline hidden initial state. Decorative offscreen art may be excluded by an explicit allowlist in the verifier.
 
-- [ ] **Step 5: Measure the client bundle**
+- [x] **Step 5: Measure the client bundle**
 
 Compute the unique JavaScript files referenced by `out/index.html` and their gzip sum. Record the result in the verification log; it must be below the audited 302.5 KiB baseline.
 
-- [ ] **Step 6: Run motion verification and commit**
+- [x] **Step 6: Run motion verification and commit**
 
 Run focused tests, full tests, lint, and build. Feel-check default and reduced motion at desktop/mobile. Then:
 

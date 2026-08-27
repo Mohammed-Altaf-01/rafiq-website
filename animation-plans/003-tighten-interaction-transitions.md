@@ -1,6 +1,6 @@
 # 003 — Tighten forms, navigation, FAQ, and press feedback
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 063844a
 - **Severity**: MEDIUM
 - **Category**: Easing, duration, physicality, performance
@@ -78,4 +78,3 @@ Buttons use `transform 140ms var(--ease-out), background-color 200ms ease, box-s
 - At 10% playback, panel motion begins quickly and decelerates; no `ease-in` delays the action.
 - Toggle reduced motion: opacity/color feedback remains, translation and layout travel disappear.
 - **Done when**: every high-frequency interaction feels immediate, interruptible, keyboard-safe, and governed by one shared timing vocabulary.
-

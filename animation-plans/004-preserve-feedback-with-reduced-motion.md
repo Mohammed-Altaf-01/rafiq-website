@@ -1,6 +1,6 @@
 # 004 — Preserve useful feedback with reduced motion
 
-- **Status**: TODO
+- **Status**: DONE
 - **Commit**: 063844a
 - **Severity**: MEDIUM
 - **Category**: Accessibility
@@ -67,4 +67,3 @@ Motion components branch through `useReducedMotion()` where a complete transform
 - **Feel check**: emulate `prefers-reduced-motion: reduce`; scroll and switch every interactive state. Nothing travels, rotates, scales, or scrubs, but each state still becomes legible through a short fade/color change.
 - Emulate no preference again and verify the restrained spatial motion returns.
 - **Done when**: reduced-motion users lose movement, not meaning or feedback.
-

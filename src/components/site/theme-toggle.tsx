@@ -43,7 +43,7 @@ export function ThemeToggle({ onDark = false }: { onDark?: boolean }) {
       type="button"
       onClick={toggle}
       aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-      className="inline-flex size-10 items-center justify-center rounded-full transition-colors duration-200 active:scale-[0.94]"
+      className="pressable inline-flex size-10 items-center justify-center rounded-full"
       style={{
         color: onDark ? "var(--deep-ink-soft)" : "var(--ink-soft)",
         boxShadow: `inset 0 0 0 1px ${onDark ? "var(--deep-line)" : "var(--line)"}`,

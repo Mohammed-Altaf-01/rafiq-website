@@ -2,10 +2,16 @@
 
 import { ListIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
 import { track } from "@vercel/analytics";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+} from "motion/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Wordmark } from "@/components/brand/mark";
 import { ThemeToggle } from "@/components/site/theme-toggle";
@@ -15,6 +21,9 @@ import { nav, site } from "@/lib/site";
 export function Nav() {
   const [condensed, setCondensed] = useState(false);
   const [open, setOpen] = useState(false);
+  const headerRef = useRef<HTMLElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const reduced = useReducedMotion();
   const { scrollY } = useScroll();
 
   // The sections these point at live on the landing page. From the legal pages
@@ -31,8 +40,32 @@ export function Nav() {
     if (next !== condensed) setCondensed(next);
   });
 
+  useEffect(() => {
+    if (!open) return;
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      setOpen(false);
+      menuButtonRef.current?.focus();
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (headerRef.current?.contains(event.target as Node)) return;
+      setOpen(false);
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("pointerdown", onPointerDown);
+    };
+  }, [open]);
+
+  const rest = "translate3d(0, 0, 0)";
+  const menuOffset = reduced ? rest : "translate3d(0, -10px, 0)";
+
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header ref={headerRef} className="fixed inset-x-0 top-0 z-50">
       <div
         // The condensed bar spans the viewport, not the content container, so
         // the hairline reads as a real edge rather than a stray line.
@@ -49,7 +82,7 @@ export function Nav() {
           className="pointer-events-none absolute inset-0 -z-10"
           initial={false}
           animate={{ opacity: condensed ? 1 : 0 }}
-          transition={{ duration: 0.3, ease: "easeOut" }}
+          transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
           style={{
             backgroundColor: "color-mix(in srgb, var(--bg) 82%, transparent)",
             boxShadow: "0 1px 0 0 var(--line)",
@@ -80,17 +113,18 @@ export function Nav() {
             onClick={() => {
               if (!site.playStore) track("offer_cta_click", { source: "nav" });
             }}
-            className="hidden rounded-full px-5 py-2.5 text-[0.875rem] font-bold transition-all duration-200 hover:-translate-y-[1px] active:translate-y-[1px] sm:inline-flex"
+            className="pressable hidden rounded-full px-5 py-2.5 text-[0.875rem] font-bold sm:inline-flex"
             style={{ background: "var(--primary)", color: "var(--on-primary)" }}
           >
             {site.playStore ? "Get Rafiq" : `Get ${site.offer.premiumDays} days free`}
           </Link>
           <button
+            ref={menuButtonRef}
             type="button"
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="inline-flex size-10 items-center justify-center rounded-full text-ink-soft lg:hidden"
+            className="pressable inline-flex size-10 items-center justify-center rounded-full text-ink-soft lg:hidden"
             style={{ boxShadow: "inset 0 0 0 1px var(--line)" }}
           >
             {open ? <XIcon size={18} /> : <ListIcon size={18} />}
@@ -98,19 +132,19 @@ export function Nav() {
         </div>
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {open ? (
           <motion.nav
             aria-label="Sections"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.24, ease: [0.16, 1, 0.3, 1] }}
+            data-spatial-motion="true"
+            initial={{ opacity: 0, transform: menuOffset }}
+            animate={{ opacity: 1, transform: rest }}
+            exit={{ opacity: 0, transform: menuOffset }}
+            transition={{ duration: reduced ? 0.18 : 0.22, ease: [0.23, 1, 0.32, 1] }}
             className="mx-5 overflow-hidden rounded-[var(--radius-card)] lg:hidden"
             style={{
               background: "var(--card)",
               boxShadow: "inset 0 0 0 1px var(--line), 0 20px 40px -20px var(--shade-deep)",
-              backdropFilter: "blur(14px)",
             }}
           >
             <ul className="flex flex-col p-2.5">
@@ -132,7 +166,7 @@ export function Nav() {
                     setOpen(false);
                     if (!site.playStore) track("offer_cta_click", { source: "nav" });
                   }}
-                  className="mt-1 block rounded-full px-4 py-3 text-center text-[0.95rem] font-bold"
+                  className="pressable mt-1 block rounded-full px-4 py-3 text-center text-[0.95rem] font-bold"
                   style={{ background: "var(--primary)", color: "var(--on-primary)" }}
                 >
                   {site.playStore ? "Get Rafiq" : `Get ${site.offer.premiumDays} days free`}
