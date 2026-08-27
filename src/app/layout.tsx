@@ -6,6 +6,7 @@ import { Amiri, Plus_Jakarta_Sans } from "next/font/google";
 import { MotionProvider } from "@/components/motion-provider";
 import { SkipLink } from "@/components/site/skip-link";
 import { ThemeScript } from "@/components/theme-script";
+import { createPageMetadata } from "@/lib/metadata";
 import { site } from "@/lib/site";
 
 import "./globals.css";
@@ -24,13 +25,15 @@ const amiri = Amiri({
   display: "swap",
 });
 
+const homeMetadata = createPageMetadata("/");
+
 export const metadata: Metadata = {
+  ...homeMetadata,
   metadataBase: new URL(site.url),
   title: {
     default: `${site.name}: ${site.tagline}`,
     template: `%s · ${site.name}`,
   },
-  description: site.description,
   applicationName: site.name,
   keywords: [
     "lower your gaze",
@@ -40,34 +43,8 @@ export const metadata: Metadata = {
     "block Shorts and Reels",
     "Android",
   ],
-  // The link preview card. `og:image` is deliberately NOT listed here: the
-  // `opengraph-image.png` file next to this one is picked up by Next's file
-  // convention, which emits the URL along with `og:image:type`, `:width` and
-  // `:height` read from the file itself, and the alt text from
-  // `opengraph-image.alt.txt`. WhatsApp in particular ignores a card whose
-  // dimensions it cannot learn without downloading the image first.
-  //
-  // To swap in a different banner, overwrite `src/app/opengraph-image.png`.
-  // Keep it 1200x630 (the 1.91:1 that X, WhatsApp, Slack and iMessage all
-  // crop to) and under ~300KB, or WhatsApp silently drops the thumbnail.
-  openGraph: {
-    type: "website",
-    siteName: site.name,
-    title: `${site.name}: ${site.tagline}`,
-    description: site.description,
-    url: site.url,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: `${site.name}: ${site.tagline}`,
-    description: site.description,
-  },
-  // The canonical URL. Without it, a link shared with tracking junk on the end
-  // (?utm_source=…, WhatsApp's own appended params) can be scraped as a
-  // separate page, so the crawler caches an empty card against that variant.
-  alternates: {
-    canonical: "/",
-  },
+  // The route helper supplies canonical, Open Graph, Twitter, and image data.
+  // opengraph-image.tsx generates the shared social card at that image URL.
   // Tab and home-screen icons come from the favicon.ico / icon.png /
   // apple-icon.png files in this directory, which Next links automatically.
 };

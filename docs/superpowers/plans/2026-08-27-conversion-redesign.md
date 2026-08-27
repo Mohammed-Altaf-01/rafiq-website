@@ -465,29 +465,29 @@ git commit -m "fix: harden navigation and landing accessibility"
 - Delete: `src/app/opengraph-image.alt.txt`
 - Create: `src/app/opengraph-image.tsx`
 
-- [ ] **Step 1: Write failing metadata tests**
+- [x] **Step 1: Write failing metadata tests**
 
 Test a pure `createPageMetadata` helper with literal expected canonical/OG URLs for `/`, `/privacy`, `/terms`, and `/delete-account`. Assert route-specific titles/descriptions and that the base URL is `https://rafiq-website-beryl.vercel.app`, never `rafiq.app`.
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 ```bash
 npm run test -- src/lib/__tests__/metadata.test.ts
 ```
 
-- [ ] **Step 3: Implement route metadata**
+- [x] **Step 3: Implement route metadata**
 
 Use `metadataBase` in the root layout and explicit `alternates.canonical`, Open Graph title/description/url/type, and Twitter card data per route. Keep legal page descriptions factual and distinct.
 
-- [ ] **Step 4: Add crawl files and 404**
+- [x] **Step 4: Add crawl files and 404**
 
 Generate robots and sitemap through documented `MetadataRoute` functions. Include `/`, `/privacy`, `/terms`, and `/delete-account`. Create a branded, useful not-found page with Home and free-month links.
 
-- [ ] **Step 5: Replace the social image in code**
+- [x] **Step 5: Replace the social image in code**
 
 Create `opengraph-image.tsx` with `ImageResponse`, exported `alt`, `size = { width: 1200, height: 630 }`, and `contentType = "image/png"`. Use the Rafiq palette/star geometry and visible **30 days Premium free** promise. Keep the render simple enough that the built PNG is `< 307200` bytes.
 
-- [ ] **Step 6: Build, inspect generated tags/image, and commit**
+- [x] **Step 6: Build, inspect generated tags/image, and commit**
 
 Run tests, lint, and build. Inspect all exported head tags and read PNG dimensions from the built file. Then:
 

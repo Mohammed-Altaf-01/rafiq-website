@@ -8,19 +8,15 @@ import {
   ProhibitIcon,
   WarningIcon,
 } from "@phosphor-icons/react/dist/ssr";
-import type { Metadata } from "next";
 import Link from "next/link";
 
 import { Footer } from "@/components/site/footer";
 import { ThemeToggle } from "@/components/site/theme-toggle";
 import { PrimaryButton } from "@/components/ui/button";
+import { createPageMetadata } from "@/lib/metadata";
 import { site } from "@/lib/site";
 
-export const metadata: Metadata = {
-  title: "Delete your account",
-  description:
-    "How to delete your Rafiq account and everything stored with it — from inside the app, or by email if you have already uninstalled.",
-};
+export const metadata = createPageMetadata("/delete-account");
 
 /*
  * This page exists for the Play Console "App content → Data safety → Data
