@@ -11,7 +11,6 @@ import { Privacy } from "@/components/sections/privacy";
 import { Protection } from "@/components/sections/protection";
 import { Setup } from "@/components/sections/setup";
 import { Verse } from "@/components/sections/verse";
-import { EmailGate } from "@/components/ui/email-gate";
 
 export default function Home() {
   return (
@@ -31,9 +30,6 @@ export default function Home() {
         <Cta />
       </main>
       <Footer />
-      {/* Landing page only, and only for a reader who has scrolled past the
-          middle of it without leaving an address. */}
-      <EmailGate />
     </>
   );
 }

@@ -216,7 +216,7 @@ git commit -m "feat: centralize the 30-day early access offer"
 - Create: `src/components/ui/__tests__/early-access.test.tsx`
 - Delete: `src/components/ui/email-gate.tsx`
 
-- [ ] **Step 1: Write failing native-form and state tests**
+- [x] **Step 1: Write failing native-form and state tests**
 
 Render the real component and assert:
 
@@ -234,7 +234,7 @@ expect(screen.getByRole("form", { name: "Reserve 30 days of Rafiq Premium" })).t
 
 Add separate tests for blur/submission validation, sending label, request-sent success, network error/support fallback, remembered success, “Use a different email”, synchronized form instances, honeypot no-request behavior, Play Store fallback, disabled-form mailto fallback, form-view tracking once, and controlled analytics properties. The test must fail if an email or arbitrary error message enters any event payload.
 
-- [ ] **Step 2: Run RED**
+- [x] **Step 2: Run RED**
 
 ```bash
 npm run test -- src/components/ui/__tests__/early-access.test.tsx
@@ -242,11 +242,11 @@ npm run test -- src/components/ui/__tests__/early-access.test.tsx
 
 Confirm missing native attributes/copy/correction and old event names account for the failures.
 
-- [ ] **Step 3: Implement the accessible progressive form**
+- [x] **Step 3: Implement the accessible progressive form**
 
 Give the form a real `action={site.offer.action}`, `method="post"`, accessible name, and the input `name={site.offer.field}`. Keep the controlled JS handler for validation, analytics, synchronized state, and inline success. Use two typed sources only: `"hero" | "offer"`.
 
-- [ ] **Step 4: Apply approved conversion copy**
+- [x] **Step 4: Apply approved conversion copy**
 
 - Submit: **Claim my free month**
 - Sending: **Reserving…**
@@ -256,15 +256,15 @@ Give the form a real `action={site.offer.action}`, `method="post"`, accessible n
 
 Explain that redemption instructions arrive in the launch email. The correction clears only local state and explicitly does not claim to remove the prior Sheet row.
 
-- [ ] **Step 5: Instrument the controlled funnel**
+- [x] **Step 5: Instrument the controlled funnel**
 
 Emit exactly `early_access_form_view`, `early_access_submit`, `early_access_request_sent`, `early_access_invalid`, `early_access_error` with `reason: "network" | "configuration"`, and `early_access_email_change`. Track view once on actual intersection, not merely because the below-fold form mounted.
 
-- [ ] **Step 6: Remove the automatic modal**
+- [x] **Step 6: Remove the automatic modal**
 
 Delete `email-gate.tsx` and all references. No replacement popup, dialog, gate, exit intent, or scroll interception is allowed.
 
-- [ ] **Step 7: Run GREEN, accessibility checks, and commit**
+- [x] **Step 7: Run GREEN, accessibility checks, and commit**
 
 Run the focused test, full tests, and lint. Inspect the rendered form in both themes before committing.
 

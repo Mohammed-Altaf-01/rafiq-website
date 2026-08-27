@@ -43,7 +43,7 @@ export function Cta() {
           </p>
 
           <div className="mt-10 flex justify-center">
-            <EarlyAccess id="early-access" onDark align="center" source="cta" />
+            <EarlyAccess id="free-month" onDark align="center" source="offer" />
           </div>
         </Reveal>
       </div>

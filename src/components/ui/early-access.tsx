@@ -2,12 +2,21 @@
 
 import { CheckCircleIcon } from "@phosphor-icons/react/dist/ssr";
 import { track } from "@vercel/analytics";
-import { AnimatePresence, motion } from "motion/react";
-import { useId, useState, useSyncExternalStore, type ReactNode } from "react";
+import { AnimatePresence, motion, useInView } from "motion/react";
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type FormEvent,
+  type ReactNode,
+} from "react";
 
 import { PrimaryButton } from "@/components/ui/button";
 import {
   earlyAccessEnabled,
+  forgetRememberedEmail,
   isEmail,
   rememberedEmail,
   subscribeRememberedEmail,
@@ -16,74 +25,62 @@ import {
 import { site } from "@/lib/site";
 
 type Status = "idle" | "sending" | "done" | "error";
+type ErrorReason = "invalid" | "network" | "configuration" | null;
+
+export type EarlyAccessSource = "hero" | "offer";
 
 /**
- * Early-access signup: an address in, a promise back.
- *
- * Three shapes, decided by configuration rather than by the caller:
- * once the Play listing exists it is a download button, before the Google
- * Form is wired up it is the plain mailto the rest of the page used to carry,
- * and in between it is this form.
- *
- * `secondary` is a second call to sit beside the submit — the hero's "See how
- * it works". Passing it turns the form from one row into two, the address over
- * the pair of buttons, because a field and two pills on one line reads as three
- * peers rather than as one question with an answer. It is also rendered under
- * the confirmation: signing up is not a reason to lose the way into the page.
- *
- * `stack` puts the button under the field at every width, for the narrow
- * columns — the scroll gate's dialog — where a row would leave the field too
- * short to read a typed address back in.
- *
- * `onDone` fires once the address is in. Only the scroll gate uses it, to close
- * itself a beat after the confirmation appears; the sections on the page keep
- * their confirmation on screen and pass nothing.
+ * The email capture has a real form action so it still works without
+ * JavaScript. With JavaScript, the same POST stays on the page and every form
+ * instance settles together through the shared remembered-email store.
  */
 export function EarlyAccess({
   onDark = false,
   storeLabel = "Get Rafiq on Google Play",
   align = "start",
   secondary,
-  stack = false,
   id,
   className = "",
-  onDone,
-  source = "page",
+  source,
 }: {
   onDark?: boolean;
   storeLabel?: string;
   align?: "start" | "center";
   secondary?: ReactNode;
-  stack?: boolean;
   id?: string;
   className?: string;
-  onDone?: () => void;
-  /** Which instance of this form fired an event — "hero", "cta", or "gate". Lets the funnel be read apart by placement instead of as one lump. */
-  source?: string;
+  source: EarlyAccessSource;
 }) {
   const inputId = useId();
+  const noteId = `${inputId}-note`;
+  const inputRef = useRef<HTMLInputElement>(null);
+  const viewRef = useRef<HTMLDivElement>(null);
+  const viewTracked = useRef(false);
+  const isInView = useInView(viewRef, { once: true, amount: 0.4 });
+
   const [typed, setTyped] = useState("");
   const [status, setStatus] = useState<Status>("idle");
+  const [errorReason, setErrorReason] = useState<ErrorReason>(null);
   const [trap, setTrap] = useState("");
 
-  /*
-   * Whether this device has already signed up. It has to come through
-   * `useSyncExternalStore`: the page is exported as static HTML, which cannot
-   * know who is reading it, so the server snapshot is null and React swaps in
-   * the stored address after hydration instead of tripping over a mismatch.
-   *
-   * Subscribing rather than reading once is what keeps the page consistent with
-   * itself: an address left in the scroll gate settles this form too, wherever
-   * on the page it is, instead of leaving a second empty field behind.
-   */
   const remembered = useSyncExternalStore(
     subscribeRememberedEmail,
     rememberedEmail,
     () => null,
   );
 
+  useEffect(() => {
+    if (!isInView || viewTracked.current || site.playStore || !earlyAccessEnabled) return;
+    viewTracked.current = true;
+    track("early_access_form_view", { source });
+  }, [isInView, source]);
+
   const settled = status === "idle" && remembered !== null;
+  const done = status === "done" || settled;
   const email = settled ? remembered : typed;
+  const invalid = status === "error" && errorReason === "invalid";
+  const ink = onDark ? "var(--deep-ink)" : "var(--ink)";
+  const inkSoft = onDark ? "var(--deep-ink-soft)" : "var(--ink-soft)";
 
   if (site.playStore) {
     return (
@@ -101,104 +98,120 @@ export function EarlyAccess({
     );
   }
 
-  async function onSubmit(event: React.FormEvent) {
+  function reportInvalid() {
+    if (status === "sending" || invalid) return;
+    setStatus("error");
+    setErrorReason("invalid");
+    track("early_access_invalid", { source });
+  }
+
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (status === "sending") return;
+
     if (!isEmail(email)) {
-      track("early_access_invalid", { source });
-      setStatus("error");
+      reportInvalid();
       return;
     }
-    // Anything in the honeypot came from a script. Give it the same screen a
-    // person gets and post nothing.
+
+    // A bot that fills the hidden field gets a quiet success screen. No
+    // request, analytics event, or remembered address is created.
     if (trap) {
-      track("early_access_bot_blocked", { source });
       setStatus("done");
-      onDone?.();
+      setErrorReason(null);
       return;
     }
 
     track("early_access_submit", { source });
     setStatus("sending");
+    setErrorReason(null);
+
     try {
       await submitEarlyAccess(email);
-      track("early_access_success", { source });
+      track("early_access_request_sent", { source });
       setStatus("done");
-      onDone?.();
-    } catch (error) {
-      track("early_access_error", {
-        source,
-        message: error instanceof Error ? error.message : "unknown",
-      });
+    } catch {
+      const reason = site.offer.action ? "network" : "configuration";
+      track("early_access_error", { source, reason });
       setStatus("error");
+      setErrorReason(reason);
     }
   }
 
-  const invalid = status === "error" && !isEmail(email);
-  const ink = onDark ? "var(--deep-ink)" : "var(--ink)";
-  const inkSoft = onDark ? "var(--deep-ink-soft)" : "var(--ink-soft)";
+  function useDifferentEmail() {
+    forgetRememberedEmail();
+    setTyped("");
+    setTrap("");
+    setStatus("idle");
+    setErrorReason(null);
+    track("early_access_email_change", { source });
+    window.requestAnimationFrame(() => inputRef.current?.focus());
+  }
 
-  // One column instead of a row: either because a second button has to sit
-  // under the field, or because the caller asked for it.
-  const column = stack || Boolean(secondary);
-
-  const submit = (
-    <button
-      type="submit"
-      disabled={status === "sending"}
-      className={`inline-flex items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[0.95rem] font-bold whitespace-nowrap transition-all duration-200 hover:-translate-y-[1px] active:translate-y-[1px] active:scale-[0.985] disabled:cursor-progress disabled:opacity-70 ${
-        secondary ? "sm:flex-1" : column ? "w-full" : "shrink-0"
-      }`}
-      style={{
-        background: onDark ? "var(--deep-primary)" : "var(--primary)",
-        color: onDark ? "#1C1A16" : "var(--on-primary)",
-        boxShadow: onDark
-          ? "0 10px 26px -12px rgba(0,0,0,0.7)"
-          : "0 10px 26px -12px var(--shade-deep)",
-      }}
-    >
-      {status === "sending" ? "Sending…" : "Get early access"}
-    </button>
-  );
+  const column = Boolean(secondary);
+  const buttonClass = `inline-flex min-h-12 items-center justify-center gap-2 whitespace-nowrap rounded-full px-7 py-3.5 text-[0.95rem] font-bold transition-[transform,box-shadow,opacity] duration-200 ease-out hover:-translate-y-px active:translate-y-px active:scale-[0.985] disabled:cursor-progress disabled:opacity-70 ${
+    secondary ? "sm:flex-1" : column ? "w-full" : "shrink-0"
+  }`;
 
   return (
-    <div id={id} className={`w-full ${align === "center" ? "text-center" : ""} ${className}`}>
+    <div
+      ref={viewRef}
+      id={id}
+      className={`w-full ${align === "center" ? "text-center" : ""} ${className}`}
+    >
       <AnimatePresence mode="wait" initial={false}>
-        {status === "done" || settled ? (
+        {done ? (
           <motion.div
             key="done"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            initial={{ opacity: 0, transform: "translateY(8px)" }}
+            animate={{ opacity: 1, transform: "translateY(0px)" }}
+            exit={{ opacity: 0, transform: "translateY(-6px)" }}
+            transition={{ duration: 0.34, ease: [0.16, 1, 0.3, 1] }}
             className={`flex items-start gap-3 ${align === "center" ? "justify-center text-left" : ""}`}
           >
-            <span className="mt-[2px] shrink-0" style={{ color: onDark ? "var(--deep-primary)" : "var(--primary)" }}>
-              <CheckCircleIcon size={24} weight="fill" />
+            <span
+              className="mt-0.5 shrink-0"
+              style={{ color: onDark ? "var(--deep-primary)" : "var(--primary)" }}
+            >
+              <CheckCircleIcon size={24} weight="fill" aria-hidden />
             </span>
             <div>
               <p className="text-[1.02rem] font-bold" style={{ color: ink }}>
-                You are on the list.
+                Your free month is reserved.
               </p>
-              <p className="mt-1 max-w-[42ch] text-[0.94rem] leading-relaxed" style={{ color: inkSoft }}>
-                We will email <span className="font-semibold">{email}</span> the day {site.name} is
-                live on Google Play. That is the only reason we will ever write to you.
+              <p
+                className="mt-1 max-w-[48ch] text-[0.94rem] leading-relaxed"
+                style={{ color: inkSoft }}
+              >
+                We will email <span className="font-semibold">{email}</span> on launch day
+                with the steps to redeem 30 days of {site.name} Premium. No card required.
               </p>
-              {/* `w-fit` so the button keeps its own width here: the `flex-1`
-                  it carries for the form row would otherwise stretch it across
-                  the whole confirmation. */}
+              <button
+                type="button"
+                onClick={useDifferentEmail}
+                className="mt-3 rounded-sm text-[0.88rem] font-bold underline decoration-1 underline-offset-4 transition-colors duration-200 hover:no-underline"
+                style={{ color: ink }}
+              >
+                Use a different email
+              </button>
+              <p className="mt-2 max-w-[52ch] text-[0.78rem] leading-relaxed" style={{ color: inkSoft }}>
+                Changing this clears the address remembered on this device. It does not
+                remove the earlier reservation from our launch list.
+              </p>
               {secondary ? <div className="mt-6 flex w-fit">{secondary}</div> : null}
             </div>
           </motion.div>
         ) : (
           <motion.form
             key="form"
+            action={site.offer.action ?? undefined}
+            method="post"
+            aria-label="Reserve 30 days of Rafiq Premium"
             onSubmit={onSubmit}
-            noValidate
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
           >
             <label htmlFor={inputId} className="sr-only">
               Email address
@@ -207,39 +220,41 @@ export function EarlyAccess({
             <div
               className={
                 column
-                  ? // Two rows. The cap is what makes the buttons read as
-                    // belonging to the field above them: they grow to share its
-                    // width exactly instead of trailing off under one end of it.
-                    `flex w-full max-w-[28rem] flex-col gap-3 ${align === "center" ? "mx-auto" : ""}`
+                  ? `flex w-full max-w-[30rem] flex-col gap-3 ${align === "center" ? "mx-auto" : ""}`
                   : `flex w-full flex-col gap-3 sm:flex-row ${
                       align === "center" ? "sm:justify-center" : ""
                     }`
               }
             >
               <input
+                ref={inputRef}
                 id={inputId}
                 type="email"
-                name="email"
+                name={site.offer.field}
                 inputMode="email"
                 autoComplete="email"
                 required
                 maxLength={254}
                 placeholder="you@example.com"
-                value={email}
-                onChange={(e) => {
-                  setTyped(e.target.value);
-                  if (status === "error") setStatus("idle");
+                value={typed}
+                onChange={(event) => {
+                  setTyped(event.target.value);
+                  if (status === "error") {
+                    setStatus("idle");
+                    setErrorReason(null);
+                  }
                 }}
-                // Checked on the way out of the field, not on every keystroke:
-                // an address is malformed for as long as it is half-typed, and
-                // saying so while someone is still typing it is just noise.
                 onBlur={() => {
-                  if (!settled && typed.trim() !== "" && !isEmail(typed)) setStatus("error");
+                  if (typed.trim() !== "" && !isEmail(typed)) reportInvalid();
+                }}
+                onInvalid={(event) => {
+                  event.preventDefault();
+                  reportInvalid();
                 }}
                 aria-invalid={invalid}
-                aria-describedby={status === "error" ? `${inputId}-note` : undefined}
+                aria-describedby={noteId}
                 disabled={status === "sending"}
-                className={`early-input w-full min-w-0 px-5 py-3.5 text-[0.95rem] font-medium transition-shadow duration-200 ${
+                className={`early-input min-h-12 w-full min-w-0 px-5 py-3.5 text-[0.95rem] font-medium transition-[box-shadow,background-color] duration-200 ${
                   column ? "" : "sm:w-[300px]"
                 }`}
                 style={{
@@ -256,7 +271,6 @@ export function EarlyAccess({
                 }}
               />
 
-              {/* Bots fill every field they find. People never see this one. */}
               <input
                 type="text"
                 name="company"
@@ -264,34 +278,71 @@ export function EarlyAccess({
                 autoComplete="off"
                 aria-hidden
                 value={trap}
-                onChange={(e) => setTrap(e.target.value)}
+                onChange={(event) => setTrap(event.target.value)}
                 className="pointer-events-none absolute -left-[9999px] h-0 w-0 opacity-0"
               />
 
               {secondary ? (
                 <div className="flex flex-col gap-3 sm:flex-row">
-                  {submit}
+                  <button
+                    type="submit"
+                    disabled={status === "sending"}
+                    className={buttonClass}
+                    style={{
+                      background: onDark ? "var(--deep-primary)" : "var(--primary)",
+                      color: onDark ? "#1C1A16" : "var(--on-primary)",
+                      boxShadow: onDark
+                        ? "0 10px 26px -12px rgba(0,0,0,0.7)"
+                        : "0 10px 26px -12px var(--shade-deep)",
+                    }}
+                  >
+                    {status === "sending" ? "Reserving…" : "Claim my free month"}
+                  </button>
                   {secondary}
                 </div>
               ) : (
-                submit
+                <button
+                  type="submit"
+                  disabled={status === "sending"}
+                  className={buttonClass}
+                  style={{
+                    background: onDark ? "var(--deep-primary)" : "var(--primary)",
+                    color: onDark ? "#1C1A16" : "var(--on-primary)",
+                    boxShadow: onDark
+                      ? "0 10px 26px -12px rgba(0,0,0,0.7)"
+                      : "0 10px 26px -12px var(--shade-deep)",
+                  }}
+                >
+                  {status === "sending" ? "Reserving…" : "Claim my free month"}
+                </button>
               )}
             </div>
 
             <p
-              id={`${inputId}-note`}
-              role="status"
+              id={noteId}
+              role={status === "error" ? "alert" : "status"}
               aria-live="polite"
               className={`mt-3 text-[0.85rem] leading-relaxed ${
-                align === "center" ? "" : "max-w-[44ch]"
+                align === "center" ? "" : "max-w-[58ch]"
               }`}
               style={{ color: status === "error" ? "var(--clay)" : inkSoft }}
             >
-              {status === "error"
-                ? invalid
-                  ? "That does not look like an email address. Check it and try again."
-                  : "That did not go through. Try again, or email us at " + site.supportEmail + "."
-                : "One email, on launch day. Nothing else, and never to anyone else."}
+              {errorReason === "invalid" ? (
+                "That does not look like an email address. Check it and try again."
+              ) : errorReason ? (
+                <>
+                  That request did not leave your browser. Try again, or {""}
+                  <a
+                    href={`mailto:${site.supportEmail}`}
+                    className="font-bold underline decoration-1 underline-offset-4 hover:no-underline"
+                  >
+                    email Rafiq support
+                  </a>
+                  .
+                </>
+              ) : (
+                "No card. One launch email. Nothing you look at leaves your phone."
+              )}
             </p>
           </motion.form>
         )}
