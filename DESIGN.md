@@ -15,6 +15,8 @@ colors:
   clay-display: "#c08457"
   gold: "#9a7526"
   gold-display: "#c9a24b"
+  gold-wash: "rgba(216,184,95,0.13)"
+  gold-line: "rgba(216,184,95,0.40)"
 typography:
   display:
     fontFamily: "Plus Jakarta Sans, ui-sans-serif, system-ui, sans-serif"
@@ -31,6 +33,8 @@ typography:
     fontWeight: 400
     lineHeight: 1.9
 rounded:
+  focus: "4px"
+  code: "6px"
   card: "24px"
   tile: "18px"
   input: "14px"
@@ -103,20 +107,22 @@ Warm cream and espresso establish day/night context; olive signals action, while
 
 ## Typography
 
-**Display Font:** Plus Jakarta Sans (with system sans-serif fallback)  
-**Body Font:** Plus Jakarta Sans (with system sans-serif fallback)  
-**Arabic Font:** Amiri (with Traditional Arabic fallback)
+- **Display Font:** Plus Jakarta Sans (with system sans-serif fallback)
+- **Body Font:** Plus Jakarta Sans (with system sans-serif fallback)
+- **Arabic Font:** Amiri (with Traditional Arabic fallback)
 
 **Character:** Heavy Jakarta display text gives the promise clarity without borrowing authority from a traditional serif. Amiri is reserved for Arabic scripture so sacred text retains the calligraphic rhythm the surrounding interface deliberately avoids imitating.
 
 ### Hierarchy
 
-- **Display** (800, responsive, 0.98 line height): one direct promise or section thesis.
-- **Headline** (800, responsive, approximately 1.05 line height): major objection and outcome sections.
-- **Title** (700–800): cards, FAQ questions, and interactive state names.
-- **Body** (400–600, approximately 1.7 line height): concrete explanation, generally capped near 62 characters.
-- **Label** (700, small uppercase with wide tracking): section orientation, never the primary message.
-- **Arabic** (400, 1.9 line height): complete passages with translation and reference.
+- **Display** (800, responsive from 2.1–3.8rem, 0.98 line height): one direct promise or section thesis. Values are optically calibrated per breakpoint rather than snapped to a generic framework scale.
+- **Headline** (800, responsive from 1.3–2.85rem, approximately 1.05 line height): major objection, offer, and outcome statements.
+- **Title** (700–800, 1.02–1.125rem): cards, FAQ questions, and interactive state names.
+- **Body** (400–600, 0.94–1.125rem, approximately 1.7 line height): concrete explanation, generally capped near 62 characters.
+- **Control** (600–800, 0.875–0.95rem): buttons, navigation, fields, and compact interactive labels.
+- **Supporting** (400–700, 0.78–0.92rem): reassurance, legal metadata, and secondary operational copy. Never use this range for a primary argument.
+- **Label** (700, 0.6875–0.875rem, uppercase with wide tracking): section orientation, never the primary message.
+- **Arabic** (400, responsive from 1.3–3.25rem, 1.9 line height): complete passages with translation and reference.
 
 ### Named Rules
 
@@ -144,7 +150,7 @@ Depth is warm and diffuse. Cards use tonal separation first, then a soft brown s
 
 ## Shapes
 
-Actions are full pills. Fields use a restrained 14px curve; tiles use 18px; large cards use 24px. The limited scale keeps soft geometry intentional. Device imagery preserves its own anti-aliased mask and bezel and is never placed inside a generic phone-frame component.
+Actions are full pills. Fields use a restrained 14px curve; tiles use 18px; large cards use 24px. Two micro-radii are functional exceptions: 4px lets a focus outline follow compact text controls without looking like a card, and 6px belongs only to inline code in legal documents. The limited scale keeps soft geometry intentional. Device imagery preserves its own anti-aliased mask and bezel and is never placed inside a generic phone-frame component.
 
 ## Components
 
@@ -174,7 +180,7 @@ The wordmark stays visually stable while the background plate condenses after sc
 
 ### Scripture Moment
 
-Arabic, translation, and reference are inseparable. The full-bleed field may carry star pattern and a deep or warm tonal stage, but no form or commercial CTA competes inside the sacred block.
+Arabic, translation, and reference are inseparable. The full-bleed field may carry star pattern and a deep or warm tonal stage, but no form or commercial CTA competes inside the sacred block. Its one radial wash (`rgba(216,184,95,0.13)`) and hairline (`rgba(216,184,95,0.40)`) are documented Prayer Gold alpha tones, not new action colors.
 
 ## Do's and Don'ts
 
@@ -191,4 +197,3 @@ Arabic, translation, and reference are inseparable. The full-bleed field may car
 - **Don't** scatter icons into generic feature-card grids when a real screen or precise statement is available.
 - **Don't** place the negative-space mark bare on an espresso surface; use its warm seal plate.
 - **Don't** gamify worship, add urgency theater, or turn the site into a punitive warning.
-

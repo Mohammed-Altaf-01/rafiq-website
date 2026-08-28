@@ -559,31 +559,31 @@ git commit -m "chore: automate the website release checks"
 - Modify only files exposed by verification failures
 - Update: `DESIGN.md` and `.impeccable/design.json` if final tokens differ
 
-- [ ] **Step 1: State the end-to-end story**
+- [x] **Step 1: State the end-to-end story**
 
 Record: “A visitor lands on the static Rafiq page, understands the protection/privacy promise, enters an email in hero or free-month form, the browser posts the configured Google field to Google Forms, both forms resolve to a local request-sent confirmation, and Vercel Analytics receives source-only funnel events.”
 
-- [ ] **Step 2: Start a production-equivalent local server**
+- [x] **Step 2: Start a production-equivalent local server**
 
 Run a static server over `out/` after a fresh build (or the project’s documented production preview). Capture server output and browser console.
 
-- [ ] **Step 3: Browser-verify required viewports**
+- [x] **Step 3: Browser-verify required viewports**
 
 Use the Vercel agent-browser verification workflow at 320×568, 390×844, 768×1024, 1280×720, and 1440×900. At each relevant breakpoint check no overflow, correct CTA visibility, readable screenshots, form usability, stable how-it-works panel, and a page height ≤12,174px at 390×844.
 
-- [ ] **Step 4: Verify modes and interaction paths**
+- [x] **Step 4: Verify modes and interaction paths**
 
 Check light/dark, reduced/default motion, 200% zoom, keyboard-only focus order, skip link, mobile menu, tabs, FAQ, hero form, offer form, synchronized success with a mocked/local network boundary, and email correction. Do not submit to the real Google endpoint.
 
-- [ ] **Step 5: Verify progressive enhancement**
+- [x] **Step 5: Verify progressive enhancement**
 
 Disable JavaScript or load the raw export. Confirm all essential copy and both forms are visible; inspect form action/method/name and native browser validation/fallback without sending the form.
 
-- [ ] **Step 6: Scan console, network, layout, and generated output**
+- [x] **Step 6: Scan console, network, layout, and generated output**
 
 There must be no hydration error, React warning, failed local asset, horizontal overflow, duplicate high-priority image warning, or unexpected layout shift. Fix each defect test-first and repeat the affected check.
 
-- [ ] **Step 7: Run the Impeccable detector exactly once**
+- [x] **Step 7: Run the Impeccable detector exactly once**
 
 After UI edits are finished:
 
@@ -593,11 +593,11 @@ node /Users/altaf/.agents/skills/impeccable/scripts/detect.mjs --json src/app/pa
 
 Apply material findings. Do not run a second detector.
 
-- [ ] **Step 8: Run the required finish review**
+- [x] **Step 8: Run the required finish review**
 
 Use the `impeccable_finish_reviewer` subagent read-only with the original request, approved spec, `PRODUCT.md`, `DESIGN.md`, surface brief, changed targets, and detector findings. Apply material fixes test-first, then re-run only affected verification plus the final release gate.
 
-- [ ] **Step 9: Review React component quality**
+- [x] **Step 9: Review React component quality**
 
 Apply the Vercel React checklist: minimal client boundaries, no inline component definitions, primitive effect dependencies, lazy localStorage reads, no unnecessary memo, direct icon imports, and no duplicate global listeners.
 
@@ -608,11 +608,11 @@ Apply the Vercel React checklist: minimal client boundaries, no inline component
 **Files:**
 - No planned source changes; any failure starts a test-first corrective cycle
 
-- [ ] **Step 1: Review the complete diff and acceptance checklist**
+- [x] **Step 1: Review the complete diff and acceptance checklist**
 
 Compare `git diff origin/main...HEAD` line-by-line against the approved spec and this plan. Confirm deleted pricing/modal code has no references, only intended files changed, and no secret/token was added.
 
-- [ ] **Step 2: Run fresh release evidence**
+- [x] **Step 2: Run fresh release evidence**
 
 Run every command from a clean shell and read full output:
 
@@ -629,7 +629,7 @@ git status --short --branch
 
 No completion, commit, or push claim is allowed unless all required commands exit 0. If a remaining audit advisory exists, stop and document its actual dependency path/runtime relevance before deciding whether release can proceed.
 
-- [ ] **Step 3: Commit any final verified fixes**
+- [x] **Step 3: Commit any final verified fixes**
 
 If final-review fixes remain staged, create one descriptive final commit only after repeating the affected tests and full release gate. Confirm `git status` is clean and `main` contains the approved spec, plan, implementation, and verification changes.
 

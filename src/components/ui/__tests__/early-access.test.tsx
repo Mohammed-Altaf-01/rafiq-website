@@ -159,6 +159,44 @@ describe("submission states", () => {
     expect(JSON.stringify(trackMock.mock.calls)).not.toContain("person@example.com");
   });
 
+  it("resets both form placements when either confirmation changes the email", async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue(undefined));
+    const EarlyAccess = await loadEarlyAccess();
+    render(
+      <>
+        <EarlyAccess source="hero" />
+        <EarlyAccess source="offer" />
+      </>,
+    );
+
+    const heroForm = screen.getByRole("form", {
+      name: "Reserve 30 days of Rafiq Premium from the introduction",
+    });
+    await user.type(
+      within(heroForm).getByRole("textbox", { name: "Email address" }),
+      "person@example.com",
+    );
+    await user.click(within(heroForm).getByRole("button", { name: "Claim my free month" }));
+
+    expect(await screen.findAllByText("Your free month is reserved.")).toHaveLength(2);
+    const changeButtons = screen.getAllByRole("button", { name: "Use a different email" });
+    await user.click(changeButtons[1]);
+
+    expect(
+      await screen.findByRole("form", {
+        name: "Reserve 30 days of Rafiq Premium from the introduction",
+      }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("form", {
+        name: "Reserve 30 days of Rafiq Premium from the free-month offer",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Your free month is reserved.")).not.toBeInTheDocument();
+    expect(localStorage.getItem("rafiq-early-access")).toBeNull();
+  });
+
   it("shows a retry and support fallback for a network rejection", async () => {
     const user = userEvent.setup();
     vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new TypeError("private diagnostic")));

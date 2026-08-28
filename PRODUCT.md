@@ -58,4 +58,3 @@ The product name is Rafiq—“companion.” Preserve the existing crescent/call
 ## Accessibility & Inclusion
 
 The website must remain understandable and operable with keyboard navigation, screen readers, 200% zoom, reduced motion, dark mode, and JavaScript unavailable. Arabic text keeps its language and direction metadata. Motion may clarify sequence but never gate content or action.
-

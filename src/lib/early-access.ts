@@ -47,6 +47,13 @@ let cached: string | null | undefined;
 
 /** Every mounted form, so one signup settles all of them at once. */
 const listeners = new Set<() => void>();
+let storageListenerAttached = false;
+
+function onStorage(event: StorageEvent) {
+  if (event.key !== null && event.key !== STORE_KEY) return;
+  cached = undefined;
+  for (const listener of listeners) listener();
+}
 
 export function rememberedEmail(): string | null {
   if (cached === undefined) {
@@ -70,17 +77,17 @@ export function rememberedEmail(): string | null {
  */
 export function subscribeRememberedEmail(onChange: () => void) {
   listeners.add(onChange);
-
-  const onStorage = (event: StorageEvent) => {
-    if (event.key !== null && event.key !== STORE_KEY) return;
-    cached = undefined;
-    onChange();
-  };
-  window.addEventListener("storage", onStorage);
+  if (!storageListenerAttached) {
+    window.addEventListener("storage", onStorage);
+    storageListenerAttached = true;
+  }
 
   return () => {
     listeners.delete(onChange);
-    window.removeEventListener("storage", onStorage);
+    if (listeners.size === 0 && storageListenerAttached) {
+      window.removeEventListener("storage", onStorage);
+      storageListenerAttached = false;
+    }
   };
 }
 

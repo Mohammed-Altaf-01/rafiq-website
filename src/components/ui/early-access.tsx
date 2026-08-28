@@ -24,7 +24,7 @@ import {
 } from "@/lib/early-access";
 import { site } from "@/lib/site";
 
-type Status = "idle" | "sending" | "done" | "error";
+type Status = "idle" | "sending" | "bot" | "error";
 type ErrorReason = "invalid" | "network" | "configuration" | null;
 
 export type EarlyAccessSource = "hero" | "offer";
@@ -76,9 +76,8 @@ export function EarlyAccess({
     track("early_access_form_view", { source });
   }, [isInView, source]);
 
-  const settled = status === "idle" && remembered !== null;
-  const done = status === "done" || settled;
-  const email = settled ? remembered : typed;
+  const done = status === "bot" || remembered !== null;
+  const email = remembered ?? typed;
   const invalid = status === "error" && errorReason === "invalid";
   const formLocation = source === "hero" ? "the introduction" : "the free-month offer";
   const ink = onDark ? "var(--deep-ink)" : "var(--ink)";
@@ -119,7 +118,7 @@ export function EarlyAccess({
     // A bot that fills the hidden field gets a quiet success screen. No
     // request, analytics event, or remembered address is created.
     if (trap) {
-      setStatus("done");
+      setStatus("bot");
       setErrorReason(null);
       return;
     }
@@ -131,7 +130,11 @@ export function EarlyAccess({
     try {
       await submitEarlyAccess(email);
       track("early_access_request_sent", { source });
-      setStatus("done");
+      // `submitEarlyAccess` updates the shared remembered-email store. Derive
+      // success from that shared value so changing the address in either form
+      // resets both placements instead of leaving the submitter stuck in a
+      // local success state.
+      setStatus("idle");
     } catch {
       const reason = site.offer.action ? "network" : "configuration";
       track("early_access_error", { source, reason });

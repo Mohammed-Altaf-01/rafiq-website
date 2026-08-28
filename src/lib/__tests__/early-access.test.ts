@@ -73,13 +73,36 @@ describe("remembered email state", () => {
     unsubscribe();
   });
 
+  it("shares one storage listener across both form subscribers", async () => {
+    const addEventListener = vi.spyOn(window, "addEventListener");
+    const removeEventListener = vi.spyOn(window, "removeEventListener");
+    const { subscribeRememberedEmail } = await import("@/lib/early-access");
+
+    const unsubscribeHero = subscribeRememberedEmail(vi.fn());
+    const unsubscribeOffer = subscribeRememberedEmail(vi.fn());
+
+    expect(
+      addEventListener.mock.calls.filter(([type]) => type === "storage"),
+    ).toHaveLength(1);
+
+    unsubscribeHero();
+    expect(
+      removeEventListener.mock.calls.filter(([type]) => type === "storage"),
+    ).toHaveLength(0);
+
+    unsubscribeOffer();
+    expect(
+      removeEventListener.mock.calls.filter(([type]) => type === "storage"),
+    ).toHaveLength(1);
+  });
+
   it("lets a visitor clear the remembered address and notifies both forms", async () => {
     localStorage.setItem(STORE_KEY, "wrong@example.com");
     const earlyAccessModule = (await import("@/lib/early-access")) as typeof import("@/lib/early-access") & {
       forgetRememberedEmail?: () => void;
     };
     const listener = vi.fn();
-    earlyAccessModule.subscribeRememberedEmail(listener);
+    const unsubscribe = earlyAccessModule.subscribeRememberedEmail(listener);
 
     expect(typeof earlyAccessModule.forgetRememberedEmail).toBe("function");
     earlyAccessModule.forgetRememberedEmail?.();
@@ -87,6 +110,7 @@ describe("remembered email state", () => {
     expect(localStorage.getItem(STORE_KEY)).toBeNull();
     expect(earlyAccessModule.rememberedEmail()).toBeNull();
     expect(listener).toHaveBeenCalledOnce();
+    unsubscribe();
   });
 });
 

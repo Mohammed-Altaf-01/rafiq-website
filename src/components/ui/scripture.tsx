@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "motion/react";
+import { motion, useInView, useReducedMotion } from "motion/react";
 import { useRef, useSyncExternalStore } from "react";
 
 import type { Passage } from "@/lib/scripture";
@@ -10,6 +10,40 @@ type Tone = "page" | "deep";
 const noopSubscribe = () => () => undefined;
 const clientSnapshot = () => true;
 const serverSnapshot = () => false;
+const EASE = [0.23, 1, 0.32, 1] as const;
+const REST = "translate3d(0, 0, 0)";
+
+export function getScriptureMotion(reduced: boolean, wordCount: number) {
+  const restingWord = {
+    opacity: 1,
+    filter: "blur(0px)",
+    transform: REST,
+  };
+
+  return {
+    group: {
+      hidden: {},
+      shown: {
+        transition: {
+          staggerChildren: reduced ? 0 : Math.min(0.05, 0.8 / wordCount),
+        },
+      },
+    },
+    word: {
+      hidden: reduced
+        ? restingWord
+        : {
+            opacity: 0,
+            filter: "blur(3px)",
+            transform: "translate3d(0, 8px, 0)",
+          },
+      shown: {
+        ...restingWord,
+        transition: { duration: reduced ? 0 : 0.55, ease: EASE },
+      },
+    },
+  };
+}
 
 const tones = {
   page: {
@@ -52,6 +86,8 @@ export function Scripture({
   const mounted = useSyncExternalStore(noopSubscribe, clientSnapshot, serverSnapshot);
   const inView = useInView(arabicRef, { once: true, amount: 0.35 });
   const shown = !mounted || inView;
+  const reduced = useReducedMotion();
+  const scriptureMotion = getScriptureMotion(Boolean(reduced), words.length);
 
   const arabicSize =
     size === "xl"
@@ -64,35 +100,20 @@ export function Scripture({
     <figure className={`text-center ${className}`}>
       <motion.p
         ref={arabicRef}
-        data-spatial-motion="true"
         dir="rtl"
         lang="ar"
         className={`arabic mx-auto max-w-[15em] ${arabicSize}`}
         style={{ color: c.arabic }}
         initial={false}
         animate={shown ? "shown" : "hidden"}
-        variants={{
-          hidden: {},
-          shown: { transition: { staggerChildren: Math.min(0.05, 0.8 / words.length) } },
-        }}
+        variants={scriptureMotion.group}
       >
         {words.map((word, i) => (
           <motion.span
             key={`${word}-${i}`}
+            data-spatial-motion="true"
             className="inline-block"
-            variants={{
-              hidden: {
-                opacity: 0,
-                filter: "blur(3px)",
-                transform: "translate3d(0, 8px, 0)",
-              },
-              shown: {
-                opacity: 1,
-                filter: "blur(0px)",
-                transform: "translate3d(0, 0, 0)",
-                transition: { duration: 0.55, ease: [0.23, 1, 0.32, 1] },
-              },
-            }}
+            variants={scriptureMotion.word}
           >
             {word}
             {i < words.length - 1 ? " " : ""}

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-08-26T18:53:22Z",
+  "generatedAt": "2026-08-28T02:54:24Z",
   "title": "Design System: Rafiq",
   "extensions": {
     "colorMeta": {
@@ -8,20 +8,29 @@
       "espresso": { "role": "neutral", "displayName": "Espresso", "canonical": "#1c1a16", "tonalRamp": ["#1c1a16", "#312e28", "#49443b", "#635c50", "#807769", "#a09686", "#c7bdaa", "#ede6d6"] },
       "olive": { "role": "primary", "displayName": "Companion Olive", "canonical": "#5c6b4c", "tonalRamp": ["#1c2616", "#304029", "#465a3b", "#5c6b4c", "#748363", "#92a17e", "#b7c2a5", "#e5eadb"] },
       "clay": { "role": "secondary", "displayName": "Earth Clay", "canonical": "#a96a3d", "tonalRamp": ["#361b0d", "#5a2f18", "#7c4728", "#a96a3d", "#c08457", "#d8a17c", "#e9c7ad", "#f8ece2"] },
-      "gold": { "role": "tertiary", "displayName": "Prayer Gold", "canonical": "#9a7526", "tonalRamp": ["#2d2208", "#503b0d", "#745715", "#9a7526", "#c9a24b", "#ddbf75", "#ecd9a4", "#faf2d8"] }
+      "gold": { "role": "tertiary", "displayName": "Prayer Gold", "canonical": "#9a7526", "tonalRamp": ["#2d2208", "#503b0d", "#745715", "#9a7526", "#c9a24b", "#ddbf75", "#ecd9a4", "#faf2d8"], "alphaTones": ["rgba(216,184,95,0.13)", "rgba(216,184,95,0.40)"] }
     },
     "typographyMeta": {
-      "display": { "displayName": "Direct Display", "purpose": "Hero and major section theses only." },
-      "body": { "displayName": "Companion Body", "purpose": "Concrete product, privacy, and offer explanation." },
-      "arabic": { "displayName": "Sacred Arabic", "purpose": "Complete Arabic scripture passages only." }
+      "display": { "displayName": "Direct Display", "purpose": "Hero and major section theses only.", "sizeRange": "2.1rem–3.8rem" },
+      "headline": { "displayName": "Section Headline", "purpose": "Offer, objection, and outcome statements.", "sizeRange": "1.3rem–2.85rem" },
+      "title": { "displayName": "Compact Title", "purpose": "Cards, FAQ questions, and interactive state names.", "sizeRange": "1.02rem–1.125rem" },
+      "body": { "displayName": "Companion Body", "purpose": "Concrete product, privacy, and offer explanation.", "sizeRange": "0.94rem–1.125rem" },
+      "control": { "displayName": "Control Text", "purpose": "Buttons, navigation, fields, and compact interactive labels.", "sizeRange": "0.875rem–0.95rem" },
+      "supporting": { "displayName": "Supporting Text", "purpose": "Reassurance, legal metadata, and secondary operational copy.", "sizeRange": "0.78rem–0.92rem" },
+      "label": { "displayName": "Orientation Label", "purpose": "Uppercase overlines and small section orientation only.", "sizeRange": "0.6875rem–0.875rem" },
+      "arabic": { "displayName": "Sacred Arabic", "purpose": "Complete Arabic scripture passages only.", "sizeRange": "1.3rem–3.25rem" }
     },
     "shadows": [
       { "name": "warm-lift", "value": "0 1px 2px rgba(46,42,35,0.14), 0 18px 40px -18px rgba(46,42,35,0.22)", "purpose": "Selective raised cards on cream." },
       { "name": "device-lift", "value": "drop-shadow(0 2px 4px rgba(46,42,35,0.10)) drop-shadow(0 32px 56px rgba(46,42,35,0.24))", "purpose": "Real device screenshots on warm surfaces." }
     ],
     "motion": [
-      { "name": "current-emphasized-out", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Incumbent section and panel entrances; replace with the approved consolidated token during implementation." },
-      { "name": "current-ui-duration", "value": "200ms", "purpose": "Incumbent color and button feedback." }
+      { "name": "strong-ease-out", "value": "cubic-bezier(0.23, 1, 0.32, 1)", "purpose": "Responsive entrances, exits, and press feedback." },
+      { "name": "strong-ease-in-out", "value": "cubic-bezier(0.77, 0, 0.175, 1)", "purpose": "Movement that remains on screen." },
+      { "name": "press-duration", "value": "140ms", "purpose": "Pointer and touch press feedback." },
+      { "name": "ui-duration", "value": "200ms", "purpose": "Navigation, field, and compact state feedback." },
+      { "name": "panel-duration", "value": "240ms", "purpose": "FAQ and product-state handoffs." },
+      { "name": "marketing-duration", "value": "550ms", "purpose": "Rare explanatory viewport reveals only." }
     ],
     "breakpoints": [
       { "name": "sm", "value": "640px" },
@@ -37,7 +46,7 @@
       "refersTo": "button-primary",
       "description": "The single filled conversion action in a region.",
       "html": "<button class=\"ds-button-primary\">CLAIM MY FREE MONTH</button>",
-      "css": ".ds-button-primary{background:var(--primary,#5c6b4c);color:var(--on-primary,#f8f5ee);border:0;border-radius:9999px;padding:14px 28px;font:700 15px/1.2 'Plus Jakarta Sans',sans-serif;box-shadow:0 10px 26px -12px rgba(46,42,35,.22);transition:background-color 200ms ease,transform 160ms cubic-bezier(.16,1,.3,1);cursor:pointer}.ds-button-primary:hover{background:var(--primary-hover,#4a5840);transform:translateY(-1px)}.ds-button-primary:active{transform:translateY(1px) scale(.985)}.ds-button-primary:focus-visible{outline:2px solid var(--primary,#5c6b4c);outline-offset:3px}"
+      "css": ".ds-button-primary{background:var(--primary,#5c6b4c);color:var(--on-primary,#f8f5ee);border:0;border-radius:9999px;padding:14px 28px;font:700 15px/1.2 'Plus Jakarta Sans',sans-serif;box-shadow:0 10px 26px -12px rgba(46,42,35,.22);transition:background-color 200ms ease,transform 140ms cubic-bezier(.23,1,.32,1);cursor:pointer}.ds-button-primary:hover{background:var(--primary-hover,#4a5840);transform:translateY(-1px)}.ds-button-primary:active{transform:translateY(1px) scale(.97)}.ds-button-primary:focus-visible{outline:2px solid var(--primary,#5c6b4c);outline-offset:3px}"
     },
     {
       "name": "Tonal Button",
@@ -45,7 +54,7 @@
       "refersTo": "button-tonal",
       "description": "A subordinate action that stays visually connected to the page surface.",
       "html": "<button class=\"ds-button-tonal\">SEE HOW IT WORKS</button>",
-      "css": ".ds-button-tonal{background:var(--surface,#efe7d6);color:var(--ink,#2e2a23);border:0;border-radius:9999px;padding:14px 28px;font:700 15px/1.2 'Plus Jakarta Sans',sans-serif;box-shadow:inset 0 0 0 1px rgba(46,42,35,.18);transition:background-color 200ms ease,transform 160ms cubic-bezier(.16,1,.3,1);cursor:pointer}.ds-button-tonal:active{transform:translateY(1px) scale(.985)}.ds-button-tonal:focus-visible{outline:2px solid var(--primary,#5c6b4c);outline-offset:3px}"
+      "css": ".ds-button-tonal{background:var(--surface,#efe7d6);color:var(--ink,#2e2a23);border:0;border-radius:9999px;padding:14px 28px;font:700 15px/1.2 'Plus Jakarta Sans',sans-serif;box-shadow:inset 0 0 0 1px rgba(46,42,35,.18);transition:background-color 200ms ease,transform 140ms cubic-bezier(.23,1,.32,1);cursor:pointer}.ds-button-tonal:active{transform:translateY(1px) scale(.97)}.ds-button-tonal:focus-visible{outline:2px solid var(--primary,#5c6b4c);outline-offset:3px}"
     },
     {
       "name": "Email Field",
@@ -100,4 +109,3 @@
     ]
   }
 }
-
