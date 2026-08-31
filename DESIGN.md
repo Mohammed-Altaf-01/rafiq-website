@@ -52,11 +52,11 @@ components:
     rounded: "{rounded.pill}"
     padding: "14px 28px"
     typography: "{typography.body}"
-  email-field:
-    backgroundColor: "{colors.raised-paper}"
-    textColor: "{colors.ink}"
-    rounded: "{rounded.input}"
-    padding: "14px 20px"
+  play-store-action:
+    backgroundColor: "{colors.olive}"
+    textColor: "{colors.canvas-cream}"
+    rounded: "{rounded.pill}"
+    padding: "14px 28px"
     typography: "{typography.body}"
 ---
 
@@ -168,15 +168,15 @@ Actions are full pills. Fields use a restrained 14px curve; tiles use 18px; larg
 - **Shadow Strategy:** Flat by default for dense groups; warm lift only when separation needs depth.
 - **Border:** Hairline warm-ink transparency, never a cold gray outline.
 
-### Inputs / Fields
+### Google Play Action
 
-- **Style:** Raised Paper field with an inset warm hairline and 14px corners.
-- **Focus:** Olive focus outline and stronger field ring without layout shift.
-- **Error / Disabled:** Clay communicates validation; disabled state retains readable text and reduces emphasis without disappearing.
+- **Style:** The existing Companion Olive primary action with the Google Play logo immediately before its label.
+- **Language:** Primary placements say “Get Rafiq on Google Play”; compact navigation may shorten this to “Get Rafiq” while retaining the icon.
+- **Behavior:** Every instance uses the same public listing URL, focus treatment, press feedback, and privacy-safe click event.
 
 ### Navigation
 
-The wordmark stays visually stable while the background plate condenses after scroll. Section links are quiet until hover/focus; the offer CTA remains the only filled action. Mobile navigation is a compact disclosure, not a full-screen takeover.
+The wordmark stays visually stable while the background plate condenses after scroll. Section links are quiet until hover/focus; the Google Play CTA remains the only filled action. Mobile navigation is a compact disclosure, not a full-screen takeover.
 
 ### Scripture Moment
 

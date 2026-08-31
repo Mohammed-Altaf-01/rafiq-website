@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { ImageResponse } from "next/og";
 
 export const alt =
-  "Rafiq — lower your gaze, take back your time, and get 30 days Premium free.";
+  "Rafiq — lower your gaze, take back your time. Available now on Google Play.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 export const dynamic = "force-static";
@@ -148,44 +148,32 @@ export default async function Image() {
               letterSpacing: 2.4,
             }}
           >
-            ANDROID EARLY ACCESS
+            AVAILABLE ON GOOGLE PLAY
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", position: "relative" }}>
-            <div style={{ display: "flex", alignItems: "flex-end" }}>
-              <div
-                style={{
-                  display: "flex",
-                  color: "#D69A6E",
-                  fontSize: 158,
-                  lineHeight: 0.78,
-                  letterSpacing: -9,
-                }}
-              >
-                30
-              </div>
-              <div
-                style={{
-                  display: "flex",
-                  marginBottom: 7,
-                  marginLeft: 14,
-                  color: "#B6AC96",
-                  fontSize: 24,
-                }}
-              >
-                days
-              </div>
+            <div
+              style={{
+                display: "flex",
+                color: "#D69A6E",
+                fontSize: 62,
+                lineHeight: 0.98,
+                letterSpacing: -3.2,
+              }}
+            >
+              Install Rafiq
             </div>
             <div
               style={{
                 display: "flex",
-                marginTop: 28,
-                fontSize: 48,
-                lineHeight: 0.98,
-                letterSpacing: -2.3,
+                marginTop: 18,
+                color: "#EDE6D6",
+                fontSize: 36,
+                lineHeight: 1.05,
+                letterSpacing: -1.6,
               }}
             >
-              Premium free
+              on Android
             </div>
           </div>
 
@@ -199,8 +187,8 @@ export default async function Image() {
               lineHeight: 1.35,
             }}
           >
-            <div style={{ display: "flex" }}>No card required.</div>
-            <div style={{ display: "flex" }}>One launch email.</div>
+            <div style={{ display: "flex" }}>Matching stays on-device.</div>
+            <div style={{ display: "flex" }}>Android 8.1 and newer.</div>
           </div>
         </div>
       </div>

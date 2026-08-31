@@ -12,9 +12,9 @@ describe("not found page", () => {
       "This page is not here",
     );
     expect(screen.getByRole("link", { name: "Go home" })).toHaveAttribute("href", "/");
-    expect(screen.getByRole("link", { name: "Get 30 days free" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Get Rafiq on Google Play" })).toHaveAttribute(
       "href",
-      "/#free-month",
+      "https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app",
     );
   });
 });

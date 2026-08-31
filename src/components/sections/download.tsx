@@ -1,7 +1,7 @@
 import { CheckCircleIcon } from "@phosphor-icons/react/dist/ssr";
+import Image from "next/image";
 
-import { EarlyAccess } from "@/components/ui/early-access";
-import { site } from "@/lib/site";
+import { PlayStoreLink } from "@/components/ui/play-store-link";
 
 const inclusions = [
   {
@@ -18,10 +18,10 @@ const inclusions = [
   },
 ];
 
-export function FreeMonth() {
+export function Download() {
   return (
     <section
-      id="free-month"
+      id="download"
       className="scroll-mt-20 px-5 py-24 sm:px-8 sm:py-32"
       style={{ background: "var(--surface)" }}
     >
@@ -30,22 +30,23 @@ export function FreeMonth() {
         style={{ background: "var(--card)", boxShadow: "0 30px 70px -42px var(--shade-deep)" }}
       >
         <div>
-          <p
-            className="display flex items-baseline gap-3 text-ink"
-          >
-            <span className="text-[clamp(4.8rem,12vw,8.5rem)]" style={{ color: "var(--clay)" }}>
-              {site.offer.premiumDays}
-            </span>
-            <span className="text-[1.35rem] sm:text-[1.65rem]">days</span>
-          </p>
-          <h2 className="display mt-3 max-w-[13ch] text-[2.25rem] sm:text-[2.85rem]">
-            Your first {site.offer.premiumDays} days of Rafiq Premium are on us.
+          <Image
+            src="/brand/app-icon.png"
+            alt=""
+            width={96}
+            height={96}
+            className="h-20 w-20 sm:h-24 sm:w-24"
+          />
+          <h2 className="display mt-7 max-w-[13ch] text-[2.25rem] sm:text-[2.85rem]">
+            Your companion is ready on Google Play.
           </h2>
           <p className="mt-6 max-w-[52ch] text-[0.98rem] leading-relaxed text-ink-soft">
-            Submit your email before launch to reserve the full Premium experience.
-            The response list records your eligibility, and the launch email contains
-            the steps to redeem it. No payment card is required.
+            Install Rafiq, choose the protections you want, and keep matching on your
+            device. No website signup is required.
           </p>
+          <div className="mt-8">
+            <PlayStoreLink source="download" />
+          </div>
         </div>
 
         <div>
@@ -73,9 +74,10 @@ export function FreeMonth() {
             ))}
           </ul>
 
-          <div className="mt-8 max-w-[34rem]">
-            <EarlyAccess source="offer" />
-          </div>
+          <p className="mt-8 max-w-[54ch] text-[0.88rem] leading-relaxed text-ink-soft">
+            Google Play handles installation and shows the current terms before any
+            purchase. This website does not collect your email.
+          </p>
         </div>
       </div>
     </section>

@@ -1,7 +1,6 @@
 import { HeroVisual } from "@/components/sections/hero-visual";
 import { TonalButton } from "@/components/ui/button";
-import { EarlyAccess } from "@/components/ui/early-access";
-import { site } from "@/lib/site";
+import { PlayStoreLink } from "@/components/ui/play-store-link";
 
 export function Hero() {
   return (
@@ -40,17 +39,15 @@ export function Hero() {
           </p>
 
           <div className="mt-9 max-w-[32rem]">
-            <p className="mb-3 text-[0.86rem] font-bold text-ink">
-              Android early access · {site.offer.premiumDays} days Premium free
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <PlayStoreLink source="hero" className="w-full sm:flex-1" />
+              <TonalButton href="#how-it-works" className="w-full sm:flex-1">
+                See how it works
+              </TonalButton>
+            </div>
+            <p className="mt-3 text-[0.86rem] font-semibold text-ink-soft">
+              Available now for Android 8.1 and newer.
             </p>
-            <EarlyAccess
-              source="hero"
-              secondary={
-                <TonalButton href="#how-it-works" className="sm:flex-1">
-                  See how it works
-                </TonalButton>
-              }
-            />
           </div>
         </div>
 

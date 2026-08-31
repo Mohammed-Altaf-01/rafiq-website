@@ -8,11 +8,11 @@ web
 
 ## Users
 
-Rafiq is for Muslims using Android who want voluntary, practical help lowering their gaze, interrupting short-video loops, and keeping app limits they chose for themselves. The primary website visitor is evaluating the product before its Google Play launch and needs to understand what it blocks, why Android Accessibility access is required, whether browsing data leaves the phone, and what happens after leaving an email.
+Rafiq is for Muslims using Android who want voluntary, practical help lowering their gaze, interrupting short-video loops, and keeping app limits they chose for themselves. The primary website visitor is evaluating the live app and needs to understand what it blocks, why Android Accessibility access is required, whether browsing data leaves the phone, and whether to install it from Google Play.
 
 ## Product Purpose
 
-Rafiq helps a person put a deliberate pause between an impulse and an action. It blocks known adult-content destinations and searches, recognises Shorts/Reels-style feeds, and enforces daily app limits. Website success means a qualified visitor understands that mechanism and confidently reserves early access by email.
+Rafiq helps a person put a deliberate pause between an impulse and an action. It blocks known adult-content destinations and searches, recognises Shorts/Reels-style feeds, and enforces daily app limits. Website success means a qualified visitor understands that mechanism and confidently opens the Google Play listing to install the app.
 
 ## Positioning
 
@@ -20,9 +20,9 @@ Rafiq is a steadfast companion rather than a punitive lock. Its block screen ret
 
 ## Operating Context
 
-The product is pre-launch. The website is a statically exported Next.js application deployed from the `main` Git branch to Vercel. No custom domain is connected; the stable production alias is `https://rafiq-website-beryl.vercel.app`.
+The product is live on Google Play at `https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app`. The website is a statically exported Next.js application deployed from the `main` Git branch to Vercel. No custom domain is connected; the stable production alias is `https://rafiq-website-beryl.vercel.app`.
 
-Early-access email addresses post to a configured Google Form. Its linked response Sheet is the eligibility record for the approved promotion: submitting before launch reserves 30 days of full Rafiq Premium with no payment card. A single launch email will contain redemption instructions. The website records and communicates the reservation; entitlement delivery remains an Android-app/launch-operations responsibility.
+Every acquisition action leads directly to the public Google Play listing. The website does not collect email addresses or maintain a waitlist. Google Play and the Android app own installation, current purchase terms, and subscription fulfillment.
 
 ## Capabilities and Constraints
 
@@ -30,9 +30,9 @@ Early-access email addresses post to a configured Google Form. Its linked respon
 - Rafiq blocks matched adult-content domains and keywords, Shorts/Reels-style feeds, and apps whose configured daily limit is spent.
 - Matching, configured limits, streaks, and local progress data are designed to remain on the device. Network access is used for blocklist updates and optional account/subscription functions described by the legal documents.
 - Android Accessibility permission is required to inspect the small amount of on-screen context needed for blocking. Protection stops when that permission is removed.
-- The pre-launch website is a static export and has no first-party submission backend. Google Forms therefore returns an opaque browser response; the UI can confirm that a request was sent, not independently verify the Sheet row.
-- There is no public Google Play listing yet. When one exists, `site.playStore` becomes the canonical acquisition destination.
-- Connecting a custom domain and automating promotional entitlements are open operational decisions, not current website capabilities.
+- The website is a static export with no first-party acquisition backend or email-capture form.
+- `site.playStore` is the canonical acquisition destination for every install action.
+- Connecting a custom domain remains an open operational decision.
 
 ## Brand Commitments
 
@@ -44,8 +44,8 @@ The product name is Rafiq—“companion.” Preserve the existing crescent/call
 - The brand mark and patterns live in `public/brand/`.
 - Qur'an and hadith passages with references live in `src/lib/scripture.ts`.
 - The Privacy Policy and Terms are copied from the Android project into `src/content/`.
-- The configured Google Form endpoint and field identifier are public acquisition configuration in `src/lib/site.ts`.
-- No testimonials, customer counts, ratings, press, efficacy benchmarks, or launch-date evidence is available. Future website work must not fabricate them.
+- The confirmed Google Play listing URL is public acquisition configuration in `src/lib/site.ts`.
+- No testimonials, customer counts, ratings, press, or efficacy benchmarks are available. Future website work must not fabricate them.
 
 ## Product Principles
 

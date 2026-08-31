@@ -1,5 +1,6 @@
 import { Wordmark } from "@/components/brand/mark";
-import { PrimaryButton, TonalButton } from "@/components/ui/button";
+import { TonalButton } from "@/components/ui/button";
+import { PlayStoreLink } from "@/components/ui/play-store-link";
 
 export default function NotFound() {
   return (
@@ -23,11 +24,11 @@ export default function NotFound() {
         </h1>
         <p className="mx-auto mt-7 max-w-[54ch] text-[1.02rem] leading-relaxed text-ink-soft sm:text-[1.12rem]">
           Rafiq is still here to help you protect your attention. Return home, or go
-          straight to the early-access offer.
+          straight to its Google Play listing.
         </p>
         <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
-          <PrimaryButton href="/">Go home</PrimaryButton>
-          <TonalButton href="/#free-month">Get 30 days free</TonalButton>
+          <PlayStoreLink source="not_found" />
+          <TonalButton href="/">Go home</TonalButton>
         </div>
       </div>
     </main>

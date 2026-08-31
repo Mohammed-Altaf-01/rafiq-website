@@ -6,7 +6,7 @@ people set for themselves.
 
 Public routes:
 
-- `/` — landing page and early-access claim
+- `/` — landing page and Google Play acquisition journey
 - `/privacy/` — Privacy Policy
 - `/terms/` — Terms of Service
 - `/delete-account/` — account-deletion instructions
@@ -24,23 +24,18 @@ the production deployment; there is no separate manual hosting command. The
 Next.js configuration uses `output: "export"`, and `npm run build` writes the
 deployable artifact to `out/`.
 
-## Early-access promise
+## Google Play acquisition
 
-Submitting an email before launch reserves **30 days of the full Rafiq Premium
-experience**, with no payment card required. The response Sheet linked to the
-Google Form is the eligibility record. The website records the claim; it does
-not grant an in-app entitlement itself.
+Rafiq is live at
+[`https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app`](https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app).
+That exact URL is configured once at `site.playStore` in `src/lib/site.ts` and
+is the destination for the hero, navigation, download, closing, and 404-page
+actions.
 
-At launch, the product owner must:
-
-1. use the Sheet as the complete eligibility list;
-2. send every eligible address the promised launch email and redemption steps;
-3. make those steps grant the full 30-day access described on the site; and
-4. keep addresses private and use them only for this launch promise unless the
-   person separately consents to something else.
-
-This fulfillment step is part of the offer. Shipping the app without the launch
-email and a working redemption path would break the promise made by the site.
+The marketing site does not collect an email address or keep acquisition data
+in local storage. Google Play handles installation and presents current purchase
+terms. The website records only privacy-safe, categorical CTA click events in
+Vercel Analytics.
 
 ## Local development
 
@@ -56,64 +51,29 @@ npm run build      # static export in ./out
 
 Stack: Next.js 16 App Router, React 19, Tailwind CSS v4, Motion, Phosphor icons,
 Vercel Analytics, Vercel Speed Insights, Plus Jakarta Sans, and Amiri. Motion is
-the only general-purpose animation library. Essential content and both email
-forms remain present in the static HTML; client-side motion enhances them after
-hydration and respects reduced-motion preferences.
+the only general-purpose animation library. Essential content and every Google
+Play link remain present in the static HTML; client-side motion enhances the
+page after hydration and respects reduced-motion preferences.
 
-## Google Form operations
+## Store-link operations
 
-The hero and free-month forms post directly to the Google Form configured at
-`site.offer.action` in `src/lib/site.ts`. Both use the field name in
-`site.offer.field`. The linked response Sheet is the launch eligibility list.
+`PlayStoreLink` in `src/components/ui/play-store-link.tsx` is the shared action.
+It supplies the Play icon, consistent visual states, the exact listing URL, and
+the controlled analytics event. Keep acquisition links on this component so a
+future listing migration remains one configuration change.
 
-Keep these Google Form settings off because each can require a signed-in Google
-account and reject anonymous website requests:
-
-- **Collect email addresses: Verified**
-- **Allow response editing**
-- **Limit to 1 response**
-
-Run the read-only configuration check after changing the form or its source
-configuration:
-
-```bash
-npm run verify:form
-```
-
-That command checks public reachability and the configured field. It submits no
-address, writes no Sheet row, and does **not** prove that Google recorded a
-submission.
-
-There is a separate end-to-end probe:
-
-```bash
-npm run verify:form -- --submit
-```
-
-The probe writes `probe+<timestamp>@rafiq.invalid` into the real Sheet and reads
-Google's status response. Run it only with explicit approval, then delete the
-probe row. It is intentionally not part of the normal release gate.
-
-Browser submissions use `mode: "no-cors"`, so the response is opaque. The UI
-and analytics therefore say **request sent**, never “Google verified the row.”
-A network rejection is still shown as an error. The submitted address is
-remembered only in that browser's `localStorage` so the second form and return
-visits do not ask again.
+The release check verifies that at least four direct store actions exist in the
+exported homepage, that each includes the store icon, and that no email form or
+retired Google Form endpoint remains.
 
 ## Analytics and conversion measurement
 
-Vercel Analytics receives only controlled event names and categorical
-properties. Email addresses are never included.
+Vercel Analytics receives only a controlled event name and categorical source.
+There is no email field on the marketing site.
 
 | Event | Meaning | Properties |
 | --- | --- | --- |
-| `early_access_form_view` | A form became meaningfully visible | `source: hero \| offer` |
-| `early_access_submit` | A valid submission attempt began | `source` |
-| `early_access_request_sent` | The browser request completed without a network rejection | `source` |
-| `early_access_invalid` | Client validation rejected the address shape | `source` |
-| `early_access_error` | A controlled network/configuration failure occurred | `source`, `reason` |
-| `early_access_email_change` | The visitor cleared the locally remembered address | `source` |
-| `offer_cta_click` | Navigation or closing copy sent a visitor to the offer | `source: nav \| closing` |
+| `play_store_click` | A visitor opened the Google Play listing | `source: hero \| download \| nav \| closing \| not_found` |
 
 These events establish the real conversion baseline. They do not imply or
 guarantee a particular conversion percentage.
@@ -121,15 +81,13 @@ guarantee a particular conversion percentage.
 ## Verification and release
 
 `npm run verify` is the local release gate. It runs the unit/component suite,
-ESLint, a production build, artifact checks, and the read-only form
-configuration check.
+ESLint, a production build, and artifact checks.
 
 ```bash
 npm run test
 npm run lint
 npm run build
 npm run verify:static
-npm run verify:form
 npm audit --omit=dev
 
 # Complete local gate
@@ -138,8 +96,9 @@ npm run verify
 
 `verify:static` inspects the real `out/` files. It checks public routes,
 route-specific canonicals and sharing URLs, internal anchors, initial content
-visibility, removal of stale commercial claims, social-image dimensions and
-size, crawl files, and the homepage JavaScript gzip budget.
+visibility, removal of stale pre-launch claims and forms, direct Google Play
+actions and icons, social-image dimensions and size, crawl files, and the
+homepage JavaScript gzip budget.
 
 Release procedure:
 
@@ -164,4 +123,4 @@ Release procedure:
 
 The published support address is intentionally taken verbatim from the legal
 documents: `rafiqgaurdian@gmail.com`. Confirm that inbox remains monitored
-before an app-store submission or launch email.
+while the app and its public listing remain live.

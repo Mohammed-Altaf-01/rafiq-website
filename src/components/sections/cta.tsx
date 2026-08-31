@@ -1,10 +1,5 @@
-"use client";
-
-import { ArrowRightIcon } from "@phosphor-icons/react/dist/ssr";
-import { track } from "@vercel/analytics";
-import Link from "next/link";
-
 import { Mark } from "@/components/brand/mark";
+import { PlayStoreLink } from "@/components/ui/play-store-link";
 
 export function Cta() {
   return (
@@ -22,22 +17,10 @@ export function Cta() {
           className="mx-auto mt-6 max-w-[52ch] text-[1rem] leading-relaxed sm:text-[1.08rem]"
           style={{ color: "var(--deep-ink-soft)" }}
         >
-          Rafiq is being prepared for Android. Reserve your first month now, then
-          receive one email when it is ready to install.
+          Rafiq is live on Google Play. Install it on Android and put the protections
+          you chose in place today.
         </p>
-        <Link
-          href="#free-month"
-          onClick={() => track("offer_cta_click", { source: "closing" })}
-          className="pressable mt-9 inline-flex min-h-12 items-center justify-center gap-2 rounded-full px-7 py-3.5 text-[0.95rem] font-bold"
-          style={{
-            background: "var(--deep-primary)",
-            color: "#1c1a16",
-            boxShadow: "0 14px 32px -18px rgba(0,0,0,0.75)",
-          }}
-        >
-          Reserve my free month
-          <ArrowRightIcon size={18} weight="bold" aria-hidden />
-        </Link>
+        <PlayStoreLink source="closing" onDark className="mt-9" />
       </div>
     </section>
   );

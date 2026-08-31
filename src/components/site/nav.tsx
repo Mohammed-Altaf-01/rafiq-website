@@ -1,7 +1,6 @@
 "use client";
 
 import { ListIcon, XIcon } from "@phosphor-icons/react/dist/ssr";
-import { track } from "@vercel/analytics";
 import {
   AnimatePresence,
   motion,
@@ -15,8 +14,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { Wordmark } from "@/components/brand/mark";
 import { ThemeToggle } from "@/components/site/theme-toggle";
-import { earlyAccessTarget } from "@/lib/early-access";
-import { nav, site } from "@/lib/site";
+import { PlayStoreLink } from "@/components/ui/play-store-link";
+import { nav } from "@/lib/site";
 
 export function Nav() {
   const [condensed, setCondensed] = useState(false);
@@ -32,7 +31,6 @@ export function Nav() {
   // browser take them to the section once it arrives.
   const onHome = usePathname() === "/";
   const to = (hash: string) => (onHome ? hash : `/${hash}`);
-  const cta = earlyAccessTarget(onHome);
 
   // Motion's scroll observer rather than a scroll listener: no per-frame
   // React state, and the bar only re-renders on the one threshold crossing.
@@ -111,16 +109,12 @@ export function Nav() {
 
         <div className="flex items-center gap-2.5">
           <ThemeToggle />
-          <Link
-            href={cta}
-            onClick={() => {
-              if (!site.playStore) track("offer_cta_click", { source: "nav" });
-            }}
-            className="pressable hidden rounded-full px-5 py-2.5 text-[0.875rem] font-bold sm:inline-flex"
-            style={{ background: "var(--primary)", color: "var(--on-primary)" }}
-          >
-            {site.playStore ? "Get Rafiq" : `Get ${site.offer.premiumDays} days free`}
-          </Link>
+          <PlayStoreLink
+            source="nav"
+            label="Get Rafiq"
+            compact
+            className="shrink-0"
+          />
           <button
             ref={menuButtonRef}
             type="button"
@@ -167,17 +161,11 @@ export function Nav() {
                 </li>
               ))}
               <li>
-                <Link
-                  href={cta}
-                  onClick={() => {
-                    setOpen(false);
-                    if (!site.playStore) track("offer_cta_click", { source: "nav" });
-                  }}
-                  className="pressable mt-1 block rounded-full px-4 py-3 text-center text-[0.95rem] font-bold"
-                  style={{ background: "var(--primary)", color: "var(--on-primary)" }}
-                >
-                  {site.playStore ? "Get Rafiq" : `Get ${site.offer.premiumDays} days free`}
-                </Link>
+                <PlayStoreLink
+                  source="nav"
+                  onClick={() => setOpen(false)}
+                  className="mt-1 w-full"
+                />
               </li>
             </ul>
           </motion.nav>

@@ -28,8 +28,8 @@ const questions = [
     a: "Matching works offline because the blocklist and detection run on your device. A connection can fetch blocklist updates, but what you viewed and the on-screen text used for matching are not sent off-device.",
   },
   {
-    q: "How does the free month work, and what happens afterward?",
-    a: `Submit your email before launch and the response list records your eligibility for ${site.offer.premiumDays} days of full Premium. The launch email explains how to redeem it, and no card is required. When the promotional access ends, Rafiq falls back to its useful free tier; you are not charged automatically.`,
+    q: "Where can I get Rafiq?",
+    a: `Rafiq is available now on Google Play for Android ${site.minAndroid} and newer. Open the store listing to install it. You can start with the free tier; any Premium purchase is handled by Google Play, which shows the current terms before you pay.`,
   },
 ];
 

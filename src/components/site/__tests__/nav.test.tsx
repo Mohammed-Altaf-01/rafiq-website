@@ -47,12 +47,21 @@ describe("Nav menu interruption", () => {
     render(<Nav />);
 
     await user.click(screen.getByRole("button", { name: "Open menu" }));
-    await user.click(screen.getAllByRole("link", { name: "Free month" }).at(-1)!);
+    await user.click(screen.getAllByRole("link", { name: "Get the app" }).at(-1)!);
 
     expect(screen.getByRole("button", { name: "Open menu" })).toBeInTheDocument();
     await waitFor(() => {
       expect(document.getElementById("mobile-sections-menu")).not.toBeInTheDocument();
     });
+  });
+
+  it("uses the live Google Play listing as the primary navigation action", () => {
+    render(<Nav />);
+
+    expect(screen.getByRole("link", { name: "Get Rafiq" })).toHaveAttribute(
+      "href",
+      "https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app",
+    );
   });
 
   it("closes when the visitor interacts outside it", async () => {

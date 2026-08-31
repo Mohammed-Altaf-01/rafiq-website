@@ -9,7 +9,7 @@ describe("FAQ disclosure", () => {
   it("keeps every native disclosure answer visible when JavaScript is unavailable", () => {
     const html = renderToStaticMarkup(<Faq />);
 
-    expect(html).toContain("falls back to its useful free tier");
+    expect(html).toContain("You can start with the free tier");
     expect(html).not.toMatch(/opacity:\s*0/);
   });
 

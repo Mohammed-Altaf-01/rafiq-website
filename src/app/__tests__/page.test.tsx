@@ -1,9 +1,15 @@
 import { render, screen, within } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import userEvent from "@testing-library/user-event";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import Home from "@/app/page";
 
-vi.mock("@vercel/analytics", () => ({ track: vi.fn() }));
+const trackMock = vi.hoisted(() => vi.fn());
+
+vi.mock("@vercel/analytics", () => ({ track: trackMock }));
+
+const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app";
 
 const proofLabels = [
   "Adult content",
@@ -31,11 +37,15 @@ const faqQuestions = [
   "What exactly does it block?",
   "Can protection be switched off?",
   "Does it work offline, and does browsing data leave the phone?",
-  "How does the free month work, and what happens afterward?",
+  "Where can I get Rafiq?",
 ];
 
 describe("conversion landing narrative", () => {
-  it("moves from one promise through product proof to one free-month decision", () => {
+  beforeEach(() => {
+    trackMock.mockClear();
+  });
+
+  it("moves from one promise through product proof to a direct Google Play decision", () => {
     const { container } = render(<Home />);
 
     expect(screen.getAllByRole("heading", { level: 1 })).toHaveLength(1);
@@ -44,17 +54,12 @@ describe("conversion landing narrative", () => {
     );
     expect(container.querySelector("main#main-content")).toBeInTheDocument();
 
-    expect(screen.getByText("Android early access · 30 days Premium free")).toBeInTheDocument();
     expect(
       screen.getByRole("heading", {
-        name: "Your first 30 days of Rafiq Premium are on us.",
+        name: "Your companion is ready on Google Play.",
       }),
     ).toBeInTheDocument();
-    expect(
-      screen.getAllByRole("form", {
-        name: /Reserve 30 days of Rafiq Premium from/,
-      }),
-    ).toHaveLength(2);
+    expect(screen.getByText(/Available now for Android 8\.1 and newer\./)).toBeInTheDocument();
 
     for (const label of proofLabels) expect(screen.getByText(label)).toBeInTheDocument();
     expect(screen.getByText("Qur'an 24:30")).toBeInTheDocument();
@@ -71,29 +76,41 @@ describe("conversion landing narrative", () => {
     }
 
     expect(container.querySelector("#pricing")).not.toBeInTheDocument();
-    expect(container.textContent).not.toMatch(/\$4\.99|\$35\.99|save 40%|\b7 days\b|\b14 days\b|free trial/i);
+    expect(container.querySelector("form")).not.toBeInTheDocument();
+    expect(container.querySelector('input[type="email"]')).not.toBeInTheDocument();
+    expect(container.textContent).not.toMatch(
+      /early access|free month|launch email|before launch|claim my|reserve my|\$4\.99|\$35\.99|save 40%|\b7 days\b|\b14 days\b|free trial/i,
+    );
   });
 
-  it("keeps the offer truthful and closes by returning to the decision point", () => {
+  it("sends every acquisition placement to the live store listing", async () => {
+    const user = userEvent.setup();
     const { container } = render(<Home />);
 
     expect(screen.getByText("Strict blocking")).toBeInTheDocument();
     expect(screen.getByText("Hard app limits")).toBeInTheDocument();
     expect(screen.getByText("Cross-app protection")).toBeInTheDocument();
-    expect(screen.getByText(/launch email contains the steps to redeem it/i)).toBeInTheDocument();
-    expect(screen.getByText(/falls back to its useful free tier/i)).toBeInTheDocument();
+    expect(screen.getByText(/No website signup is required/i)).toBeInTheDocument();
+    expect(screen.getByText(/You can start with the free tier/i)).toBeInTheDocument();
 
-    const closingLink = screen.getByRole("link", { name: "Reserve my free month" });
-    expect(closingLink).toHaveAttribute("href", "#free-month");
-    expect(container.querySelectorAll('form[action*="formResponse"]')).toHaveLength(2);
-  });
+    const storeLinks = screen
+      .getAllByRole("link")
+      .filter((link) => link.getAttribute("href") === PLAY_STORE_URL);
+    expect(storeLinks.length).toBeGreaterThanOrEqual(4);
+    for (const link of storeLinks) {
+      expect(link).toHaveAttribute("href", PLAY_STORE_URL);
+      expect(link.querySelector("svg")).toBeInTheDocument();
+    }
 
-  it("uses visible offer text instead of unsupported ARIA on a paragraph", () => {
-    render(<Home />);
+    const hero = screen.getByRole("region", {
+      name: /Lower your gaze\.\s*Take back your time\./,
+    });
+    const heroLink = within(hero).getByRole("link", { name: "Get Rafiq on Google Play" });
+    heroLink.addEventListener("click", (event) => event.preventDefault(), { once: true });
+    await user.click(heroLink);
 
-    expect(screen.getByText("30", { selector: "span" }).parentElement).not.toHaveAttribute(
-      "aria-label",
-    );
+    expect(trackMock).toHaveBeenCalledWith("play_store_click", { source: "hero" });
+    expect(container.querySelector('a[href*="formResponse"]')).not.toBeInTheDocument();
   });
 
   it("keeps footer fine print on the contrast-safe text token", () => {

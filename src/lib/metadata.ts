@@ -30,7 +30,7 @@ const socialImage = {
   url: `${site.url}/opengraph-image`,
   width: 1200,
   height: 630,
-  alt: "Rafiq — lower your gaze, take back your time, and get 30 days Premium free.",
+  alt: "Rafiq — lower your gaze, take back your time. Available now on Google Play.",
 };
 
 export function canonicalUrl(path: PublicPath): string {

@@ -14,6 +14,8 @@ import { JSDOM } from "jsdom";
 
 const PROJECT_ROOT = dirname(fileURLToPath(new URL("../package.json", import.meta.url)));
 const BASE_URL = "https://rafiq-website-beryl.vercel.app";
+const PLAY_STORE_URL =
+  "https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app";
 const MAX_HOMEPAGE_JS_GZIP_BYTES = 302.5 * 1024;
 const MAX_OG_IMAGE_BYTES = 300 * 1024;
 
@@ -36,6 +38,10 @@ const forbiddenLandingClaims = [
   { label: "7 days", pattern: /\b7 days\b/i },
   { label: "14-day", pattern: /\b14-day\b/i },
   { label: "14 days", pattern: /\b14 days\b/i },
+  { label: "early access", pattern: /\bearly access\b/i },
+  { label: "free month", pattern: /\bfree month\b/i },
+  { label: "before launch", pattern: /\bbefore launch\b/i },
+  { label: "launch email", pattern: /\blaunch email\b/i },
 ];
 
 const args = process.argv.slice(2);
@@ -162,6 +168,26 @@ if (homepage) {
       !claim.pattern.test(marketingText),
       `Landing marketing HTML still contains the old claim “${claim.label}”.`,
     );
+  }
+
+  check(
+    document.querySelectorAll("form, input[type='email']").length === 0,
+    "Landing HTML still contains an email-capture form or field.",
+  );
+  check(
+    !html.includes("formResponse") && !html.includes("docs.google.com/forms"),
+    "Landing HTML still contains the retired Google Form destination.",
+  );
+
+  const playStoreLinks = [
+    ...document.querySelectorAll(`a[href="${PLAY_STORE_URL}"]`),
+  ];
+  check(
+    playStoreLinks.length >= 4,
+    `Landing HTML has ${playStoreLinks.length} direct Google Play links; expected at least 4.`,
+  );
+  for (const link of playStoreLinks) {
+    check(Boolean(link.querySelector("svg")), "A Google Play action is missing its store icon.");
   }
 
   const scriptPaths = [

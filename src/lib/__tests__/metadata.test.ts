@@ -5,7 +5,7 @@ import { createPageMetadata, type PublicPath } from "@/lib/metadata";
 const base = "https://rafiq-website-beryl.vercel.app";
 const socialImage = `${base}/opengraph-image`;
 const socialImageAlt =
-  "Rafiq — lower your gaze, take back your time, and get 30 days Premium free.";
+  "Rafiq — lower your gaze, take back your time. Available now on Google Play.";
 
 const cases: Array<{
   path: PublicPath;
@@ -20,7 +20,7 @@ const cases: Array<{
     title: "Rafiq: Lower your gaze. Take back your time.",
     socialTitle: "Rafiq: Lower your gaze. Take back your time.",
     description:
-      "Rafiq is an Android app that blocks adult content and short-video feeds, and holds the screen-time limits you set for yourself. Every match happens on your device. Nothing you look at is ever stored or sent.",
+      "Rafiq blocks adult content, Shorts and Reels, and holds your screen-time limits on Android. Matching stays on your phone. Available now on Google Play.",
   },
   {
     path: "/privacy",
