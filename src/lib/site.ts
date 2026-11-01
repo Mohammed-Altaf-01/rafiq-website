@@ -4,7 +4,7 @@ export const site = {
   description:
     "Rafiq blocks adult content, Shorts and Reels, and holds your screen-time limits on Android. Matching stays on your phone. Available now on Google Play.",
   url: "https://rafiq-website-beryl.vercel.app",
-  supportEmail: "rafiqgaurdian@gmail.com",
+  supportEmail: "support@rafiqguardian.app",
   playStore: "https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app",
 
   minAndroid: "8.1",

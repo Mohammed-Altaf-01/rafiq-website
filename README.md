@@ -122,5 +122,5 @@ Release procedure:
   and `.impeccable/design.json`.
 
 The published support address is intentionally taken verbatim from the legal
-documents: `rafiqgaurdian@gmail.com`. Confirm that inbox remains monitored
+documents: `support@rafiqguardian.app`. Confirm that inbox remains monitored
 while the app and its public listing remain live.
