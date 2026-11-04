@@ -1,9 +1,14 @@
 {
   "redirects": [
     {
-      "source": "/:path*",
-      "has": [{ "type": "host", "value": "rafiq-website-beryl.vercel.app" }],
-      "destination": "https://www.rafiqguardian.app/:path*",
+      "source": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "rafiq-website-beryl.vercel.app"
+        }
+      ],
+      "destination": "https://www.rafiqguardian.app/$1",
       "permanent": true
     }
   ]
