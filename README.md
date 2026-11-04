@@ -13,11 +13,11 @@ Public routes:
 
 ## Production
 
-The current production URL is
-[`https://rafiq-website-beryl.vercel.app`](https://rafiq-website-beryl.vercel.app).
-There is no connected custom domain yet. Until one is connected and verified,
-that Vercel URL is the source of truth for canonical links, Open Graph data,
-robots, sitemap, and hosted legal links.
+The production URL is
+[`https://www.rafiqguardian.app`](https://www.rafiqguardian.app). It is the source
+of truth for canonical links, Open Graph data, JSON-LD, robots, sitemap, and hosted
+legal links. The apex domain redirects to it in Vercel's domain settings, and the
+old `rafiq-website-beryl.vercel.app` alias redirects to it through `vercel.json`.
 
 Vercel is connected to this Git repository. A verified push to `main` triggers
 the production deployment; there is no separate manual hosting command. The
@@ -116,7 +116,7 @@ Release procedure:
   plate on dark surfaces because the lettering is negative space.
 - Legal prose in `src/content/` mirrors the app documents. At build time,
   `src/lib/legal.ts` replaces only the deployment-owned account-deletion URL so
-  it cannot point visitors to an unrelated domain before Rafiq has one.
+  it cannot point visitors to the unrelated `rafiq.app` domain.
 - Qur'an and hadith sources live in `src/lib/scripture.ts` with references.
 - Design tokens and theme behavior live in `src/app/globals.css`, `DESIGN.md`,
   and `.impeccable/design.json`.

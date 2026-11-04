@@ -16,6 +16,10 @@ const questions = [
     a: "Android Accessibility is what lets Rafiq briefly read the address-bar URL, search text, or feed layout needed to recognise one of your rules. The app explains that boundary before Android asks. Blocking stops if you remove the permission.",
   },
   {
+    q: "Is Rafiq an Islamic porn and adult content blocker?",
+    a: "Yes. Rafiq is made for Muslims on Android who want practical help lowering their gaze. It blocks porn and other adult content, along with Shorts and Reels. When it stops something, you see a quiet pause and dhikr, then choose what to do next.",
+  },
+  {
     q: "What exactly does it block?",
     a: "Rafiq matches known adult-content domains and search terms, recognises Shorts- and Reels-style feeds, and blocks an app after the daily limit you set has been spent.",
   },
@@ -26,6 +30,10 @@ const questions = [
   {
     q: "Does it work offline, and does browsing data leave the phone?",
     a: "Matching works offline because the blocklist and detection run on your device. A connection can fetch blocklist updates, but what you viewed and the on-screen text used for matching are not sent off-device.",
+  },
+  {
+    q: "Is Rafiq Guardian the same app as Rafiq?",
+    a: "Yes. It is one Android app. Google Play lists it as Rafiq: Your Digital Companion, and rafiqguardian.app is its official website.",
   },
   {
     q: "Where can I get Rafiq?",

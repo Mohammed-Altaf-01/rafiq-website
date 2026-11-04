@@ -9,10 +9,17 @@ import { Journey } from "@/components/sections/journey";
 import { ProofRibbon } from "@/components/sections/proof-ribbon";
 import { Protection } from "@/components/sections/protection";
 import { Verse } from "@/components/sections/verse";
+import { homeJsonLd } from "@/lib/structured-data";
 
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(homeJsonLd).replace(/</g, "\\u003c"),
+        }}
+      />
       <Nav />
       <main id="main-content" tabIndex={-1}>
         <Hero />

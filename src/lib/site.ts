@@ -1,9 +1,11 @@
 export const site = {
   name: "Rafiq",
+  alternateName: "Rafiq Guardian",
   tagline: "Lower your gaze. Take back your time.",
+  homeTitle: "Rafiq Guardian: Islamic Adult Content & Reels Blocker",
   description:
-    "Rafiq blocks adult content, Shorts and Reels, and holds your screen-time limits on Android. Matching stays on your phone. Available now on Google Play.",
-  url: "https://rafiq-website-beryl.vercel.app",
+    "Rafiq is an Islamic porn and adult content blocker for Android. It blocks Shorts and Reels and holds your screen-time limits. Matching stays on your phone.",
+  url: "https://www.rafiqguardian.app",
   supportEmail: "support@rafiqguardian.app",
   playStore: "https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app",
 

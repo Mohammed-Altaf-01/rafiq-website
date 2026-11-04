@@ -31,18 +31,22 @@ export const metadata: Metadata = {
   ...homeMetadata,
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name}: ${site.tagline}`,
+    default: site.homeTitle,
     template: `%s · ${site.name}`,
   },
   applicationName: site.name,
   keywords: [
+    "Rafiq",
+    "Rafiq Guardian",
+    "Islamic adult content blocker",
+    "Islamic porn blocker",
+    "porn blocker for Muslims",
     "lower your gaze",
-    "content blocker",
-    "Muslim app",
-    "screen time",
     "block Shorts and Reels",
+    "screen time limits",
     "Android",
   ],
+  robots: { googleBot: { "max-image-preview": "large" } },
   // The route helper supplies canonical, Open Graph, Twitter, and image data.
   // opengraph-image.tsx generates the shared social card at that image URL.
   // Tab and home-screen icons come from the favicon.ico / icon.png /

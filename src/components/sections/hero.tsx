@@ -33,9 +33,9 @@ export function Hero() {
           </h1>
 
           <p className="mt-7 max-w-[58ch] text-[1.02rem] leading-relaxed text-ink-soft sm:text-[1.12rem]">
-            Rafiq blocks adult content and Shorts or Reels, then holds the daily app
-            limits you chose. Matching happens on your Android phone—not on a server
-            that sees what you see.
+            Rafiq is an Islamic adult content blocker for Android. It blocks porn sites
+            and searches, Shorts and Reels, then holds the daily app limits you chose.
+            Matching happens on your phone—not on a server that sees what you see.
           </p>
 
           <div className="mt-9 max-w-[32rem]">

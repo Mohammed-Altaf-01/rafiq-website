@@ -81,7 +81,8 @@ export function Scripture({
   className?: string;
 }) {
   const c = tones[tone];
-  const words = passage.arabic.split(" ");
+  // A pause mark has no letter of its own: split off, it floats into the line above.
+  const words = passage.arabic.replace(/ ([\u06D6-\u06DC])/g, "$1").split(" ");
   const arabicRef = useRef<HTMLParagraphElement>(null);
   const mounted = useSyncExternalStore(noopSubscribe, clientSnapshot, serverSnapshot);
   const inView = useInView(arabicRef, { once: true, amount: 0.35 });
@@ -102,7 +103,7 @@ export function Scripture({
         ref={arabicRef}
         dir="rtl"
         lang="ar"
-        className={`arabic mx-auto max-w-[15em] ${arabicSize}`}
+        className={`arabic mx-auto max-w-[15em] leading-[2.3] ${arabicSize}`}
         style={{ color: c.arabic }}
         initial={false}
         animate={shown ? "shown" : "hidden"}
@@ -144,6 +145,10 @@ export function Scripture({
           style={{ color: c.reference, letterSpacing: "0.18em" }}
         >
           {passage.reference}
+        </p>
+        <p className="mt-2 text-[0.8rem]" style={{ color: c.translation }}>
+          {passage.translator}
+          {passage.grade ? ` · ${passage.grade}` : ""}
         </p>
       </figcaption>
     </figure>

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import robots, { dynamic as robotsDynamic } from "@/app/robots";
 import sitemap, { dynamic as sitemapDynamic } from "@/app/sitemap";
 
-const base = "https://rafiq-website-beryl.vercel.app";
+const base = "https://www.rafiqguardian.app";
 
 describe("crawl metadata", () => {
   it("opts metadata routes into static export", () => {

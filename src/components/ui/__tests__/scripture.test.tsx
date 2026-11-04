@@ -11,6 +11,7 @@ describe("progressive Scripture markup", () => {
     for (const word of loweringTheGaze.arabic.split(" ")) expect(html).toContain(word);
     expect(html).toContain(loweringTheGaze.translation);
     expect(html).toContain("24:30");
+    expect(html).toContain("M.A.S. Abdel Haleem");
     expect(html).not.toMatch(/opacity:\s*0/);
     expect(html).not.toMatch(/filter:\s*blur\(3px\)/);
   });

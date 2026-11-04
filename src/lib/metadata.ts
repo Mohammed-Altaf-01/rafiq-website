@@ -6,7 +6,7 @@ export type PublicPath = "/" | "/privacy" | "/terms" | "/delete-account";
 
 const pages: Record<PublicPath, { title: string; description: string }> = {
   "/": {
-    title: `${site.name}: ${site.tagline}`,
+    title: site.homeTitle,
     description: site.description,
   },
   "/privacy": {

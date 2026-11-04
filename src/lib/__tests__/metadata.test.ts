@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import { createPageMetadata, type PublicPath } from "@/lib/metadata";
 
-const base = "https://rafiq-website-beryl.vercel.app";
+const base = "https://www.rafiqguardian.app";
 const socialImage = `${base}/opengraph-image`;
 const socialImageAlt =
   "Rafiq — lower your gaze, take back your time. Available now on Google Play.";
@@ -17,10 +17,10 @@ const cases: Array<{
   {
     path: "/",
     canonical: `${base}/`,
-    title: "Rafiq: Lower your gaze. Take back your time.",
-    socialTitle: "Rafiq: Lower your gaze. Take back your time.",
+    title: "Rafiq Guardian: Islamic Adult Content & Reels Blocker",
+    socialTitle: "Rafiq Guardian: Islamic Adult Content & Reels Blocker",
     description:
-      "Rafiq blocks adult content, Shorts and Reels, and holds your screen-time limits on Android. Matching stays on your phone. Available now on Google Play.",
+      "Rafiq is an Islamic porn and adult content blocker for Android. It blocks Shorts and Reels and holds your screen-time limits. Matching stays on your phone.",
   },
   {
     path: "/privacy",
@@ -84,5 +84,12 @@ describe("public route metadata", () => {
       ],
     });
     expect(JSON.stringify(metadata)).not.toContain("rafiq.app");
+  });
+
+  it("keeps the homepage title and description short enough to show in full", () => {
+    const home = createPageMetadata("/");
+
+    expect(String(home.title).length).toBeLessThanOrEqual(60);
+    expect(String(home.description).length).toBeLessThanOrEqual(160);
   });
 });

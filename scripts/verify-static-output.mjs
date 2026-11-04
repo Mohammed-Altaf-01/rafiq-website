@@ -13,7 +13,7 @@ import { fileURLToPath } from "node:url";
 import { JSDOM } from "jsdom";
 
 const PROJECT_ROOT = dirname(fileURLToPath(new URL("../package.json", import.meta.url)));
-const BASE_URL = "https://rafiq-website-beryl.vercel.app";
+const BASE_URL = "https://www.rafiqguardian.app";
 const PLAY_STORE_URL =
   "https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app";
 const MAX_HOMEPAGE_JS_GZIP_BYTES = 302.5 * 1024;
@@ -160,6 +160,29 @@ if (homepage) {
       element.textContent.trim().replace(/\s+/g, " ").slice(0, 70) ||
       element.tagName.toLowerCase();
     failures.push(`Substantive landing content starts hidden: ${description}.`);
+  }
+
+  const title = document.querySelector("title")?.textContent ?? "";
+  check(
+    title.includes("Rafiq Guardian") && title.length <= 60,
+    `Homepage title is “${title}”; it must name Rafiq Guardian in 60 characters or fewer.`,
+  );
+  check(
+    document
+      .querySelector('meta[name="googlebot"]')
+      ?.getAttribute("content")
+      ?.includes("max-image-preview:large") === true,
+    "Homepage does not allow large image previews.",
+  );
+
+  const jsonLd = document.querySelector('script[type="application/ld+json"]')?.textContent;
+  const graph = jsonLd ? JSON.parse(jsonLd)["@graph"] : [];
+  for (const type of ["Organization", "WebSite", "MobileApplication"]) {
+    const entity = graph.find((item) => item["@type"] === type);
+    check(
+      entity?.url === `${BASE_URL}/`,
+      `Homepage JSON-LD ${type} url is ${entity?.url ?? "missing"}.`,
+    );
   }
 
   const marketingText = document.body.textContent.replace(/\s+/g, " ");

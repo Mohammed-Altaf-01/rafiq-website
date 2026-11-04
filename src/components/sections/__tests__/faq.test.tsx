@@ -35,7 +35,7 @@ describe("FAQ disclosure", () => {
     render(<Faq />);
 
     const questions = screen.getAllByRole("button");
-    expect(questions).toHaveLength(5);
+    expect(questions).toHaveLength(7);
 
     for (const question of questions) {
       const panelId = question.getAttribute("aria-controls");

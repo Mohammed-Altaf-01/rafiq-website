@@ -20,7 +20,7 @@ Rafiq is a steadfast companion rather than a punitive lock. Its block screen ret
 
 ## Operating Context
 
-The product is live on Google Play at `https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app`. The website is a statically exported Next.js application deployed from the `main` Git branch to Vercel. No custom domain is connected; the stable production alias is `https://rafiq-website-beryl.vercel.app`.
+The product is live on Google Play at `https://play.google.com/store/apps/details?id=com.rafiqgaurdian.app`. The website is a statically exported Next.js application deployed from the `main` Git branch to Vercel. The production origin is `https://www.rafiqguardian.app`; the apex domain and the old `rafiq-website-beryl.vercel.app` alias redirect to it.
 
 Every acquisition action leads directly to the public Google Play listing. The website does not collect email addresses or maintain a waitlist. Google Play and the Android app own installation, current purchase terms, and subscription fulfillment.
 
@@ -32,7 +32,6 @@ Every acquisition action leads directly to the public Google Play listing. The w
 - Android Accessibility permission is required to inspect the small amount of on-screen context needed for blocking. Protection stops when that permission is removed.
 - The website is a static export with no first-party acquisition backend or email-capture form.
 - `site.playStore` is the canonical acquisition destination for every install action.
-- Connecting a custom domain remains an open operational decision.
 
 ## Brand Commitments
 

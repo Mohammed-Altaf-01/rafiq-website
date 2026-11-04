@@ -9,7 +9,7 @@ describe("hosted legal documents", () => {
       const document = await loadLegal(file);
 
       expect(document.html).toContain(
-        "https://rafiq-website-beryl.vercel.app/delete-account/",
+        "https://www.rafiqguardian.app/delete-account/",
       );
       expect(document.html).not.toContain("https://rafiq.app");
     },

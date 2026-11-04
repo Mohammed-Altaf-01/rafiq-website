@@ -34,9 +34,11 @@ const progressOutcomes = [
 
 const faqQuestions = [
   "Why does Rafiq need Android Accessibility permission?",
+  "Is Rafiq an Islamic porn and adult content blocker?",
   "What exactly does it block?",
   "Can protection be switched off?",
   "Does it work offline, and does browsing data leave the phone?",
+  "Is Rafiq Guardian the same app as Rafiq?",
   "Where can I get Rafiq?",
 ];
 
@@ -70,7 +72,7 @@ describe("conversion landing narrative", () => {
     for (const outcome of progressOutcomes) expect(screen.getByText(outcome)).toBeInTheDocument();
 
     const faq = screen.getByRole("region", { name: "Questions before you decide" });
-    expect(within(faq).getAllByRole("button")).toHaveLength(5);
+    expect(within(faq).getAllByRole("button")).toHaveLength(faqQuestions.length);
     for (const question of faqQuestions) {
       expect(within(faq).getByRole("button", { name: question })).toBeInTheDocument();
     }
@@ -111,6 +113,33 @@ describe("conversion landing narrative", () => {
 
     expect(trackMock).toHaveBeenCalledWith("play_store_click", { source: "hero" });
     expect(container.querySelector('a[href*="formResponse"]')).not.toBeInTheDocument();
+  });
+
+  it("describes the app to search engines without invented proof", () => {
+    const { container } = render(<Home />);
+
+    const source = container.querySelector('script[type="application/ld+json"]')?.textContent;
+    const graph: Array<Record<string, unknown>> = JSON.parse(source!)["@graph"];
+
+    expect(graph.map((entity) => entity["@type"])).toEqual([
+      "Organization",
+      "WebSite",
+      "MobileApplication",
+    ]);
+    for (const entity of graph) {
+      expect(entity.url).toBe("https://www.rafiqguardian.app/");
+      expect(entity.alternateName).toContain("Rafiq Guardian");
+    }
+    expect(source).toContain(PLAY_STORE_URL);
+    expect(source).not.toMatch(/aggregateRating|review/i);
+  });
+
+  it("uses the names people search for in visible copy", () => {
+    const { container } = render(<Home />);
+
+    expect(container.textContent).toContain("Islamic adult content blocker");
+    expect(container.textContent).toContain("Rafiq Guardian");
+    expect(container.textContent).toContain("Android is a trademark of Google LLC.");
   });
 
   it("keeps footer fine print on the contrast-safe text token", () => {
