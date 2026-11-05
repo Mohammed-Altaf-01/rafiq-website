@@ -80,18 +80,12 @@ export function Nav() {
         */}
         <motion.div
           aria-hidden
-          className="pointer-events-none absolute inset-0 -z-10"
+          className="pointer-events-none absolute inset-0 -z-10 bg-bg/82 shadow-[0_1px_0_0_var(--line)] backdrop-blur-[14px]"
           initial={false}
           animate={{ opacity: condensed ? 1 : 0 }}
           transition={{ duration: 0.2, ease: [0.23, 1, 0.32, 1] }}
-          style={{
-            backgroundColor: "color-mix(in srgb, var(--bg) 82%, transparent)",
-            boxShadow: "0 1px 0 0 var(--line)",
-            backdropFilter: "blur(14px)",
-            WebkitBackdropFilter: "blur(14px)",
-          }}
         />
-        <Link href="/" aria-label="Rafiq home" className="shrink-0">
+        <Link href="/" aria-label="Rafiq home" className="inline-flex min-h-11 shrink-0 items-center">
           <Wordmark />
         </Link>
 
@@ -107,7 +101,7 @@ export function Nav() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-1.5 min-[375px]:gap-2.5">
           <ThemeToggle />
           <PlayStoreLink
             source="nav"
@@ -123,8 +117,7 @@ export function Nav() {
             aria-expanded={open}
             aria-controls={open ? "mobile-sections-menu" : undefined}
             aria-haspopup="true"
-            className="pressable inline-flex size-10 items-center justify-center rounded-full text-ink-soft lg:hidden"
-            style={{ boxShadow: "inset 0 0 0 1px var(--line)" }}
+            className="pressable inline-flex size-11 items-center justify-center rounded-full text-ink-soft inset-ring inset-ring-line lg:hidden"
           >
             {open ? <XIcon size={18} /> : <ListIcon size={18} />}
           </button>
@@ -141,11 +134,7 @@ export function Nav() {
             animate={{ opacity: 1, transform: rest }}
             exit={{ opacity: 0, transform: menuOffset }}
             transition={{ duration: reduced ? 0.18 : 0.22, ease: [0.23, 1, 0.32, 1] }}
-            className="mx-5 overflow-hidden rounded-[var(--radius-card)] lg:hidden"
-            style={{
-              background: "var(--card)",
-              boxShadow: "inset 0 0 0 1px var(--line), 0 20px 40px -20px var(--shade-deep)",
-            }}
+            className="mx-5 max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-card bg-card shadow-[inset_0_0_0_1px_var(--line),0_20px_40px_-20px_var(--shade-deep)] sm:mx-8 lg:hidden"
           >
             <ul className="flex flex-col p-2.5">
               {nav.map((item, index) => (
@@ -154,7 +143,7 @@ export function Nav() {
                     ref={index === 0 ? firstMenuLinkRef : undefined}
                     href={to(item.hash)}
                     onClick={() => setOpen(false)}
-                    className="block rounded-[var(--radius-input)] px-4 py-3 text-[0.95rem] font-semibold text-ink"
+                    className="block rounded-input px-4 py-3 text-[0.95rem] font-semibold text-ink"
                   >
                     {item.label}
                   </Link>

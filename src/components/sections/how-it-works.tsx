@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { useId, useRef, useState, type KeyboardEvent } from "react";
 
 import { Device } from "@/components/ui/device";
@@ -32,33 +31,10 @@ const states: Array<{
   },
 ];
 
-const REST = "translate3d(0, 0, 0)";
-
-export function getPanelMotion(reduced: boolean) {
-  return {
-    hidden: {
-      opacity: 0,
-      transform: reduced ? REST : "translate3d(0, 10px, 0)",
-    },
-    shown: { opacity: 1, transform: REST },
-    exit: {
-      opacity: 0,
-      transform: reduced ? REST : "translate3d(0, -6px, 0)",
-    },
-    transition: {
-      duration: reduced ? 0.18 : 0.22,
-      ease: [0.23, 1, 0.32, 1] as const,
-    },
-  };
-}
-
 export function HowItWorks() {
   const [active, setActive] = useState(0);
-  const reduced = useReducedMotion();
   const baseId = useId();
   const tabs = useRef<Array<HTMLButtonElement | null>>([]);
-  const current = states[active];
-  const panelMotion = getPanelMotion(Boolean(reduced));
 
   function selectFromKeyboard(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     let next: number | null = null;
@@ -74,22 +50,25 @@ export function HowItWorks() {
   }
 
   return (
-    <section id="how-it-works" className="scroll-mt-20 px-5 py-24 sm:px-8 sm:py-32">
-      <div className="mx-auto grid max-w-[1160px] items-center gap-14 lg:grid-cols-[0.94fr_1.06fr] lg:gap-20">
-        <div>
-          <h2 className="display max-w-[14ch] text-[2.4rem] sm:text-[3.2rem] lg:text-[3.65rem]">
-            A block should create a pause, not another fight.
-          </h2>
-          <p className="mt-6 max-w-[58ch] text-[1rem] leading-relaxed text-ink-soft sm:text-[1.08rem]">
-            Rafiq watches only for the small pieces of on-screen context needed to match
-            a rule. When one matches, the page or feed gives way to a deliberate choice.
-          </p>
+    <section id="how-it-works" className="scroll-mt-20 px-5 py-20 sm:px-8 sm:py-32">
+      <div className="mx-auto grid max-w-[1160px] items-center gap-8 lg:grid-cols-[0.94fr_1.06fr] lg:gap-20">
+        {/* Below lg this wrapper dissolves so the phone sits between the intro and the tabs: a tap has to change something still on screen. */}
+        <div className="contents lg:block">
+          <div>
+            <h2 className="display max-w-[14ch] text-[2.4rem] sm:text-[3.2rem] lg:text-[3.65rem]">
+              A block should create a pause, not another fight.
+            </h2>
+            <p className="mt-6 max-w-[58ch] text-[1rem] leading-relaxed text-ink-soft sm:text-[1.08rem]">
+              Rafiq watches only for the small pieces of on-screen context needed to match
+              a rule. When one matches, the page or feed gives way to a deliberate choice.
+            </p>
+          </div>
 
           <div
             role="tablist"
             aria-label="How Rafiq responds"
             aria-orientation="vertical"
-            className="mt-10 space-y-2"
+            className="order-last space-y-2 lg:mt-10"
           >
             {states.map((state, index) => {
               const selected = index === active;
@@ -108,11 +87,9 @@ export function HowItWorks() {
                   tabIndex={selected ? 0 : -1}
                   onClick={() => setActive(index)}
                   onKeyDown={(event) => selectFromKeyboard(event, index)}
-                  className="pressable w-full rounded-[var(--radius-input)] px-5 py-4 text-left"
-                  style={{
-                    background: selected ? "var(--surface)" : "transparent",
-                    boxShadow: selected ? "inset 0 0 0 1px var(--line-strong)" : "none",
-                  }}
+                  className={`pressable w-full rounded-input px-5 py-4 text-left ${
+                    selected ? "bg-surface inset-ring inset-ring-line-strong" : ""
+                  }`}
                 >
                   <span className="block text-[1rem] font-extrabold text-ink sm:text-[1.08rem]">
                     {state.title}
@@ -126,30 +103,36 @@ export function HowItWorks() {
           </div>
         </div>
 
-        <div
-          className="relative min-h-[590px] overflow-hidden rounded-[var(--radius-card)] px-8 pt-10 sm:min-h-[720px] sm:px-12 sm:pt-14"
-          style={{ background: "var(--deep)", boxShadow: "0 30px 70px -36px var(--shade-deep)" }}
-        >
+        <div className="relative overflow-hidden rounded-card bg-deep px-8 py-8 shadow-[0_30px_70px_-36px_var(--shade-deep)] sm:px-12 sm:py-14">
           <div className="star-field-gold pointer-events-none absolute inset-0 opacity-50" aria-hidden />
           <div
             id={`${baseId}-panel`}
             role="tabpanel"
             aria-labelledby={`${baseId}-tab-${active}`}
             tabIndex={0}
-            className="relative mx-auto w-[72%] max-w-[330px]"
+            className="relative mx-auto grid w-[72%] max-w-[330px]"
           >
-            <AnimatePresence initial={false}>
-              <motion.div
-                key={current.src}
-                data-spatial-motion="true"
-                initial={panelMotion.hidden}
-                animate={panelMotion.shown}
-                exit={panelMotion.exit}
-                transition={panelMotion.transition}
-              >
-                <Device src={current.src} alt={current.alt} onDark sizes="(max-width: 640px) 66vw, 330px" />
-              </motion.div>
-            </AnimatePresence>
+            {/*
+              Every screen stays mounted in one grid cell. The renders differ in
+              height, and swapping them through normal flow stacked two phones for
+              the length of the fade. Here the tallest one holds the height, all
+              three are loaded before the first tap, and the fade can be interrupted.
+              The outgoing screen waits so the dark card never shows through mid-fade.
+            */}
+            {states.map((state, index) => {
+              const selected = index === active;
+              return (
+                <div
+                  key={state.src}
+                  aria-hidden={!selected}
+                  className={`[grid-area:1/1] transition-opacity duration-(--duration-panel) ease-(--ease-out) ${
+                    selected ? "z-10 opacity-100" : "opacity-0 delay-100"
+                  }`}
+                >
+                  <Device src={state.src} alt={state.alt} onDark />
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>

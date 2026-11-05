@@ -1,8 +1,8 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it } from "vitest";
 
-import { getPanelMotion, HowItWorks } from "@/components/sections/how-it-works";
+import { HowItWorks } from "@/components/sections/how-it-works";
 
 describe("HowItWorks", () => {
   it("links the selected tab to one stable panel", () => {
@@ -39,13 +39,18 @@ describe("HowItWorks", () => {
     await waitFor(() => expect(holding).toHaveAttribute("aria-selected", "true"));
   });
 
-  it("keeps reduced-motion state feedback but removes panel travel", () => {
-    const reduced = getPanelMotion(true);
-    const regular = getPanelMotion(false);
+  it("keeps every screen mounted so a switch cannot stack two phones in flow", async () => {
+    const user = userEvent.setup();
+    render(<HowItWorks />);
 
-    expect(reduced.hidden.opacity).toBe(0);
-    expect(reduced.hidden.transform).toBe(reduced.shown.transform);
-    expect(regular.hidden.transform).not.toBe(regular.shown.transform);
-    expect(reduced.transition.duration).toBeLessThanOrEqual(0.2);
+    const panel = screen.getByRole("tabpanel");
+    const mounted = () => within(panel).getAllByRole("img", { hidden: true });
+    expect(mounted()).toHaveLength(3);
+
+    await user.click(screen.getByRole("tab", { name: /A pause instead of a loophole/ }));
+
+    expect(mounted()).toHaveLength(3);
+    // Only the selected screen is exposed, so the others stay preloaded but silent.
+    expect(within(panel).getByRole("img")).toHaveAccessibleName(/completed pause screen/);
   });
 });

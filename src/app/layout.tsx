@@ -20,9 +20,11 @@ const jakarta = Plus_Jakarta_Sans({
 
 const amiri = Amiri({
   subsets: ["arabic"],
-  weight: ["400", "700"],
+  weight: "400",
   variable: "--font-amiri",
   display: "swap",
+  // The Arabic sits below the fold everywhere, so it must not compete with the hero.
+  preload: false,
 });
 
 const homeMetadata = createPageMetadata("/");
@@ -53,9 +55,9 @@ export const metadata: Metadata = {
   // apple-icon.png files in this directory, which Next links automatically.
 };
 
-// Cream, unconditionally: the page itself loads light regardless of the OS
-// preference, so keying the browser chrome to `prefers-color-scheme` would tint
-// it dark above a light page.
+// Cream by default: the page loads light regardless of the OS preference, so
+// keying the browser chrome to `prefers-color-scheme` would tint it dark above a
+// light page. ThemeToggle retints it for a visitor who chose dark.
 export const viewport: Viewport = {
   themeColor: "#f6f1e7",
 };

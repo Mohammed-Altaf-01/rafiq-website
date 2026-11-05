@@ -21,16 +21,12 @@ export function Device({
   eager = false,
   highPriority = false,
   onDark = false,
-  className = "",
-  sizes = "(max-width: 768px) 70vw, 380px",
 }: {
   src: ScreenSrc;
   alt: string;
   eager?: boolean;
   highPriority?: boolean;
   onDark?: boolean;
-  className?: string;
-  sizes?: string;
 }) {
   const { width, height } = screenSize[src];
 
@@ -41,12 +37,12 @@ export function Device({
       width={width}
       height={height}
       // Next 16 recommends eager loading or fetchPriority over preload when a
-      // hero contains two viewport-dependent LCP images. Both load eagerly;
-      // runtime LCP verification decides which single phone gets `high`.
+      // hero contains two viewport-dependent LCP images. Both load eagerly. The
+      // home screen is the measured LCP below 1024px, where this app's Android
+      // visitors are, so that phone gets `high`.
       loading={eager ? "eager" : "lazy"}
       fetchPriority={highPriority ? "high" : undefined}
-      sizes={sizes}
-      className={`h-auto w-full select-none ${onDark ? "lift-device-deep" : "lift-device"} ${className}`}
+      className={`h-auto w-full select-none ${onDark ? "lift-device-deep" : "lift-device"}`}
       draggable={false}
     />
   );

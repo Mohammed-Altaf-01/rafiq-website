@@ -6,14 +6,12 @@ import {
   cloneElement,
   isValidElement,
   useRef,
-  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
+import { useMounted } from "@/lib/use-mounted";
+
 const EASE = [0.23, 1, 0.32, 1] as const;
-const noopSubscribe = () => () => undefined;
-const clientSnapshot = () => true;
-const serverSnapshot = () => false;
 
 const revealVariants: Variants = {
   hidden: { opacity: 0, transform: "translate3d(0, 18px, 0)" },
@@ -24,7 +22,7 @@ const revealVariants: Variants = {
 };
 
 function useEnhancedInView(ref: React.RefObject<Element | null>) {
-  const mounted = useSyncExternalStore(noopSubscribe, clientSnapshot, serverSnapshot);
+  const mounted = useMounted();
   const inView = useInView(ref, { once: true, amount: 0.2 });
   return !mounted || inView;
 }

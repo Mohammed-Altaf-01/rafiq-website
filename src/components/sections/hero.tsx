@@ -24,10 +24,10 @@ export function Hero() {
             id="hero-title"
             className="display text-[clamp(2.65rem,5.4vw,4rem)]"
           >
-            <span className="block" style={{ color: "var(--clay)" }}>
+            <span className="block text-clay">
               Lower your gaze.{" "}
             </span>
-            <span className="block" style={{ color: "var(--primary)" }}>
+            <span className="block text-primary">
               Take back your time.
             </span>
           </h1>

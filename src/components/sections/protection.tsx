@@ -48,8 +48,7 @@ export function Protection() {
   return (
     <section
       id="protection"
-      className="scroll-mt-20 px-5 py-24 sm:px-8 sm:py-32"
-      style={{ background: "var(--surface)" }}
+      className="scroll-mt-20 bg-surface px-5 py-20 sm:px-8 sm:py-32"
     >
       <div className="mx-auto max-w-[1160px]">
         <div className="grid gap-12 lg:grid-cols-[0.78fr_1.22fr] lg:gap-20">
@@ -65,8 +64,8 @@ export function Protection() {
 
           <ul className="grid gap-x-10 gap-y-0 sm:grid-cols-2">
             {safeguards.map(({ Icon, title, body }) => (
-              <li key={title} className="border-t py-7" style={{ borderColor: "var(--line-strong)" }}>
-                <Icon size={23} weight="regular" aria-hidden style={{ color: "var(--primary)" }} />
+              <li key={title} className="border-t border-line-strong py-7">
+                <Icon size={23} weight="regular" aria-hidden className="text-primary" />
                 <h3 className="mt-4 text-[1.08rem] font-extrabold">{title}</h3>
                 <p className="mt-2.5 text-[0.93rem] leading-relaxed text-ink-soft">{body}</p>
               </li>
@@ -76,8 +75,7 @@ export function Protection() {
 
         <div
           id="privacy"
-          className="mt-20 scroll-mt-24 rounded-[var(--radius-card)] px-6 py-9 sm:px-10 sm:py-12 lg:px-12"
-          style={{ background: "var(--card)", boxShadow: "0 22px 52px -34px var(--shade-deep)" }}
+          className="mt-16 scroll-mt-24 rounded-card bg-card px-5 py-8 shadow-[0_22px_52px_-34px_var(--shade-deep)] sm:mt-20 sm:px-10 sm:py-12 lg:px-12"
         >
           <div className="grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:gap-16">
             <div>
@@ -91,7 +89,7 @@ export function Protection() {
               </p>
               <Link
                 href="/privacy"
-                className="mt-6 inline-flex rounded-sm text-[0.9rem] font-bold text-ink underline decoration-1 underline-offset-4 hover:no-underline"
+                className="mt-3 inline-flex min-h-11 items-center rounded-sm text-[0.9rem] font-bold text-ink underline decoration-1 underline-offset-4 hover:no-underline"
               >
                 Read the full Privacy Policy
               </Link>
@@ -101,8 +99,7 @@ export function Protection() {
               {privacyContract.map((item) => (
                 <div
                   key={item.title}
-                  className="grid gap-2 border-t py-5 sm:grid-cols-[0.42fr_0.58fr] sm:gap-7"
-                  style={{ borderColor: "var(--line-strong)" }}
+                  className="grid gap-2 border-t border-line-strong py-5 sm:grid-cols-[0.42fr_0.58fr] sm:gap-7"
                 >
                   <dt className="text-[0.92rem] font-extrabold text-ink">{item.title}</dt>
                   <dd className="text-[0.92rem] leading-relaxed text-ink-soft">{item.body}</dd>

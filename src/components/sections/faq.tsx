@@ -2,13 +2,10 @@
 
 import { PlusIcon } from "@phosphor-icons/react/dist/ssr";
 import { motion, useReducedMotion } from "motion/react";
-import { useId, useState, useSyncExternalStore } from "react";
+import { useId, useState } from "react";
 
 import { site } from "@/lib/site";
-
-const noopSubscribe = () => () => undefined;
-const clientSnapshot = () => true;
-const serverSnapshot = () => false;
+import { useMounted } from "@/lib/use-mounted";
 
 const questions = [
   {
@@ -44,14 +41,13 @@ const questions = [
 export function Faq() {
   const baseId = useId();
   const reduced = useReducedMotion();
-  const mounted = useSyncExternalStore(noopSubscribe, clientSnapshot, serverSnapshot);
+  const mounted = useMounted();
   const [openItems, setOpenItems] = useState<Set<number>>(() => new Set([0]));
 
   return (
     <section
       aria-labelledby={`${baseId}-title`}
-      className="border-t px-5 py-24 sm:px-8 sm:py-32"
-      style={{ borderColor: "var(--line)" }}
+      className="border-t border-line px-5 py-20 sm:px-8 sm:py-32"
     >
       <div className="mx-auto grid max-w-[1160px] gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
         <div>
@@ -81,8 +77,7 @@ export function Faq() {
                 data-spatial-motion="true"
                 layout={reduced ? false : "position"}
                 transition={{ layout: { duration: 0.24, ease: [0.23, 1, 0.32, 1] } }}
-                className="group border-b"
-                style={{ borderColor: "var(--line-strong)" }}
+                className="group border-b border-line-strong"
                 onToggle={(event) => {
                   const open = event.currentTarget.open;
                   setOpenItems((current) => {
@@ -106,8 +101,7 @@ export function Faq() {
                     weight="regular"
                     aria-hidden
                     data-spatial-motion="true"
-                    className="mt-0.5 shrink-0 transition-transform duration-200 group-open:rotate-45"
-                    style={{ color: "var(--primary)" }}
+                    className="mt-0.5 shrink-0 text-primary transition-transform duration-200 group-open:rotate-45"
                   />
                 </summary>
                 <motion.div

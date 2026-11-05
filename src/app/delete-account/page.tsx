@@ -79,7 +79,7 @@ export default function DeleteAccountPage() {
         <div className="mx-auto flex max-w-[880px] items-center justify-between gap-4">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-[0.88rem] font-semibold text-ink-soft transition-colors hover:text-ink"
+            className="inline-flex min-h-11 items-center gap-2 text-[0.88rem] font-semibold text-ink-soft transition-colors hover:text-ink"
           >
             <ArrowLeftIcon size={15} />
             Back to Rafiq
@@ -89,7 +89,7 @@ export default function DeleteAccountPage() {
         </div>
 
         <header className="mx-auto mt-12 max-w-[880px]">
-          <p className="overline text-gold">Rafiq for Android</p>
+          <p className="eyebrow text-gold">Rafiq for Android</p>
           <h1 className="display mt-4 text-[2.5rem] sm:text-[3.25rem]">
             Delete your account
           </h1>
@@ -102,10 +102,9 @@ export default function DeleteAccountPage() {
 
         <div className="mx-auto mt-14 grid max-w-[880px] gap-5 md:grid-cols-2">
           <section
-            className="rounded-[var(--radius-card)] p-7"
-            style={{ background: "var(--card)", boxShadow: "inset 0 0 0 1px var(--line)" }}
+            className="rounded-card bg-card p-5 inset-ring inset-ring-line sm:p-7"
           >
-            <DeviceMobileIcon size={24} style={{ color: "var(--primary)" }} />
+            <DeviceMobileIcon size={24} className="text-primary" />
             <h2 className="mt-4 text-[1.15rem] font-extrabold tracking-tight">
               In the app
             </h2>
@@ -116,8 +115,7 @@ export default function DeleteAccountPage() {
               {inAppSteps.map((step, index) => (
                 <li key={step} className="flex items-start gap-3.5">
                   <span
-                    className="mt-[1px] flex size-[22px] shrink-0 items-center justify-center rounded-full text-[0.75rem] font-bold"
-                    style={{ background: "var(--surface)", color: "var(--ink-faint)" }}
+                    className="mt-[1px] flex size-[22px] shrink-0 items-center justify-center rounded-full bg-surface text-[0.75rem] font-bold text-ink-faint"
                   >
                     {index + 1}
                   </span>
@@ -128,10 +126,9 @@ export default function DeleteAccountPage() {
           </section>
 
           <section
-            className="rounded-[var(--radius-card)] p-7"
-            style={{ background: "var(--card)", boxShadow: "inset 0 0 0 1px var(--line)" }}
+            className="rounded-card bg-card p-5 inset-ring inset-ring-line sm:p-7"
           >
-            <EnvelopeSimpleIcon size={24} style={{ color: "var(--primary)" }} />
+            <EnvelopeSimpleIcon size={24} className="text-primary" />
             <h2 className="mt-4 text-[1.15rem] font-extrabold tracking-tight">
               By email
             </h2>
@@ -152,8 +149,7 @@ export default function DeleteAccountPage() {
               Or write to{" "}
               <a
                 href={`mailto:${site.supportEmail}`}
-                className="font-semibold underline decoration-1 underline-offset-4"
-                style={{ color: "var(--primary)" }}
+                className="font-semibold text-primary underline decoration-1 underline-offset-4"
               >
                 {site.supportEmail}
               </a>{" "}
@@ -177,8 +173,7 @@ export default function DeleteAccountPage() {
                   <li key={item} className="flex items-start gap-3.5">
                     <CheckIcon
                       size={18}
-                      className="mt-[5px] shrink-0"
-                      style={{ color: "var(--primary)" }}
+                      className="mt-[5px] shrink-0 text-primary"
                     />
                     <span className="text-[0.95rem] leading-relaxed text-ink-soft">{item}</span>
                   </li>
@@ -195,8 +190,7 @@ export default function DeleteAccountPage() {
                   <li key={item.what} className="flex items-start gap-3.5">
                     <ProhibitIcon
                       size={18}
-                      className="mt-[5px] shrink-0"
-                      style={{ color: "var(--clay)" }}
+                      className="mt-[5px] shrink-0 text-clay"
                     />
                     <div>
                       <p className="text-[0.95rem] font-semibold text-ink">{item.what}</p>
@@ -216,11 +210,10 @@ export default function DeleteAccountPage() {
         </section>
 
         <section
-          className="mx-auto mt-16 max-w-[880px] rounded-[var(--radius-card)] p-7"
-          style={{ background: "var(--surface)", boxShadow: "inset 0 0 0 1px var(--line)" }}
+          className="mx-auto mt-16 max-w-[880px] rounded-card bg-surface p-5 inset-ring inset-ring-line sm:p-7"
         >
           <div className="flex items-start gap-3.5">
-            <WarningIcon size={22} className="mt-[2px] shrink-0" style={{ color: "var(--clay)" }} />
+            <WarningIcon size={22} className="mt-[2px] shrink-0 text-clay" />
             <div>
               <h2 className="text-[1.05rem] font-extrabold tracking-tight">
                 Cancel your subscription first
@@ -232,8 +225,7 @@ export default function DeleteAccountPage() {
               </p>
               <a
                 href="https://play.google.com/store/account/subscriptions"
-                className="mt-4 inline-flex items-center gap-1.5 text-[0.9rem] font-semibold underline decoration-1 underline-offset-4"
-                style={{ color: "var(--primary)" }}
+                className="mt-2 inline-flex min-h-11 items-center gap-1.5 text-[0.9rem] font-semibold text-primary underline decoration-1 underline-offset-4"
               >
                 Manage subscriptions on Google Play
                 <ArrowUpRightIcon size={14} />
@@ -257,16 +249,14 @@ export default function DeleteAccountPage() {
             The full detail is in the{" "}
             <Link
               href="/privacy"
-              className="font-semibold underline decoration-1 underline-offset-4"
-              style={{ color: "var(--primary)" }}
+              className="font-semibold text-primary underline decoration-1 underline-offset-4"
             >
               Privacy Policy
             </Link>
             . Anything else, write to{" "}
             <a
               href={`mailto:${site.supportEmail}`}
-              className="font-semibold underline decoration-1 underline-offset-4"
-              style={{ color: "var(--primary)" }}
+              className="font-semibold text-primary underline decoration-1 underline-offset-4"
             >
               {site.supportEmail}
             </a>

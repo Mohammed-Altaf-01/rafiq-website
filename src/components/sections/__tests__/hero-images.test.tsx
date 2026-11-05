@@ -25,14 +25,12 @@ describe("hero image loading", () => {
   it("gives only the likely LCP image a high-priority fetch", () => {
     render(<HeroVisual />);
 
-    const home = imageCalls.find((props) => props.src === "/screens/home.webp");
-    const measuredLcp = imageCalls.find(
-      (props) => props.src === "/screens/block-limit.webp",
-    );
+    const measuredLcp = imageCalls.find((props) => props.src === "/screens/home.webp");
+    const back = imageCalls.find((props) => props.src === "/screens/block-limit.webp");
 
     expect(measuredLcp).toMatchObject({ loading: "eager", fetchPriority: "high" });
-    expect(home).toMatchObject({ loading: "eager" });
-    expect(home?.fetchPriority).toBeUndefined();
+    expect(back).toMatchObject({ loading: "eager" });
+    expect(back?.fetchPriority).toBeUndefined();
     expect(imageCalls.filter((props) => props.fetchPriority === "high")).toHaveLength(1);
   });
 

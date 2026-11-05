@@ -5,31 +5,22 @@ import type { ReactNode } from "react";
  * That is the entire radius system; nothing else invents its own.
  */
 const base =
-  "pressable group inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full " +
-  "px-7 py-3.5 text-[0.95rem] font-bold";
+  "pressable inline-flex min-h-12 items-center justify-center gap-2 rounded-full " +
+  "px-5 py-3.5 text-center text-[0.95rem] font-bold sm:px-7";
 
 export function PrimaryButton({
   href,
   children,
-  onDark = false,
   className = "",
 }: {
   href: string;
   children: ReactNode;
-  onDark?: boolean;
   className?: string;
 }) {
   return (
     <a
       href={href}
-      className={`${base} ${className}`}
-      style={{
-        background: onDark ? "var(--deep-primary)" : "var(--primary)",
-        color: onDark ? "#1C1A16" : "var(--on-primary)",
-        boxShadow: onDark
-          ? "0 10px 26px -12px rgba(0,0,0,0.7)"
-          : "0 10px 26px -12px var(--shade-deep)",
-      }}
+      className={`${base} bg-primary text-on-primary shadow-[0_10px_26px_-12px_var(--shade-deep)] ${className}`}
     >
       {children}
     </a>
@@ -39,26 +30,14 @@ export function PrimaryButton({
 export function TonalButton({
   href,
   children,
-  onDark = false,
   className = "",
 }: {
   href: string;
   children: ReactNode;
-  onDark?: boolean;
   className?: string;
 }) {
   return (
-    <a
-      href={href}
-      className={`${base} ${className}`}
-      style={{
-        background: onDark ? "rgba(237,230,214,0.08)" : "var(--surface)",
-        color: onDark ? "var(--deep-ink)" : "var(--ink)",
-        boxShadow: onDark
-          ? "inset 0 0 0 1px var(--deep-line)"
-          : "inset 0 0 0 1px var(--line-strong)",
-      }}
-    >
+    <a href={href} className={`${base} bg-surface text-ink inset-ring inset-ring-line-strong ${className}`}>
       {children}
     </a>
   );

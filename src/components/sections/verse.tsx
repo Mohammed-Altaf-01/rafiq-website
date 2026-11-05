@@ -10,8 +10,7 @@ export function Verse() {
   return (
     <section
       id="gaze"
-      className="relative overflow-hidden px-5 py-24 sm:px-8 sm:py-32"
-      style={{ background: "var(--deep)", color: "var(--deep-ink)" }}
+      className="relative overflow-hidden bg-deep px-5 py-20 text-deep-ink sm:px-8 sm:py-32"
     >
       <div
         className="star-field-gold pointer-events-none absolute inset-0 opacity-90"
@@ -26,9 +25,8 @@ export function Verse() {
         }}
       />
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 h-px"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-deep-gold/40 to-transparent"
         aria-hidden
-        style={{ background: "linear-gradient(90deg, transparent, rgba(216,184,95,0.4), transparent)" }}
       />
 
       <div className="relative mx-auto max-w-[900px]">
@@ -36,8 +34,7 @@ export function Verse() {
         <Scripture passage={loweringTheGaze} tone="deep" size="xl" />
 
         <p
-          className="mx-auto mt-14 max-w-[54ch] text-center text-[1.02rem] leading-relaxed sm:text-[1.1rem]"
-          style={{ color: "var(--deep-ink-soft)" }}
+          className="mx-auto mt-14 max-w-[54ch] text-center text-[1.02rem] leading-relaxed text-deep-ink-soft sm:text-[1.1rem]"
         >
           The command is to lower the gaze, not to renegotiate it every few minutes.
           Rafiq helps the choice you made in a clear moment keep holding in a difficult one.

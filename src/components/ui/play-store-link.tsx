@@ -30,20 +30,18 @@ export function PlayStoreLink({
         track("play_store_click", { source });
         onClick?.(event);
       }}
-      className={`pressable inline-flex items-center justify-center whitespace-nowrap rounded-full font-bold ${
+      className={`pressable inline-flex items-center justify-center rounded-full text-center font-bold ${
+        // Under 360px the nav bar has no room for the icon; the full-size label may wrap.
         compact
-          ? "min-h-10 gap-1.5 px-5 py-2.5 text-[0.875rem]"
-          : "min-h-12 gap-2.5 px-7 py-3.5 text-[0.95rem]"
+          ? "min-h-11 gap-1.5 whitespace-nowrap px-3 py-2.5 text-[0.875rem] min-[360px]:px-5 max-[359px]:[&>svg]:hidden"
+          : "min-h-12 gap-2.5 px-5 py-3.5 text-[0.95rem] sm:px-7"
+      } ${
+        onDark
+          ? "bg-deep-primary text-deep shadow-[0_10px_26px_-12px_rgba(0,0,0,0.7)]"
+          : "bg-primary text-on-primary shadow-[0_10px_26px_-12px_var(--shade-deep)]"
       } ${className}`}
-      style={{
-        background: onDark ? "var(--deep-primary)" : "var(--primary)",
-        color: onDark ? "#1C1A16" : "var(--on-primary)",
-        boxShadow: onDark
-          ? "0 10px 26px -12px rgba(0,0,0,0.7)"
-          : "0 10px 26px -12px var(--shade-deep)",
-      }}
     >
-      <GooglePlayLogoIcon size={compact ? 18 : 20} weight="fill" aria-hidden />
+      <GooglePlayLogoIcon size={compact ? 18 : 20} weight="fill" aria-hidden className="shrink-0" />
       <span>{label}</span>
     </a>
   );

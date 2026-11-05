@@ -7,18 +7,17 @@ export default function NotFound() {
     <main
       id="main-content"
       tabIndex={-1}
-      className="star-field relative flex min-h-screen items-center overflow-hidden px-5 py-24 sm:px-8"
+      className="star-field relative flex min-h-dvh items-center overflow-hidden px-5 py-24 sm:px-8"
     >
       <div
         aria-hidden
-        className="absolute inset-x-0 top-0 h-px"
-        style={{ background: "var(--line-strong)" }}
+        className="absolute inset-x-0 top-0 h-px bg-line-strong"
       />
       <div className="relative mx-auto w-full max-w-[760px] text-center">
         <div className="flex justify-center">
           <Wordmark />
         </div>
-        <p className="overline mt-14 text-clay">Error 404</p>
+        <p className="eyebrow mt-14 text-clay">Error 404</p>
         <h1 className="display mx-auto mt-5 max-w-[13ch] text-[3rem] sm:text-[4.5rem]">
           This page is not here.
         </h1>

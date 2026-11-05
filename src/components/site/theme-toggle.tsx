@@ -5,13 +5,24 @@ import { useSyncExternalStore } from "react";
 
 type Theme = "light" | "dark";
 
+// Android Chrome tints its toolbar from this tag, so it has to follow the toggle.
+function syncBrowserChrome() {
+  document
+    .querySelector('meta[name="theme-color"]')
+    ?.setAttribute("content", getComputedStyle(document.documentElement).getPropertyValue("--bg"));
+}
+
 /*
  * The theme lives on `<html data-theme>`, written before first paint by
  * ThemeScript. This subscribes to that attribute rather than mirroring it into
  * React state, so there is one source of truth and nothing to keep in sync.
  */
 function subscribe(onChange: () => void) {
-  const observer = new MutationObserver(onChange);
+  syncBrowserChrome();
+  const observer = new MutationObserver(() => {
+    syncBrowserChrome();
+    onChange();
+  });
   observer.observe(document.documentElement, {
     attributes: true,
     attributeFilter: ["data-theme"],
@@ -25,7 +36,7 @@ const readTheme = (): Theme => (document.documentElement.dataset.theme as Theme)
 // real theme instead of guessing and flipping on hydration.
 const readOnServer = (): Theme | undefined => undefined;
 
-export function ThemeToggle({ onDark = false }: { onDark?: boolean }) {
+export function ThemeToggle() {
   const theme = useSyncExternalStore(subscribe, readTheme, readOnServer);
 
   function toggle() {
@@ -43,11 +54,7 @@ export function ThemeToggle({ onDark = false }: { onDark?: boolean }) {
       type="button"
       onClick={toggle}
       aria-label={theme === "dark" ? "Switch to light theme" : "Switch to dark theme"}
-      className="pressable inline-flex size-10 items-center justify-center rounded-full"
-      style={{
-        color: onDark ? "var(--deep-ink-soft)" : "var(--ink-soft)",
-        boxShadow: `inset 0 0 0 1px ${onDark ? "var(--deep-line)" : "var(--line)"}`,
-      }}
+      className="pressable inline-flex size-11 items-center justify-center rounded-full text-ink-soft inset-ring inset-ring-line"
     >
       {theme === "dark" ? (
         <SunIcon size={18} weight="regular" />

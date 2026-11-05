@@ -32,7 +32,7 @@ export function HeroVisual() {
 
   return (
     <div
-      className="relative mx-auto h-[500px] w-full max-w-[430px] sm:h-[590px] lg:h-[650px] lg:max-w-[500px]"
+      className="relative mx-auto aspect-[7/10] w-full max-w-[430px] sm:aspect-auto sm:h-[590px] lg:h-[650px] lg:max-w-[500px]"
     >
       <motion.div
         data-spatial-motion="true"
@@ -44,8 +44,6 @@ export function HeroVisual() {
             src="/screens/block-limit.webp"
             alt="Rafiq holding a daily app limit after its chosen minutes have been used."
             eager
-            highPriority
-            sizes="(max-width: 640px) 52vw, (max-width: 1024px) 260px, 270px"
           />
         </div>
       </motion.div>
@@ -59,7 +57,7 @@ export function HeroVisual() {
             src="/screens/home.webp"
             alt="The Rafiq home screen showing protection controls, today's blocks, time saved, and the dhikr of the day."
             eager
-            sizes="(max-width: 640px) 61vw, (max-width: 1024px) 300px, 320px"
+            highPriority
           />
         </div>
       </motion.div>

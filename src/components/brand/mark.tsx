@@ -18,18 +18,21 @@ export function Mark({
 }) {
   const mark = (
     <Image
-      src="/brand/mark.png"
+      src="/brand/mark.webp"
       alt=""
       width={size}
       height={size}
       loading="lazy"
+      className={onDark ? undefined : "in-data-[theme=dark]:scale-[0.76]"}
       style={{ width: onDark ? size * 0.76 : size, height: "auto" }}
     />
   );
 
   if (!onDark) {
     return (
-      <span className={`inline-flex shrink-0 items-center justify-center ${className}`}>
+      <span
+        className={`inline-flex shrink-0 items-center justify-center rounded-full in-data-[theme=dark]:bg-deep-ink in-data-[theme=dark]:inset-ring in-data-[theme=dark]:inset-ring-deep-gold/40 ${className}`}
+      >
         {mark}
       </span>
     );
@@ -37,29 +40,19 @@ export function Mark({
 
   return (
     <span
-      className={`inline-flex shrink-0 items-center justify-center rounded-full ${className}`}
-      style={{
-        width: size,
-        height: size,
-        background: "#EDE6D6",
-        boxShadow: "inset 0 0 0 1px rgba(216, 184, 95, 0.4)",
-      }}
+      className={`inline-flex shrink-0 items-center justify-center rounded-full bg-deep-ink inset-ring inset-ring-deep-gold/40 ${className}`}
+      style={{ width: size, height: size }}
     >
       {mark}
     </span>
   );
 }
 
-export function Wordmark({ onDark = false }: { onDark?: boolean }) {
+export function Wordmark() {
   return (
     <span className="inline-flex items-center gap-2.5">
-      <Mark size={onDark ? 34 : 30} onDark={onDark} />
-      <span
-        className="text-[1.05rem] font-extrabold tracking-tight"
-        style={{ color: onDark ? "var(--deep-ink)" : "var(--ink)" }}
-      >
-        Rafiq
-      </span>
+      <Mark size={30} />
+      <span className="text-[1.05rem] font-extrabold tracking-tight text-ink">Rafiq</span>
     </span>
   );
 }

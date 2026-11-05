@@ -22,20 +22,18 @@ export function Download() {
   return (
     <section
       id="download"
-      className="scroll-mt-20 px-5 py-24 sm:px-8 sm:py-32"
-      style={{ background: "var(--surface)" }}
+      className="scroll-mt-20 bg-surface px-5 py-20 sm:px-8 sm:py-32"
     >
       <div
-        className="mx-auto grid max-w-[1160px] gap-12 overflow-hidden rounded-[var(--radius-card)] px-6 py-9 sm:px-10 sm:py-12 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16 lg:px-14 lg:py-14"
-        style={{ background: "var(--card)", boxShadow: "0 30px 70px -42px var(--shade-deep)" }}
+        className="mx-auto grid max-w-[1160px] gap-12 rounded-card bg-card px-5 py-8 shadow-[0_30px_70px_-42px_var(--shade-deep)] sm:px-10 sm:py-12 lg:grid-cols-[0.78fr_1.22fr] lg:gap-16 lg:px-14 lg:py-14"
       >
         <div>
           <Image
-            src="/brand/app-icon.png"
+            src="/brand/app-icon.webp"
             alt=""
             width={96}
             height={96}
-            className="h-20 w-20 sm:h-24 sm:w-24"
+            className="size-20 rounded-tile sm:size-24"
           />
           <h2 className="display mt-7 max-w-[13ch] text-[2.25rem] sm:text-[2.85rem]">
             Your companion is ready on Google Play.
@@ -45,7 +43,7 @@ export function Download() {
             device. No website signup is required.
           </p>
           <div className="mt-8">
-            <PlayStoreLink source="download" />
+            <PlayStoreLink source="download" className="w-full sm:w-auto" />
           </div>
         </div>
 
@@ -54,15 +52,13 @@ export function Download() {
             {inclusions.map((item) => (
               <li
                 key={item.title}
-                className="flex gap-4 border-t py-5 first:border-t-0 first:pt-0"
-                style={{ borderColor: "var(--line-strong)" }}
+                className="flex gap-4 border-t border-line-strong py-5 first:border-t-0 first:pt-0"
               >
                 <CheckCircleIcon
                   size={23}
                   weight="fill"
-                  className="mt-0.5 shrink-0"
+                  className="mt-0.5 shrink-0 text-primary"
                   aria-hidden
-                  style={{ color: "var(--primary)" }}
                 />
                 <div>
                   <h3 className="text-[1.02rem] font-extrabold">{item.title}</h3>

@@ -1,4 +1,4 @@
-import { ArrowLeftIcon } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeftIcon, CaretDownIcon } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 
 import { ReadingProgress } from "@/components/legal/reading-progress";
@@ -7,6 +7,17 @@ import { ThemeToggle } from "@/components/site/theme-toggle";
 import type { LegalDoc } from "@/lib/legal";
 
 export function LegalPage({ doc, sibling }: { doc: LegalDoc; sibling: { href: string; label: string } }) {
+  const tocLinks = doc.toc.map((item) => (
+    <li key={item.id}>
+      <a
+        href={`#${item.id}`}
+        className="flex min-h-11 items-center py-1 text-[0.875rem] leading-snug text-ink-soft transition-colors hover:text-ink lg:block lg:min-h-0 lg:py-0"
+      >
+        {item.text}
+      </a>
+    </li>
+  ));
+
   return (
     <>
       <ReadingProgress />
@@ -21,7 +32,7 @@ export function LegalPage({ doc, sibling }: { doc: LegalDoc; sibling: { href: st
         <div className="mx-auto flex max-w-[1160px] items-center justify-between gap-4">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-[0.88rem] font-semibold text-ink-soft transition-colors hover:text-ink"
+            className="inline-flex min-h-11 items-center gap-2 text-[0.88rem] font-semibold text-ink-soft transition-colors hover:text-ink"
           >
             <ArrowLeftIcon size={15} />
             Back to Rafiq
@@ -47,27 +58,26 @@ export function LegalPage({ doc, sibling }: { doc: LegalDoc; sibling: { href: st
           </dl>
         </header>
 
-        <div className="mx-auto mt-16 grid max-w-[1160px] gap-14 lg:grid-cols-[240px_1fr] lg:gap-20">
+        <div className="mx-auto mt-10 grid max-w-[1160px] gap-10 lg:mt-16 lg:grid-cols-[240px_1fr] lg:gap-20">
+          {/* These documents run past 18,000px on a phone, so the contents have to survive the narrow layout. */}
+          <details className="group rounded-input bg-card inset-ring inset-ring-line lg:hidden">
+            <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-4 px-5 text-[0.95rem] font-bold [&::-webkit-details-marker]:hidden">
+              On this page
+              <CaretDownIcon size={16} aria-hidden className="shrink-0 text-primary group-open:rotate-180" />
+            </summary>
+            <nav aria-label="On this page" className="px-5 pb-3">
+              <ul>{tocLinks}</ul>
+            </nav>
+          </details>
+
           <nav aria-label="On this page" className="hidden lg:block">
             <div className="sticky top-11">
-              <p className="overline text-ink-faint">On this page</p>
-              <ul className="mt-5 space-y-2.5">
-                {doc.toc.map((item) => (
-                  <li key={item.id}>
-                    <a
-                      href={`#${item.id}`}
-                      className="block text-[0.875rem] leading-snug text-ink-soft transition-colors hover:text-ink"
-                    >
-                      {item.text}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <p className="eyebrow text-ink-faint">On this page</p>
+              <ul className="mt-5 space-y-2.5">{tocLinks}</ul>
 
               <Link
                 href={sibling.href}
-                className="mt-9 inline-block border-t pt-6 text-[0.875rem] font-semibold transition-colors hover:opacity-80"
-                style={{ color: "var(--primary)", borderColor: "var(--line)" }}
+                className="mt-9 inline-block border-t border-line pt-6 text-[0.875rem] font-semibold text-primary transition-colors hover:opacity-80"
               >
                 {sibling.label}
               </Link>

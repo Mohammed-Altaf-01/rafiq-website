@@ -17,19 +17,17 @@ const outcomes = [
 
 export function Journey() {
   return (
-    <section className="px-5 py-24 sm:px-8 sm:py-32">
+    <section className="px-5 py-20 sm:px-8 sm:py-32">
       <div className="mx-auto grid max-w-[1120px] items-center gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
         <div className="relative mx-auto w-[68%] max-w-[310px] lg:w-full">
           <div
-            className="absolute -inset-7 rounded-[44%]"
+            className="absolute -inset-7 rounded-[44%] bg-gold-fill/11"
             aria-hidden
-            style={{ background: "color-mix(in srgb, var(--gold-fill) 11%, transparent)" }}
           />
           <div className="relative">
             <Device
               src="/screens/journey.webp"
               alt="Rafiq's journey screen showing a clean-day streak, a monthly pattern, and time returned."
-              sizes="(max-width: 1024px) 68vw, 310px"
             />
           </div>
         </div>
@@ -45,7 +43,7 @@ export function Journey() {
 
           <ul className="mt-10">
             {outcomes.map((outcome) => (
-              <li key={outcome.title} className="border-t py-5" style={{ borderColor: "var(--line-strong)" }}>
+              <li key={outcome.title} className="border-t border-line-strong py-5">
                 <h3 className="text-[1.05rem] font-extrabold">{outcome.title}</h3>
                 <p className="mt-2 max-w-[55ch] text-[0.92rem] leading-relaxed text-ink-soft">
                   {outcome.body}

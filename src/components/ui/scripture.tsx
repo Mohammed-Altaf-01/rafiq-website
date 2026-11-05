@@ -1,15 +1,13 @@
 "use client";
 
 import { motion, useInView, useReducedMotion } from "motion/react";
-import { useRef, useSyncExternalStore } from "react";
+import { useRef } from "react";
 
 import type { Passage } from "@/lib/scripture";
+import { useMounted } from "@/lib/use-mounted";
 
 type Tone = "page" | "deep";
 
-const noopSubscribe = () => () => undefined;
-const clientSnapshot = () => true;
-const serverSnapshot = () => false;
 const EASE = [0.23, 1, 0.32, 1] as const;
 const REST = "translate3d(0, 0, 0)";
 
@@ -47,16 +45,16 @@ export function getScriptureMotion(reduced: boolean, wordCount: number) {
 
 const tones = {
   page: {
-    arabic: "var(--ink)",
-    translation: "var(--ink-soft)",
-    reference: "var(--gold)",
-    transliteration: "var(--gold)",
+    arabic: "text-ink",
+    translation: "text-ink-soft",
+    reference: "text-gold",
+    transliteration: "text-gold",
   },
   deep: {
-    arabic: "var(--deep-ink)",
-    translation: "var(--deep-ink-soft)",
-    reference: "var(--deep-gold)",
-    transliteration: "var(--deep-gold)",
+    arabic: "text-deep-ink",
+    translation: "text-deep-ink-soft",
+    reference: "text-deep-gold",
+    transliteration: "text-deep-gold",
   },
 } satisfies Record<Tone, Record<string, string>>;
 
@@ -84,7 +82,7 @@ export function Scripture({
   // A pause mark has no letter of its own: split off, it floats into the line above.
   const words = passage.arabic.replace(/ ([\u06D6-\u06DC])/g, "$1").split(" ");
   const arabicRef = useRef<HTMLParagraphElement>(null);
-  const mounted = useSyncExternalStore(noopSubscribe, clientSnapshot, serverSnapshot);
+  const mounted = useMounted();
   const inView = useInView(arabicRef, { once: true, amount: 0.35 });
   const shown = !mounted || inView;
   const reduced = useReducedMotion();
@@ -103,8 +101,7 @@ export function Scripture({
         ref={arabicRef}
         dir="rtl"
         lang="ar"
-        className={`arabic mx-auto max-w-[15em] leading-[2.3] ${arabicSize}`}
-        style={{ color: c.arabic }}
+        className={`arabic mx-auto max-w-[15em] leading-[2.3] ${arabicSize} ${c.arabic}`}
         initial={false}
         animate={shown ? "shown" : "hidden"}
         variants={scriptureMotion.group}
@@ -124,8 +121,7 @@ export function Scripture({
 
       {passage.transliteration ? (
         <p
-          className="mt-5 text-[0.8rem] font-medium tracking-wide italic sm:text-[0.875rem]"
-          style={{ color: c.transliteration, lineHeight: 1.6 }}
+          className={`mt-5 text-[0.8rem] leading-[1.6] font-medium tracking-wide italic sm:text-[0.875rem] ${c.transliteration}`}
         >
           {passage.transliteration}
         </p>
@@ -135,18 +131,12 @@ export function Scripture({
         className={`mx-auto max-w-[46ch] ${passage.transliteration ? "mt-3" : "mt-7"}`}
       >
         <p
-          className="text-[0.98rem] leading-relaxed sm:text-[1.075rem]"
-          style={{ color: c.translation }}
+          className={`text-[0.98rem] leading-relaxed sm:text-[1.075rem] ${c.translation}`}
         >
           {passage.translation}
         </p>
-        <p
-          className="overline mt-5"
-          style={{ color: c.reference, letterSpacing: "0.18em" }}
-        >
-          {passage.reference}
-        </p>
-        <p className="mt-2 text-[0.8rem]" style={{ color: c.translation }}>
+        <p className={`eyebrow mt-5 ${c.reference}`}>{passage.reference}</p>
+        <p className={`mt-2 text-[0.8rem] ${c.translation}`}>
           {passage.translator}
           {passage.grade ? ` · ${passage.grade}` : ""}
         </p>
